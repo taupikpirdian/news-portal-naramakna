@@ -11,6 +11,8 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
     @include("components.header")
+    @include('components.sidebar')
+
 
     <div class="fixed lg:left-[calc(50%-theme(maxWidth.6xl)/2-3.5rem)] xl:left-[calc(50%-theme(maxWidth.6xl)/2-7rem)] 2xl:left-[calc(50%-theme(maxWidth.6xl)/2-8.5rem)] top-[calc(50%+2.5rem)] -translate-y-1/2 hidden lg:block z-[900]">
         <img src="img/5358285501561176027.jpeg" alt="Banner kiri" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
@@ -20,6 +22,9 @@
     </div>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mt-6">
+            <div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium mb-8">Google Ads</div>
+        </div>
         @yield('content')
     </main>
     @include("components.footer")

@@ -2,10 +2,7 @@
 @section('title', 'Naramakna')
 
 @section('content')
-@include('components.sidebar')
-
 <div class="py-10">
-    <div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium mb-8">Google Ads</div>
     <div class="grid grid-cols-12 gap-8">
         <section class="col-span-12 lg:col-span-8">
             <div class="mb-8">

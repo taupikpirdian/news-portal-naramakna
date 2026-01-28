@@ -3,10 +3,6 @@
 @section('title', 'Naramakna - Cerdas Memaknai')
 
 @section('content')
-@include('components.sidebar')
-<!-- Ad Placeholder -->
-<div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium my-12">AdSense</div>
-
 <!-- Artikel Terbaru -->
 <section class="mb-16">
     <div class="flex items-center justify-between mb-6">
