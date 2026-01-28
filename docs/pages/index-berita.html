@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Naramakna — Index Berita</title>
+  <meta name="description" content="Kumpulan berita terbaru dan utama Naramakna. Cepat dibaca dan SEO-ready.">
+  <link rel="canonical" href="https://naramakna.id/index-berita">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Naramakna — Index Berita">
+  <meta property="og:description" content="Kumpulan berita terbaru dan utama Naramakna. Cepat dibaca dan SEO-ready.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop">
+  <meta property="og:url" content="https://naramakna.id/index-berita">
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            yellow: { 450: '#eab307', 550: '#d4a006' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-[1000]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between gap-4 py-4 flex-wrap">
+        <a href="/" class="text-2xl font-bold no-underline">
+          <div><span class="text-gray-800">nara</span><span class="text-yellow-450">makna</span></div>
+          <div class="text-xs text-gray-500 tracking-wider">Cerdas Memaknai</div>
+        </a>
+        <div class="flex items-center gap-3 flex-1 max-w-[600px] w-full order-3 lg:order-2">
+          <div class="relative flex-1">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" class="w-full py-2.5 pl-10 pr-4 border border-gray-300 rounded-lg outline-none focus:border-yellow-450 focus:ring-2 focus:ring-yellow-450/20 transition-all" placeholder="Cari berita terbaru...">
+          </div>
+          <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition-all no-underline cursor-pointer">Masuk</a>
+          <a href="#" class="px-4 py-2 text-sm font-medium text-white bg-yellow-450 rounded-lg hover:bg-yellow-550 transition-all no-underline cursor-pointer">Buat Tulisan</a>
+        </div>
+      </div>
+      <nav class="border-t border-gray-200 py-3">
+        <ul class="flex gap-6 list-none flex-wrap">
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Narapandang</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Pelakon</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Laga & Gaya</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Wahana</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Olah Bola</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Cerita Rasa</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Horison</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Jagat Kita</a></li>
+          <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Mata Elang</a></li>
+          <li>
+            <a href="#" onclick="openMoreSidebar()" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Lainnya</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="bg-gray-50 border-t border-gray-200 py-2">
+        <ul class="flex flex-wrap gap-3 list-none">
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-red-100 text-red-800">Index Berita</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-blue-100 text-blue-800">Video Story</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-green-100 text-green-800">Polling</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Budaya</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Pendidikan</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Teknologi</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Data Bicara</a></li>
+          <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Liputan Khusus</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <div id="moreSidebar" class="fixed inset-0 z-[1100] hidden opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/40" onclick="closeMoreSidebar()"></div>
+    <div id="moreSidebarPanel" class="absolute right-0 top-0 h-full w-[420px] max-w-[90vw] bg-white shadow-2xl p-6 rounded-l-2xl translate-x-full transition-transform duration-300">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-800">Lainnya</h3>
+        <button class="w-8 h-8 rounded-full bg-gray-100 text-gray-700" onclick="closeMoreSidebar()">×</button>
+      </div>
+      <div class="space-y-6 overflow-y-auto h-[calc(100%-3rem)]">
+        <div class="grid grid-cols-2 gap-3">
+          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+            <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">T</span>
+            <span class="text-sm text-gray-800 font-medium">Terpopuler</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+            <span class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm">V</span>
+            <span class="text-sm text-gray-800 font-medium">Video Story</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+            <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-sm">K</span>
+            <span class="text-sm text-gray-800 font-medium">Kirim Tulisan</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+            <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-sm">I</span>
+            <span class="text-sm text-gray-800 font-medium">Index Berita</span>
+          </a>
+        </div>
+        <div class="border-t border-gray-200"></div>
+        <div>
+          <div class="text-sm font-semibold text-gray-700 mb-3">Kategori</div>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs">N</span>
+              <span class="text-sm text-gray-800 font-medium">Narapandang</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs">P</span>
+              <span class="text-sm text-gray-800 font-medium">Pelakon</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs">L</span>
+              <span class="text-sm text-gray-800 font-medium">Laga & Gaya</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-xs">W</span>
+              <span class="text-sm text-gray-800 font-medium">Wahana</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">O</span>
+              <span class="text-sm text-gray-800 font-medium">Olah Bola</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs">C</span>
+              <span class="text-sm text-gray-800 font-medium">Cerita Rasa</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">H</span>
+              <span class="text-sm text-gray-800 font-medium">Horison</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">J</span>
+              <span class="text-sm text-gray-800 font-medium">Jagat Kita</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xs">M</span>
+              <span class="text-sm text-gray-800 font-medium">Mata Elang</span>
+            </a>
+          </div>
+        </div>
+        <div class="border-t border-gray-200"></div>
+        <div>
+          <div class="text-sm font-semibold text-gray-700 mb-3">Layanan</div>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">T</span>
+              <span class="text-sm text-gray-800 font-medium">Tentang Kami</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">R</span>
+              <span class="text-sm text-gray-800 font-medium">Redaksi</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">K</span>
+              <span class="text-sm text-gray-800 font-medium">Kontak</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">P</span>
+              <span class="text-sm text-gray-800 font-medium">Kebijakan Privasi</span>
+            </a>
+          </div>
+        </div>
+        <div class="border-t border-gray-200"></div>
+        <div>
+          <div class="text-sm font-semibold text-gray-700 mb-3">Informasi</div>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">T</span>
+              <span class="text-sm text-gray-800 font-medium">Tentang Kami</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs">C</span>
+              <span class="text-sm text-gray-800 font-medium">Cara Menulis</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">K</span>
+              <span class="text-sm text-gray-800 font-medium">Informasi Kerja sama</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+              <span class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs">B</span>
+              <span class="text-sm text-gray-800 font-medium">Bantuan</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed left-[calc(50%-theme(maxWidth.7xl)/2-9rem)] top-1/2 -translate-y-1/2 hidden lg:block z-[900]">
+    <img src="img/5358285501561176027.jpeg" alt="Banner kiri" class="w-37 h-auto max-h-[80vh] rounded-lg shadow-lg">
+  </div>
+  <div class="fixed right-[calc(50%-theme(maxWidth.7xl)/2-9rem)] top-1/2 -translate-y-1/2 hidden lg:block z-[900]">
+    <img src="img/5358285501561176027.jpeg" alt="Banner kanan" class="w-37 h-auto max-h-[80vh] rounded-lg shadow-lg">
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium mb-8">Google Ads</div>
+
+    <div class="grid grid-cols-12 gap-8">
+      <section class="col-span-12 lg:col-span-8">
+        <div class="mb-8">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
+            <h2 class="text-xl font-bold">Headline</h2>
+          </div>
+          <a href="artikel.html?id=headline-utama" class="group block no-underline">
+            <div class="relative rounded-2xl overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop" alt="Headline" class="w-full h-[320px] sm:h-[380px] object-cover">
+              <span class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">Horison</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mt-4 leading-tight group-hover:text-yellow-450">Pemerintah Dorong Ekonomi Hijau Lewat Regulasi Baru</h3>
+            <div class="text-sm text-gray-600 line-clamp-2 mt-1">Ringkasan kebijakan baru untuk mendorong transisi ekonomi hijau dan dampaknya bagi pelaku usaha.</div>
+            <div class="flex gap-3 items-center text-gray-600 text-sm mt-2">
+              <span>Khaerunnisa</span>
+              <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+              <span>27/01, 08.00</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="mb-6">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
+            <h2 class="text-xl font-bold">Berita Terbaru</h2>
+          </div>
+          <div class="divide-y divide-gray-200 bg-white rounded-2xl shadow-sm">
+            <a href="artikel.html?id=terbaru-1" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=240&h=240&fit=crop" alt="" class="w-24 h-24 object-cover rounded-lg">
+              <div class="flex-1">
+                <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">Spesies Baru Ditemukan dari Lini Masa</div>
+                <div class="text-sm text-gray-600 line-clamp-2 mt-1">Rangkuman penemuan spesies baru yang menarik dari berbagai lini masa dan implikasinya.</div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>Khaerunnisa</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>27/01, 05.00</span>
+                </div>
+              </div>
+            </a>
+            <a href="artikel.html?id=terbaru-2" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=240&h=240&fit=crop" alt="" class="w-24 h-24 object-cover rounded-lg">
+              <div class="flex-1">
+                <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia</div>
+                <div class="text-sm text-gray-600 line-clamp-2 mt-1">Kisah kontribusi kreator Indonesia dalam simbol kebangsaan Malaysia.</div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>Yosal Iriantara</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>27/01, 02.00</span>
+                </div>
+              </div>
+            </a>
+            <a href="artikel.html?id=terbaru-3" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=240&h=240&fit=crop" alt="" class="w-24 h-24 object-cover rounded-lg">
+              <div class="flex-1">
+                <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">Belajar Mendaki Di Pangradinan</div>
+                <div class="text-sm text-gray-600 line-clamp-2 mt-1">Pengalaman mendaki dengan tips jalur dan keselamatan di Pangradinan.</div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>Yosal Iriantara</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>25/01, 19.00</span>
+                </div>
+              </div>
+            </a>
+            <a href="artikel.html?id=terbaru-4" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=240&h=240&fit=crop" alt="" class="w-24 h-24 object-cover rounded-lg">
+              <div class="flex-1">
+                <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">Naluri Melindungi Keluarga Berujung Masalah</div>
+                <div class="text-sm text-gray-600 line-clamp-2 mt-1">Potret keputusan emosional yang berdampak pada hukum dan sosial.</div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>Khaerunnisa</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>26/01, 01.00</span>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="mt-4 flex items-center justify-between">
+            <a id="paginationPrev" href="?page=1" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 no-underline">‹ Sebelumnya</a>
+            <div class="flex gap-2">
+              <a href="?page=1" data-page="1" class="pagination-link px-3 py-2 text-sm font-medium rounded-lg no-underline border border-gray-300 bg-white text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">1</a>
+              <a href="?page=2" data-page="2" class="pagination-link px-3 py-2 text-sm font-medium rounded-lg no-underline border border-gray-300 bg-white text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">2</a>
+              <a href="?page=3" data-page="3" class="pagination-link px-3 py-2 text-sm font-medium rounded-lg no-underline border border-gray-300 bg-white text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">3</a>
+            </div>
+            <a id="paginationNext" href="?page=2" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 no-underline">Berikutnya ›</a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="col-span-12 lg:col-span-4">
+        <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+          <h3 class="text-base font-semibold text-gray-900 mb-3">Kategori</h3>
+          <div class="flex flex-wrap gap-2">
+            <a href="#" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">Horison</a>
+            <a href="#" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">Narapandang</a>
+            <a href="#" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">Laga & Gaya</a>
+            <a href="#" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">Cerita Rasa</a>
+            <a href="#" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">Wahana</a>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm p-4">
+          <h3 class="text-base font-semibold text-gray-900 mb-3">Trending</h3>
+          <div class="space-y-3">
+            <a href="artikel.html?id=trend-1" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=120&h=120&fit=crop" alt="" class="w-16 h-16 object-cover rounded-lg">
+              <div class="flex-1">
+                <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Gas Tertawa dan Hidup yang Terlalu Cepat</div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>Khaerunnisa</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>26/01, 23.00</span>
+                </div>
+              </div>
+            </a>
+            <a href="artikel.html?id=trend-2" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
+              <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=120&h=120&fit=crop" alt="" class="w-16 h-16 object-cover rounded-lg">
+              <div class="flex-1">
+                <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia</div>
+                <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                  <span>Yosal Iriantara</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>27/01, 02.00</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-400 py-12 pb-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+              <div>
+                  <div class="text-2xl font-bold mb-4">
+                      <span class="text-white">nara</span><span class="text-yellow-450">makna</span>
+                  </div>
+                  <div class="text-xs text-gray-500 tracking-wider mb-4">Cerdas Memaknai</div>
+                  <p class="text-sm mb-4">
+                      Platform media digital yang menghadirkan informasi berkualitas dan perspektif mendalam untuk membantu Anda cerdas dalam memaknai berbagai peristiwa dan isu terkini.
+                  </p>
+                  <div class="flex gap-3">
+                      <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white">
+                          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                          </svg>
+                      </a>
+                      <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white">
+                          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                          </svg>
+                      </a>
+                      <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white">
+                          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+                          </svg>
+                      </a>
+                      <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white">
+                          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                          </svg>
+                      </a>
+                  </div>
+              </div>
+
+              <div>
+                  <h3 class="text-white text-base font-semibold mb-4">Kategori</h3>
+                  <ul class="list-none">
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Narapandang</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Horison</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Laga & Gaya</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Cerita Rasa</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Wahana</a></li>
+                  </ul>
+              </div>
+
+              <div>
+                  <h3 class="text-white text-base font-semibold mb-4">Tentang Kami</h3>
+                  <ul class="list-none">
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Tentang Naramakna</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Redaksi</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Pedoman Media Siber</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Kontak</a></li>
+                      <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Kebijakan Privasi</a></li>
+                  </ul>
+              </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-6 flex justify-between items-center flex-wrap gap-4 text-sm">
+              <p>&copy; 2025 Naramakna.id. All rights reserved.</p>
+              <div class="flex gap-6">
+                  <a href="#" class="text-gray-400 no-underline transition-colors hover:text-yellow-450">Syarat & Ketentuan</a>
+                  <a href="#" class="text-gray-400 no-underline transition-colors hover:text-yellow-450">Kebijakan Privasi</a>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+  <script type="application/ld+json" id="itemListJsonLd">{}</script>
+  <script>
+    const items = [
+      { title: 'Pemerintah Dorong Ekonomi Hijau Lewat Regulasi Baru', url: location.origin + '/artikel.html?id=headline-utama' },
+      { title: 'Spesies Baru Ditemukan dari Lini Masa', url: location.origin + '/artikel.html?id=terbaru-1' },
+      { title: 'Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia', url: location.origin + '/artikel.html?id=terbaru-2' },
+      { title: 'Belajar Mendaki Di Pangradinan', url: location.origin + '/artikel.html?id=terbaru-3' },
+      { title: 'Naluri Melindungi Keluarga Berujung Masalah', url: location.origin + '/artikel.html?id=terbaru-4' }
+    ];
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      'itemListElement': items.map((it, i) => ({
+        '@type': 'ListItem',
+        'position': i + 1,
+        'url': it.url,
+        'name': it.title
+      }))
+    };
+    document.getElementById('itemListJsonLd').textContent = JSON.stringify(ld);
+
+    const totalPages = 5;
+    const params = new URLSearchParams(location.search);
+    const currentPage = parseInt(params.get('page') || '1', 10);
+    const pageLinks = document.querySelectorAll('.pagination-link');
+    pageLinks.forEach(link => {
+      const p = parseInt(link.dataset.page, 10);
+      link.href = `?page=${p}`;
+      if (p === currentPage) {
+        link.className = 'pagination-link px-3 py-2 text-sm font-medium rounded-lg no-underline border border-yellow-450 bg-yellow-450 text-white';
+        link.setAttribute('aria-current', 'page');
+      }
+    });
+    const prevEl = document.getElementById('paginationPrev');
+    const nextEl = document.getElementById('paginationNext');
+    if (prevEl) {
+      if (currentPage > 1) {
+        prevEl.href = `?page=${currentPage - 1}`;
+      } else {
+        prevEl.classList.add('opacity-50', 'pointer-events-none');
+      }
+    }
+    if (nextEl) {
+      if (currentPage < totalPages) {
+        nextEl.href = `?page=${currentPage + 1}`;
+      } else {
+        nextEl.classList.add('opacity-50', 'pointer-events-none');
+      }
+    }
+    function openMoreSidebar() {
+      const el = document.getElementById('moreSidebar');
+      const panel = document.getElementById('moreSidebarPanel');
+      if (!el || !panel) return;
+      el.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        el.classList.add('opacity-100');
+        panel.classList.remove('translate-x-full');
+      });
+    }
+    function closeMoreSidebar() {
+      const el = document.getElementById('moreSidebar');
+      const panel = document.getElementById('moreSidebarPanel');
+      if (!el || !panel) return;
+      el.classList.remove('opacity-100');
+      panel.classList.add('translate-x-full');
+      setTimeout(() => el.classList.add('hidden'), 300);
+    }
+    const FALLBACK_IMG = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="24">Image unavailable</text></svg>';
+    Array.from(document.querySelectorAll('img')).forEach(img => {
+      img.addEventListener('error', () => {
+        img.src = FALLBACK_IMG;
+      }, { once: true });
+    });
+  </script>
+</body>
+</html>

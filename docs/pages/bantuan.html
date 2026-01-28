@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bantuan - Naramakna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        yellow: { 450: '#eab307', 550: '#d4a006' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-[1000]">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
+            <div class="flex items-center justify-between gap-4 py-4 flex-wrap">
+                <a href="/" class="text-2xl font-bold no-underline">
+                    <div><span class="text-gray-800">nara</span><span class="text-yellow-450">makna</span></div>
+                    <div class="text-xs text-gray-500 tracking-wider">Cerdas Memaknai</div>
+                </a>
+                <div class="flex items-center gap-3 flex-1 max-w-[600px] w-full order-3 lg:order-2">
+                    <div class="relative flex-1">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" class="w-full py-2.5 pl-10 pr-4 border border-gray-300 rounded-lg outline-none focus:border-yellow-450 focus:ring-2 focus:ring-yellow-450/20 transition-all" placeholder="Cari artikel, berita, video...">
+                    </div>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 transition-all no-underline cursor-pointer">Masuk</a>
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-white bg-yellow-450 rounded-lg hover:bg-yellow-550 transition-all no-underline cursor-pointer">Buat Tulisan</a>
+                </div>
+            </div>
+            <nav class="border-t border-gray-200 py-3">
+                <ul class="flex gap-6 list-none flex-wrap">
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Narapandang</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Pelakon</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Laga & Gaya</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Wahana</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Olah Bola</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Cerita Rasa</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Horison</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Jagat Kita</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Mata Elang</a></li>
+                </ul>
+            </nav>
+            <div class="bg-gray-50 border-t border-gray-200 py-2">
+                <ul class="flex flex-wrap gap-3 list-none">
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-red-100 text-red-800">Index Berita</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-blue-100 text-blue-800">Video Story</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-green-100 text-green-800">Polling</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Budaya</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Pendidikan</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Teknologi</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Data Bicara</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Liputan Khusus</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-12">
+        <section class="relative -mx-[calc(50%-50vw)] bg-gray-900">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/10"></div>
+            <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-16 sm:py-22">
+                <div class="max-w-3xl text-white">
+                    <div class="inline-flex items-center gap-2 mb-4">
+                        <span class="w-1 h-7 bg-yellow-450 rounded-full"></span>
+                        <span class="uppercase tracking-wider text-xs text-white/80">Bantuan</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-bold leading-tight">Pusat Bantuan</h1>
+                    <p class="mt-2 text-white/90 text-sm sm:text-base">Temukan jawaban dan panduan penggunaan platform Naramakna.id</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-12">
+            <div class="grid lg:grid-cols-12 gap-6 items-start">
+                <aside class="lg:col-span-4">
+                    <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                        <div class="text-sm font-semibold text-gray-800 px-2 mb-2">Kategori Bantuan</div>
+                        <div class="space-y-2" id="help-categories">
+                            <button data-cat="umum" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 bg-orange-500 text-white shadow-sm transition-all duration-200 ease-out hover:bg-orange-500/90 hover:shadow-md hover:-translate-y-0.5">
+                                <span class="w-8 h-8 rounded-full bg-orange-600/10 text-orange-600 flex items-center justify-center">?</span>
+                                <span class="text-sm font-medium">Pertanyaan Umum</span>
+                            </button>
+                            <button data-cat="akun" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5">
+                                <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center">🔒</span>
+                                <span class="text-sm text-gray-800 font-medium">Akun & Login</span>
+                            </button>
+                            <button data-cat="konten" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5">
+                                <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center">✎</span>
+                                <span class="text-sm text-gray-800 font-medium">Artikel & Konten</span>
+                            </button>
+                            <button data-cat="teknis" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5">
+                                <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center">⚙️</span>
+                                <span class="text-sm text-gray-800 font-medium">Masalah Teknis</span>
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <section class="lg:col-span-8">
+                    <div class="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8 shadow-sm">
+                        <div class="text-center mb-6">
+                            <h2 id="panel-title" class="text-2xl font-bold text-gray-900">Pertanyaan Umum</h2>
+                            <p id="panel-desc" class="mt-1 text-sm text-gray-600">Temukan jawaban untuk pertanyaan seputar pertanyaan umum</p>
+                        </div>
+                        <div id="faq-list" class="space-y-3">
+                            <!-- items injected by script -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-12">
+            <div class="rounded-3xl bg-gradient-to-r from-orange-500 to-orange-600 text-white p-8 sm:p-10 shadow-xl">
+                <div class="text-center">
+                    <h2 class="text-2xl sm:text-3xl font-bold">Masih Perlu Bantuan?</h2>
+                    <p class="mt-2 text-white/90 text-sm sm:text-base">Hubungi tim kami, atau kunjungi alamat kantor kami di Bandung</p>
+                    <div class="mt-4 text-white/90 text-xs">Jl. Sanggar Kencana Utama No. 1C, Sanggar Hurip Estate, Jatisari, Buahbatu, Kota Bandung, Jawa Barat 40286</div>
+                    <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                            <div class="flex flex-col items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M16.5 14.5c-.5-.25-1.5-.75-1.75-.85-.25-.1-.4-.1-.55.1-.15.2-.6.7-.75.85-.15.15-.3.15-.5.05-.2-.1-.85-.3-1.6-.95-.6-.55-1.05-1.23-1.17-1.43-.12-.2-.01-.31.09-.41.1-.1.2-.24.3-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.37-.05-.11-.49-1.16-.67-1.59-.18-.41-.36-.36-.49-.37h-.42c-.15 0-.39.06-.59.26-.2.2-.78.74-.78 1.8 0 1.06.8 2.09.91 2.24.11.15 1.58 2.35 3.83 3.29.54.22.95.36 1.27.46.53.17 1.02.14 1.4.09.43-.06 1.31-.53 1.5-1.04.19-.51.19-.95.13-1.04-.06-.09-.2-.15-.45-.27z" fill="currentColor"/>
+                                </svg>
+                                <div class="text-sm font-semibold">WhatsApp</div>
+                            </div>
+                            <div class="mt-1 text-xs text-white/80 text-center">Hubungi tim support langsung via WhatsApp</div>
+                        </a>
+                        <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                            <div class="flex flex-col items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 5h18v14H3V5zm9 6L3 5h18l-9 6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                                <div class="text-sm font-semibold">Email</div>
+                            </div>
+                            <div class="mt-1 text-xs text-white/80 text-center">Kirim email ke tim support kami</div>
+                        </a>
+                        <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                            <div class="flex flex-col items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                                <div class="text-sm font-semibold">Instagram</div>
+                            </div>
+                            <div class="mt-1 text-xs text-white/80 text-center">DM kami di instagram untuk bantuan</div>
+                        </a>
+                        <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                            <div class="flex flex-col items-center gap-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M13 9h2V7h-2c-1.657 0-3 1.343-3 3v2H8v2h2v5h2v-5h2l1-2h-3V10c0-.552.448-1 1-1z" fill="currentColor"/>
+                                </svg>
+                                <div class="text-sm font-semibold">Facebook</div>
+                            </div>
+                            <div class="mt-1 text-xs text-white/80 text-center">Hubungi kami melalu Facebook</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-12 pb-6">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="text-2xl font-bold mb-4"><span class="text-white">nara</span><span class="text-yellow-450">makna</span></div>
+                    <div class="text-xs text-gray-500 tracking-wider mb-4">Cerdas Memaknai</div>
+                    <p class="text-sm mb-4">Platform media digital yang menghadirkan informasi berkualitas dan perspektif mendalam untuk membantu Anda cerdas dalam memaknai berbagai peristiwa dan isu terkini.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center no-underline text-gray-400 transition-all hover:bg-yellow-450 hover:text-white"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03z"/></svg></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-white text-base font-semibold mb-4">Kategori</h3>
+                    <ul class="list-none">
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Narapandang</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Horison</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Laga & Gaya</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Cerita Rasa</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Wahana</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white text-base font-semibold mb-4">Informasi</h3>
+                    <ul class="list-none">
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Tentang Naramakna</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Redaksi</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Kontak</a></li>
+                        <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Bantuan</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 flex justify-between items-center flex-wrap gap-4 text-sm">
+                <p>&copy; 2025 Naramakna.id. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-400 no-underline transition-colors hover:text-yellow-450">Syarat & Ketentuan</a>
+                    <a href="#" class="text-gray-400 no-underline transition-colors hover:text-yellow-450">Kebijakan Privasi</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const data = {
+            umum: {
+                title: 'Pertanyaan Umum',
+                desc: 'Temukan jawaban untuk pertanyaan seputar pertanyaan umum',
+                items: [
+                    { q: 'Apa itu Naramakna.id?', a: 'Naramakna.id adalah platform media digital yang menyajikan konten berkualitas dengan tagline "Cerdas Memaknai". Kami fokus pada jurnalisme data yang humanis dan konten yang mendalam.' },
+                    { q: 'Bagaimana cara menggunakan platform ini?', a: 'Anda bisa membaca artikel, berpartisipasi dalam polling, menonton video story, dan berinteraksi dengan konten lainnya. Untuk fitur lengkap, daftar dan login ke akun Anda.' },
+                    { q: 'Apakah konten di sini gratis?', a: 'Ya, semua konten di Naramakna.id dapat diakses secara gratis. Kami berkomitmen memberikan informasi berkualitas tanpa biaya kepada pembaca.' },
+                ],
+            },
+            akun: {
+                title: 'Akun & Login',
+                desc: 'Temukan jawaban untuk pertanyaan seputar akun & login',
+                items: [
+                    { q: 'Bagaimana cara mendaftar akun?', a: 'Klik tombol "Daftar" di pojok kanan atas, isi form registrasi dengan data lengkap, verifikasi email yang dikirim, dan login dengan akun yang sudah dibuat.' },
+                    { q: 'Lupa password, bagaimana?', a: 'Klik "Lupa Password" di halaman login, masukkan email yang terdaftar, dan ikuti instruksi reset password yang dikirim ke email Anda.' },
+                    { q: 'Bisa ganti email yang terdaftar?', a: 'Ya, Anda bisa mengubah email di pengaturan profil. Pastikan email baru aktif dan belum terdaftar di platform lain.' },
+                ],
+            },
+            konten: {
+                title: 'Artikel & Konten',
+                desc: 'Temukan jawaban untuk pertanyaan seputar artikel & konten',
+                items: [
+                    { q: 'Bagaimana cara menulis artikel?', a: 'Setelah login, klik "Tulis Artikel" di dashboard, pilih kategori yang sesuai, tulis konten, upload gambar pendukung, dan submit untuk review admin.' },
+                    { q: 'Berapa lama artikel dipublish?', a: 'Proses review artikel biasanya memakan waktu 24–48 jam kerja. Tim admin akan meninjau kualitas konten dan memberikan feedback jika diperlukan.' },
+                    { q: 'Bisa edit artikel yang sudah dipublish?', a: 'Ya, Anda bisa mengedit artikel yang sudah dipublish melalui dashboard penulis. Perubahan akan direview ulang sebelum dipublish.' },
+                ],
+            },
+            teknis: {
+                title: 'Masalah Teknis',
+                desc: 'Temukan jawaban untuk pertanyaan seputar masalah teknis',
+                items: [
+                    { q: 'Website tidak bisa diakses, kenapa?', a: 'Cek koneksi internet Anda, clear cache browser, atau coba akses dari browser lain. Jika masih bermasalah, hubungi tim support kami.' },
+                    { q: 'Gambar tidak muncul, bagaimana?', a: 'Pastikan koneksi internet stabil, refresh halaman, atau coba akses dari device lain. Jika masalah berlanjut, laporkan ke tim support.' },
+                    { q: 'Aplikasi mobile tidak berfungsi?', a: 'Update aplikasi ke versi terbaru, restart aplikasi, atau reinstall jika diperlukan. Pastikan device Anda mendukung versi aplikasi.' },
+                ],
+            }
+        };
+
+        const categories = document.querySelectorAll('#help-categories button');
+        const faqList = document.getElementById('faq-list');
+        const panelTitle = document.getElementById('panel-title');
+        const panelDesc = document.getElementById('panel-desc');
+
+        function renderFAQ(catKey) {
+            const cat = data[catKey];
+            panelTitle.textContent = cat.title;
+            panelDesc.textContent = cat.desc;
+            faqList.innerHTML = '';
+            cat.items.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'rounded-xl border border-gray-200 p-4';
+                const header = document.createElement('button');
+                header.className = 'w-full flex items-center justify-between gap-3 text-left';
+                const title = document.createElement('div');
+                title.className = 'text-sm font-medium text-gray-900';
+                title.textContent = item.q;
+                const icon = document.createElement('span');
+                icon.className = 'text-gray-400';
+                icon.textContent = '▾';
+                header.appendChild(title);
+                header.appendChild(icon);
+                const body = document.createElement('div');
+                body.className = 'mt-2 text-xs text-gray-600 overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-out';
+                body.textContent = item.a;
+                body.dataset.open = 'false';
+                header.addEventListener('click', () => {
+                    const isOpen = body.dataset.open === 'true';
+                    if (isOpen) {
+                        body.style.maxHeight = '0px';
+                        body.style.opacity = '0';
+                        icon.textContent = '▾';
+                        body.dataset.open = 'false';
+                    } else {
+                        body.style.maxHeight = body.scrollHeight + 'px';
+                        body.style.opacity = '1';
+                        icon.textContent = '▴';
+                        body.dataset.open = 'true';
+                    }
+                });
+                card.appendChild(header);
+                card.appendChild(body);
+                faqList.appendChild(card);
+            });
+        }
+
+        categories.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categories.forEach(b => b.classList.remove('bg-orange-500', 'text-white', 'shadow-sm'));
+                categories.forEach(b => b.classList.add('border', 'border-gray-200'));
+                btn.classList.add('bg-orange-500', 'text-white', 'shadow-sm');
+                renderFAQ(btn.dataset.cat);
+            });
+        });
+
+        renderFAQ('umum');
+    </script>
+</body>
+</html>
