@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Naramakna - Cerdas Memaknai')
-
 @section('content')
 <!-- Artikel Terbaru -->
 <section class="mb-16">
