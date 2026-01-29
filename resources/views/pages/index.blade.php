@@ -174,24 +174,7 @@
             nextEl.classList.add('opacity-50', 'pointer-events-none');
         }
     }
-    function openMoreSidebar() {
-        const el = document.getElementById('moreSidebar');
-        const panel = document.getElementById('moreSidebarPanel');
-        if (!el || !panel) return;
-        el.classList.remove('hidden');
-        requestAnimationFrame(() => {
-            el.classList.add('opacity-100');
-            panel.classList.remove('translate-x-full');
-        });
-    }
-    function closeMoreSidebar() {
-        const el = document.getElementById('moreSidebar');
-        const panel = document.getElementById('moreSidebarPanel');
-        if (!el || !panel) return;
-        el.classList.remove('opacity-100');
-        panel.classList.add('translate-x-full');
-        setTimeout(() => el.classList.add('hidden'), 300);
-    }
+
     const FALLBACK_IMG = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="24">Image unavailable</text></svg>';
     Array.from(document.querySelectorAll('img')).forEach(img => {
         img.addEventListener('error', () => {

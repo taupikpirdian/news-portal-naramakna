@@ -5,24 +5,28 @@
             <h3 class="text-lg font-semibold text-gray-800">Lainnya</h3>
             <button class="w-8 h-8 rounded-full bg-gray-100 text-gray-700" onclick="closeMoreSidebar()">×</button>
         </div>
+        
         <div class="space-y-6 overflow-y-auto h-[calc(100%-3rem)]">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                    <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm">T</span>
-                    <span class="text-sm text-gray-800 font-medium">Terpopuler</span>
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                    <span class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm">V</span>
-                    <span class="text-sm text-gray-800 font-medium">Video Story</span>
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                    <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-sm">K</span>
-                    <span class="text-sm text-gray-800 font-medium">Kirim Tulisan</span>
-                </a>
-                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                    <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-sm">I</span>
-                    <span class="text-sm text-gray-800 font-medium">Index Berita</span>
-                </a>
+            <div>
+                <div class="text-sm font-semibold text-gray-700 mb-3">Informasi</div>
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="{{ route('tentangKami') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                        <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">T</span>
+                        <span class="text-sm text-gray-800 font-medium">Tentang Kami</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                        <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs">C</span>
+                        <span class="text-sm text-gray-800 font-medium">Cara Menulis</span>
+                    </a>
+                    <a href="{{ route('kerjaSama') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                        <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">K</span>
+                        <span class="text-sm text-gray-800 font-medium">Informasi Kerja sama</span>
+                    </a>
+                    <a href="{{ route('bantuan') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                        <span class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs">B</span>
+                        <span class="text-sm text-gray-800 font-medium">Bantuan</span>
+                    </a>
+                </div>
             </div>
             <div class="border-t border-gray-200"></div>
             <div>
@@ -67,49 +71,6 @@
                 </div>
             </div>
             <div class="border-t border-gray-200"></div>
-            <div>
-                <div class="text-sm font-semibold text-gray-700 mb-3">Layanan</div>
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">T</span>
-                        <span class="text-sm text-gray-800 font-medium">Tentang Kami</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">R</span>
-                        <span class="text-sm text-gray-800 font-medium">Redaksi</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">K</span>
-                        <span class="text-sm text-gray-800 font-medium">Kontak</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs">P</span>
-                        <span class="text-sm text-gray-800 font-medium">Kebijakan Privasi</span>
-                    </a>
-                </div>
-            </div>
-            <div class="border-t border-gray-200"></div>
-            <div>
-                <div class="text-sm font-semibold text-gray-700 mb-3">Informasi</div>
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="{{ route('tentangKami') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">T</span>
-                        <span class="text-sm text-gray-800 font-medium">Tentang Kami</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs">C</span>
-                        <span class="text-sm text-gray-800 font-medium">Cara Menulis</span>
-                    </a>
-                    <a href="{{ route('kerjaSama') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">K</span>
-                        <span class="text-sm text-gray-800 font-medium">Informasi Kerja sama</span>
-                    </a>
-                    <a href="{{ route('bantuan') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs">B</span>
-                        <span class="text-sm text-gray-800 font-medium">Bantuan</span>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </div>

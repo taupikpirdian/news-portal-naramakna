@@ -47,11 +47,9 @@
             <div>
                 <h3 class="text-white text-base font-semibold mb-4">Tentang Kami</h3>
                 <ul class="list-none">
-                    <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Tentang Naramakna</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Redaksi</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Pedoman Media Siber</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Kontak</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Kebijakan Privasi</a></li>
+                    <li class="mb-2"><a href="{{ route('tentangKami') }}" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Tentang Naramakna</a></li>
+                    <li class="mb-2"><a href="{{ route('kerjaSama') }}" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Informasi Kerja Sama</a></li>
+                    <li class="mb-2"><a href="{{ route('bantuan') }}" class="text-gray-400 no-underline text-sm transition-colors hover:text-yellow-450">Kontak</a></li>
                 </ul>
             </div>
         </div>
