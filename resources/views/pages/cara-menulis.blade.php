@@ -8,6 +8,12 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
+    /* Fix search icon position */
+    .search-icon-fix {
+        top: 70% !important;
+        transform: translateY(-50%) !important;
+    }
+
     /* Custom animations */
     @keyframes blob {
         0% {
@@ -529,6 +535,14 @@
 
 @push('scripts')
 <script>
+    // Fix search icon position
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchIcon = document.querySelector('.relative.flex-1 svg');
+        if (searchIcon) {
+            searchIcon.classList.add('search-icon-fix');
+        }
+    });
+
     // Initialize Lucide icons
     lucide.createIcons();
 
