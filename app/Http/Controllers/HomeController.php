@@ -35,4 +35,9 @@ class HomeController extends Controller
     {
         return view('pages.tentang-kami');
     }
+
+    public function caraMenulis()
+    {
+        return view('pages.cara-menulis');
+    }
 }

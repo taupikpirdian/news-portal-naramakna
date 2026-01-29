@@ -69,7 +69,7 @@
     </div>
     <p class="text-sm text-gray-600 mb-6">Berbagai peluang kolaborasi yang bisa kita eksplorasi bersama</p>
     <div class="grid md:grid-cols-3 gap-4">
-        <div class="rounded-xl border border-gray-200 p-5">
+        <div class="rounded-xl border border-gray-200 p-5 bg-white">
             <div class="flex items-center gap-3 mb-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -81,7 +81,7 @@
             </div>
             <div class="text-xs text-gray-600">Kolaborasi kebijakan berbasis data, kampanye edukasi, dan transparansi publik.</div>
         </div>
-        <div class="rounded-xl border border-gray-200 p-5">
+        <div class="rounded-xl border border-gray-200 p-5 bg-white">
             <div class="flex items-center gap-3 mb-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-sky-500 to-sky-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -93,7 +93,7 @@
             </div>
             <div class="text-xs text-gray-600">Produksi konten kolaboratif, sindikasi artikel, dan program editorial bersama.</div>
         </div>
-        <div class="rounded-xl border border-gray-200 p-5">
+        <div class="rounded-xl border border-gray-200 p-5 bg-white">
             <div class="flex items-center gap-3 mb-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-rose-500 to-rose-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -104,7 +104,7 @@
             </div>
             <div class="text-xs text-gray-600">Advokasi isu publik, publikasi riset, dan kampanye kesadaran sosial.</div>
         </div>
-        <div class="rounded-xl border border-gray-200 p-5">
+        <div class="rounded-xl border border-gray-200 p-5 bg-white">
             <div class="flex items-center gap-3 mb-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-purple-500 to-purple-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -115,7 +115,7 @@
             </div>
             <div class="text-xs text-gray-600">Proyek riset bersama, publikasi ilmiah populer, dan kelas/bootcamp.</div>
         </div>
-        <div class="rounded-xl border border-gray-200 p-5">
+        <div class="rounded-xl border border-gray-200 p-5 bg-white">
             <div class="flex items-center gap-3 mb-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -127,7 +127,7 @@
             </div>
             <div class="text-xs text-gray-600">Program konten berdampak, CSR berbasis data, dan edukasi publik.</div>
         </div>
-        <div class="rounded-xl border border-gray-200 p-5">
+        <div class="rounded-xl border border-gray-200 p-5 bg-white">
             <div class="flex items-center gap-3 mb-2">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -153,7 +153,7 @@
     <div class="grid lg:grid-cols-12 gap-8 items-start">
         <div class="lg:col-span-12">
             <div class="grid md:grid-cols-3 gap-4">
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded-xl border border-gray-200 p-5 bg-white">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -164,7 +164,7 @@
                     </div>
                     <div class="text-xs text-gray-600">Jangkau ribuan pembaca aktif yang peduli akan kualitas konten</div>
                 </div>
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded-xl border border-gray-200 p-5 bg-white">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -176,7 +176,7 @@
                     </div>
                     <div class="text-xs text-gray-600">Standar jurnalistik yang ketat dan reputasi yang terpercaya</div>
                 </div>
-                <div class="rounded-xl border border-gray-200 p-5">
+                <div class="rounded-xl border border-gray-200 p-5 bg-white">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-b from-purple-500 to-purple-600 text-white shadow ring-1 ring-white/20 flex items-center justify-center">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">

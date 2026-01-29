@@ -14,7 +14,7 @@
                         <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">T</span>
                         <span class="text-sm text-gray-800 font-medium">Tentang Kami</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                    <a href="{{ route('caraMenulis') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
                         <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs">C</span>
                         <span class="text-sm text-gray-800 font-medium">Cara Menulis</span>
                     </a>

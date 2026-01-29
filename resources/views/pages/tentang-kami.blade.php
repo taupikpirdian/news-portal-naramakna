@@ -85,19 +85,19 @@
         <div class="lg:col-span-6">
             <p class="text-gray-700">Kami hadir sebagai kompas intelektual di tengah derasnya informasi. Setiap artikel melalui proses kurasi untuk memastikan akurasi, relevansi, dan dampak sosial yang positif.</p>
             <div class="grid grid-cols-2 gap-4 mt-6">
-                <div class="rounded-xl border border-gray-200 p-4">
+                <div class="rounded-xl border border-gray-200 p-4 bg-white">
                     <div class="text-sm font-semibold text-gray-900">Jurnalisme Data Humanis</div>
                     <div class="text-xs text-gray-600 mt-1">Menghadirkan fakta yang informatif dan inspiratif.</div>
                 </div>
-                <div class="rounded-xl border border-gray-200 p-4">
+                <div class="rounded-xl border border-gray-200 p-4 bg-white">
                     <div class="text-sm font-semibold text-gray-900">Kurasi Ketat</div>
                     <div class="text-xs text-gray-600 mt-1">Menjaga kualitas, akurasi, dan relevansi.</div>
                 </div>
-                <div class="rounded-xl border border-gray-200 p-4">
+                <div class="rounded-xl border border-gray-200 p-4 bg-white">
                     <div class="text-sm font-semibold text-gray-900">Dialog Konstruktif</div>
                     <div class="text-xs text-gray-600 mt-1">Mendorong empati dan diskusi yang sehat.</div>
                 </div>
-                <div class="rounded-xl border border-gray-200 p-4">
+                <div class="rounded-xl border border-gray-200 p-4 bg-white">
                     <div class="text-sm font-semibold text-gray-900">Dampak Sosial</div>
                     <div class="text-xs text-gray-600 mt-1">Berpihak pada kebenaran dan kemaslahatan publik.</div>
                 </div>
@@ -124,23 +124,23 @@
         </div>
     </div>
     <div class="grid md:grid-cols-3 gap-6">
-        <div class="rounded-2xl border border-gray-200 p-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-xl bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow-md ring-1 ring-white/20 flex items-center justify-center">
-                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 16V11M12 16V8M18 16V13" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M4 16h16" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="text-sm font-semibold text-gray-900">Data Intelligence</div>
-                        <div class="text-xs text-gray-600">Layanan Unggulan</div>
-                    </div>
-                </div>
-                <div class="mt-3 text-xs text-gray-600">Riset data, analisis, dan visualisasi untuk keputusan yang lebih tajam.</div>
-        </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow-md ring-1 ring-white/20 flex items-center justify-center">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 16V11M12 16V8M18 16V13" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M4 16h16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold text-gray-900">Data Intelligence</div>
+                    <div class="text-xs text-gray-600">Layanan Unggulan</div>
+                </div>
+            </div>
+            <div class="mt-3 text-xs text-gray-600">Riset data, analisis, dan visualisasi untuk keputusan yang lebih tajam.</div>
+        </div>
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
+            <div class="flex items-center gap-4 ">
                 <div class="w-16 h-16 rounded-xl bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
                         <path d="M8 4h8a2 2 0 0 1 2 2v6l-6 6H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
@@ -154,7 +154,7 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Narasi editorial, visual, dan infografik yang menggugah dan informatif.</div>
         </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 rounded-xl bg-gradient-to-b from-green-500 to-green-600 text-white shadow-md ring-1 ring-white/20 flex items-center justify-center">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
@@ -170,7 +170,6 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Distribusi multi-kanal, timing optimal, dan praktik SEO yang efektif.</div>
         </div>
-        
     </div>
 </section>
 
@@ -182,7 +181,7 @@
         </div>
     </div>
     <div class="grid md:grid-cols-3 gap-6">
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <img class="w-16 h-16 rounded-xl object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=600&fit=crop" alt="Pemimpin Redaksi">
                 <div>
@@ -192,7 +191,7 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Memimpin arah editorial, menjaga kualitas jurnalisme, dan membangun ekosistem diskusi publik yang sehat.</div>
         </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <img class="w-16 h-16 rounded-xl object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=600&fit=crop" alt="Wakil Pemimpin Redaksi">
                 <div>
@@ -202,7 +201,7 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Mengawal proses kurasi, koordinasi liputan, serta memastikan relevansi dan dampak sosial.</div>
         </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <img class="w-16 h-16 rounded-xl object-cover" src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=600&h=600&fit=crop" alt="Redaktur Pelaksana">
                 <div>
@@ -212,7 +211,7 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Mengelola produksi harian, menyunting naskah, dan memastikan konsistensi gaya editorial.</div>
         </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <img class="w-16 h-16 rounded-xl object-cover" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=600&h=600&fit=crop" alt="Editor Data">
                 <div>
@@ -222,7 +221,7 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Mengolah data, membuat visualisasi, dan memperkaya narasi dengan sudut pandang berbasis bukti.</div>
         </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <img class="w-16 h-16 rounded-xl object-cover" src="https://images.unsplash.com/photo-1544005315-4dc0b5a9fb16?w=600&h=600&fit=crop" alt="Editor Visual">
                 <div>
@@ -232,7 +231,7 @@
             </div>
             <div class="mt-3 text-xs text-gray-600">Merancang identitas visual, infografik, dan pengalaman membaca yang nyaman.</div>
         </div>
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <div class="rounded-2xl border border-gray-200 p-6 bg-white">
             <div class="flex items-center gap-4">
                 <img class="w-16 h-16 rounded-xl object-cover" src="https://images.unsplash.com/photo-1544723795-3fb6469f9f13?w=600&h=600&fit=crop" alt="Editor Publikasi">
                 <div>

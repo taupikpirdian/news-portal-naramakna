@@ -14,3 +14,5 @@ Route::get('/bantuan', [\App\Http\Controllers\HomeController::class, 'bantuan'])
 Route::get('/kerja-sama', [\App\Http\Controllers\HomeController::class, 'kerjaSama'])->name('kerjaSama');
 // tentang-kami.html
 Route::get('/tentang-kami', [\App\Http\Controllers\HomeController::class, 'tentangKami'])->name('tentangKami');
+// cara-menulis.html
+Route::get('/cara-menulis', [\App\Http\Controllers\HomeController::class, 'caraMenulis'])->name('caraMenulis');

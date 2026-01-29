@@ -8,15 +8,61 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
     @include("components.head")
+    @stack('styles')
+    <style>
+        .ad-sidebar-left {
+            position: fixed;
+            left: calc(50% - theme(maxWidth.6xl) / 2 - 10rem);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 900;
+        }
+
+        .ad-sidebar-right {
+            position: fixed;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 900;
+        }
+
+        @media (min-width: 1024px) {
+            .ad-sidebar-left {
+                display: block;
+            }
+            .ad-sidebar-right {
+                display: block;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .ad-sidebar-left {
+                left: calc(50% - theme(maxWidth.6xl) / 2 - 12rem);
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .ad-sidebar-left {
+                left: calc(50% - theme(maxWidth.6xl) / 2 - 14rem);
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .ad-sidebar-left,
+            .ad-sidebar-right {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
     @include("components.header")
     @include('components.sidebar')
 
-    <div class="fixed lg:left-[calc(50%-theme(maxWidth.6xl)/2-10rem)] xl:left-[calc(50%-theme(maxWidth.6xl)/2-12rem)] 2xl:left-[calc(50%-theme(maxWidth.6xl)/2-14rem)] top-[calc(50%+2.5rem)] -translate-y-1/2 hidden lg:block z-[900]">
+    <div class="ad-sidebar-left">
         <img src="https://placehold.co/160x600/e2e8f0/64748b?text=Advertisement" alt="Advertisement" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
     </div>
-    <div class="fixed right-4 top-[calc(50%+2.5rem)] -translate-y-1/2 hidden lg:block z-[900]">
+    <div class="ad-sidebar-right">
         <img src="https://placehold.co/160x600/e2e8f0/64748b?text=Advertisement" alt="Advertisement" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
     </div>
 
