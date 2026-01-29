@@ -21,19 +21,19 @@
             <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
                 <div class="text-sm font-semibold text-gray-800 px-2 mb-2">Kategori Bantuan</div>
                 <div class="space-y-2" id="help-categories">
-                    <button data-cat="umum" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 bg-orange-500 text-white shadow-sm transition-all duration-200 ease-out hover:bg-orange-500/90 hover:shadow-md hover:-translate-y-0.5">
+                    <button data-cat="umum" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 bg-orange-500 text-white shadow-sm transition-all duration-200 ease-out hover:bg-orange-500/90 hover:shadow-md hover:-translate-y-0.5 cursor-pointer">
                         <span class="w-8 h-8 rounded-full bg-orange-600/10 text-orange-600 flex items-center justify-center">?</span>
                         <span class="text-sm font-medium">Pertanyaan Umum</span>
                     </button>
-                    <button data-cat="akun" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5">
+                    <button data-cat="akun" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5 cursor-pointer">
                         <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center">🔒</span>
                         <span class="text-sm text-gray-800 font-medium">Akun & Login</span>
                     </button>
-                    <button data-cat="konten" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5">
+                    <button data-cat="konten" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5 cursor-pointer">
                         <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center">✎</span>
                         <span class="text-sm text-gray-800 font-medium">Artikel & Konten</span>
                     </button>
-                    <button data-cat="teknis" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5">
+                    <button data-cat="teknis" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-200 ease-out hover:shadow-sm hover:-translate-y-0.5 cursor-pointer">
                         <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center">⚙️</span>
                         <span class="text-sm text-gray-800 font-medium">Masalah Teknis</span>
                     </button>
@@ -64,7 +64,7 @@
             <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
                 <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
                             <path d="M16.5 14.5c-.5-.25-1.5-.75-1.75-.85-.25-.1-.4-.1-.55.1-.15.2-.6.7-.75.85-.15.15-.3.15-.5.05-.2-.1-.85-.3-1.6-.95-.6-.55-1.05-1.23-1.17-1.43-.12-.2-.01-.31.09-.41.1-.1.2-.24.3-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.37-.05-.11-.49-1.16-.67-1.59-.18-.41-.36-.36-.49-.37h-.42c-.15 0-.39.06-.59.26-.2.2-.78.74-.78 1.8 0 1.06.8 2.09.91 2.24.11.15 1.58 2.35 3.83 3.29.54.22.95.36 1.27.46.53.17 1.02.14 1.4.09.43-.06 1.31-.53 1.5-1.04.19-.51.19-.95.13-1.04-.06-.09-.2-.15-.45-.27z" fill="currentColor"/>
                         </svg>
@@ -74,7 +74,7 @@
                 </a>
                 <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <path d="M3 5h18v14H3V5zm9 6L3 5h18l-9 6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                         </svg>
                         <div class="text-sm font-semibold">Email</div>
@@ -83,7 +83,7 @@
                 </a>
                 <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2"/>
                             <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
                         </svg>
@@ -93,7 +93,7 @@
                 </a>
                 <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
                             <path d="M13 9h2V7h-2c-1.657 0-3 1.343-3 3v2H8v2h2v5h2v-5h2l1-2h-3V10c0-.552.448-1 1-1z" fill="currentColor"/>
                         </svg>
@@ -163,7 +163,7 @@
             const card = document.createElement('div');
             card.className = 'rounded-xl border border-gray-200 p-4';
             const header = document.createElement('button');
-            header.className = 'w-full flex items-center justify-between gap-3 text-left';
+            header.className = 'w-full flex items-center justify-between gap-3 text-left cursor-pointer';
             const title = document.createElement('div');
             title.className = 'text-sm font-medium text-gray-900';
             title.textContent = item.q;
