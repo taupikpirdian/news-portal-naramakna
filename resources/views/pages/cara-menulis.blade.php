@@ -14,6 +14,11 @@
         transform: translateY(-50%) !important;
     }
 
+    /* Section background */
+    .section-bg-gray {
+        background-color: #f3f4f6;
+    }
+
     /* Custom animations */
     @keyframes blob {
         0% {
@@ -88,7 +93,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="relative py-20 overflow-hidden" style="background-color: #f3f4f6;">
+<section class="relative py-20 overflow-hidden section-bg-gray">
     <div class="absolute top-20 right-10 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
     <div class="absolute bottom-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
     
@@ -113,7 +118,7 @@
 </section>
 
 <!-- Tabs Section -->
-<section class="py-16" style="background-color: #f3f4f6;">
+<section class="py-16 section-bg-gray">
     <div class="container mx-auto px-4">
         <!-- Tab Buttons -->
         <div class="flex flex-wrap justify-center gap-4 mb-12">
@@ -421,7 +426,7 @@
 </section>
 
 <!-- FAQ Section -->
-<section class="py-16 mb-10" style="background-color: #f3f4f6;">
+<section class="py-16 mb-10 section-bg-gray">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
             <!-- Section Header -->
@@ -496,7 +501,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-16" style="background-color: #f3f4f6;">
+<section class="py-16 section-bg-gray">
     <div class="container mx-auto px-4">
         <div class="max-w-5xl mx-auto">
             <div class="relative overflow-hidden rounded-3xl bg-orange-500 p-12 md:p-16 shadow-2xl">
