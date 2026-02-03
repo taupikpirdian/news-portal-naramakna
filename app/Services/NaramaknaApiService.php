@@ -93,6 +93,55 @@ class NaramaknaApiService
     }
 
     /**
+     * Fetch a single post by slug
+     *
+     * @param string $slug
+     * @return array|null
+     */
+    public function getPostBySlug(string $slug): ?array
+    {
+        return Cache::remember("post.{$slug}", $this->cacheTtl, function () use ($slug) {
+            $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/posts/slug/{$slug}");
+
+            if ($response->successful()) {
+                $data = $response->json();
+                // The API response for single post might be direct object or wrapped in data
+                return $data['data'] ?? $data;
+            }
+
+            return null;
+        });
+    }
+
+    /**
+     * Fetch feed posts
+     *
+     * @param int $page
+     * @param int $limit
+     * @param string $sortBy
+     * @param string $sortOrder
+     * @return array
+     */
+    public function getFeed(int $page = 1, int $limit = 12, string $sortBy = 'date', string $sortOrder = 'desc'): array
+    {
+        return Cache::remember("feed.{$page}.{$limit}.{$sortBy}.{$sortOrder}", $this->cacheTtl, function () use ($page, $limit, $sortBy, $sortOrder) {
+            $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/feed", [
+                'page' => $page,
+                'limit' => $limit,
+                'sortBy' => $sortBy,
+                'sortOrder' => $sortOrder,
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return $data['data'] ?? [];
+            }
+
+            return [];
+        });
+    }
+
+    /**
      * Fetch category posts with pagination
      *
      * @param string $categorySlug

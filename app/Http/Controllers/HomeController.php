@@ -77,7 +77,34 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('pages.index');
+        // Fetch feed data for the index page
+        $feedData = $this->apiService->getFeed(1, 12, 'date', 'desc');
+        $posts = $feedData['posts'] ?? [];
+        
+        // First post for Headline
+        $firstPost = $posts[0] ?? null;
+        
+        return view('pages.index', [
+            'firstPost' => $firstPost,
+        ]);
+    }
+
+    /**
+     * API endpoint for fetching feed posts with pagination (AJAX)
+     */
+    public function getFeedPosts(Request $request)
+    {
+        $page = $request->query('page', 1);
+        $limit = $request->query('limit', 12);
+        $sortBy = $request->query('sortBy', 'date');
+        $sortOrder = $request->query('sortOrder', 'desc');
+
+        $data = $this->apiService->getFeed((int)$page, (int)$limit, $sortBy, $sortOrder);
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
     }
 
     public function category(string $slug)
@@ -110,9 +137,32 @@ class HomeController extends Controller
         ]);
     }
 
-    public function detail()
+    public function detail($slug = null)
     {
-        return view('pages.detail');
+        if (!$slug && request()->has('id')) {
+            // Backward compatibility or redirect logic could go here
+            // For now, we abort or handle as needed. 
+            // If the user uses ID, we might not be able to fetch by slug unless we have a mapping.
+            abort(404);
+        }
+        
+        if (!$slug) {
+            abort(404);
+        }
+
+        $post = $this->apiService->getPostBySlug($slug);
+
+        if (!$post) {
+            abort(404);
+        }
+
+        // Fetch latest posts for sidebar "Artikel Terbaru"
+        $latestPosts = $this->apiService->getLatestPosts(5);
+
+        return view('pages.detail', [
+            'post' => $post,
+            'latestPosts' => $latestPosts
+        ]);
     }
 
     public function bantuan()

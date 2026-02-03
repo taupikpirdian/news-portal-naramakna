@@ -8,7 +8,7 @@
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
             <h2>Artikel Terbaru</h2>
         </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
+        <a href="{{ url('/index') }}" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
             Lihat lainnya
             <span>›</span>
         </a>
@@ -23,10 +23,12 @@
                         @if(isset($featuredPosts) && count($featuredPosts) > 0)
                             @foreach($featuredPosts as $index => $post)
                                 <div class="min-w-full h-full relative" data-index="{{ $index }}">
-                                    <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
-                                         alt="{{ $post['title'] }}"
-                                         class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+                                    <a href="{{ url('/read') }}/{{ $post['slug'] }}" class="block h-full">
+                                        <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
+                                            alt="{{ $post['title'] }}"
+                                            class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+                                    </a>
                                 </div>
                             @endforeach
                         @endif
@@ -42,12 +44,14 @@
                     </button>
                     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
                     <div class="absolute left-4 right-4 bottom-16 text-white z-10">
-                        <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold"></h3>
-                        <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
-                            <span id="featuredAuthor"></span>
-                            <span class="w-2 h-2 bg-white/50 rounded-full"></span>
-                            <span id="featuredDate"></span>
-                        </div>
+                        <a href="" id="featuredLink" class="no-underline">
+                            <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold hover:text-yellow-450 transition-colors"></h3>
+                            <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
+                                <span id="featuredAuthor"></span>
+                                <span class="w-2 h-2 bg-white/50 rounded-full"></span>
+                                <span id="featuredDate"></span>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -58,7 +62,7 @@
                     <h4 class="text-base font-semibold text-gray-900 mb-4">Terbaru</h4>
                     <div class="space-y-2">
                         @foreach($latestPosts as $post)
-                            <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
+                            <a href="{{ url('/read') }}/{{ $post['slug'] }}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                                 <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
                                      alt="{{ $post['title'] }}"
                                      class="w-20 h-20 object-cover rounded-lg">
@@ -432,6 +436,8 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
+        const readUrl = '{{ url('/read') }}';
+        const categoryUrl = '{{ url('/kategori') }}';
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -440,7 +446,7 @@
                         <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
                         <h2>${category.name}</h2>
                     </div>
-                    <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
+                    <a href="${categoryUrl}/${category.slug}" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
                         Artikel Lainnya
                         <span>›</span>
                     </a>
@@ -455,7 +461,7 @@
             const date = firstPost.date ? new Date(firstPost.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
 
             html += `
-                    <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
+                    <a href="${readUrl}/${firstPost.slug}" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
                         <img src="${firstPost.featured_image?.url || 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&h=630&fit=crop'}"
                              alt="${firstPost.title}"
                              class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl"
@@ -483,7 +489,7 @@
             const date = post.date ? new Date(post.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
 
             html += `
-                            <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
+                            <a href="${readUrl}/${post.slug}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                                 <img src="${post.featured_image?.url || 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop'}"
                                      alt="${post.title}"
                                      class="w-20 h-20 object-cover rounded-lg"
@@ -749,6 +755,8 @@
     const featuredAuthorEl = document.getElementById('featuredAuthor');
     const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
+    const featuredLinkEl = document.getElementById('featuredLink');
+    const readUrl = '{{ url('/read') }}';
 
     // Store post data from server-side rendered slides
     const featuredData = @if(isset($featuredPosts) && count($featuredPosts) > 0)
@@ -757,7 +765,8 @@
                 'title' => $post['title'] ?? '',
                 'author' => $post['author']['display_name'] ?? 'Redaksi',
                 'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '',
-                'channel' => $post['metadata']['_channel'] ?? 'Artikel'
+                'channel' => $post['metadata']['_channel'] ?? 'Artikel',
+                'slug' => $post['slug'] ?? ''
             ];
         })->values()->toArray()) !!}
     @else
@@ -772,13 +781,14 @@
         // Update slide position
         featuredContainer.style.transform = `translateX(-${featuredCurrent * 100}%)`;
 
-        // Update text content
+        // Update text content and link
         if (featuredData[featuredCurrent]) {
             const d = featuredData[featuredCurrent];
             if (featuredTitleEl) featuredTitleEl.textContent = d.title;
             if (featuredAuthorEl) featuredAuthorEl.textContent = d.author;
             if (featuredDateEl) featuredDateEl.textContent = d.date;
             if (featuredChannelEl) featuredChannelEl.textContent = d.channel;
+            if (featuredLinkEl) featuredLinkEl.href = `${readUrl}/${d.slug}`;
         }
 
         // Update dots

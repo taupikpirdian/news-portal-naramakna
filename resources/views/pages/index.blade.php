@@ -12,7 +12,7 @@
                     <h2 class="text-xl font-bold">Headline</h2>
                 </div>
                 @if($firstPost)
-                <a href="{{ url('/detail?id=' . $firstPost['id']) }}" class="group block no-underline">
+                <a href="{{ route('detail', ['slug' => $firstPost['slug']]) }}" class="group block no-underline">
                     <div class="relative rounded-2xl overflow-hidden">
                         @php
                             $featuredImage = is_array($firstPost['featured_image'] ?? null)
@@ -167,7 +167,7 @@
                 }
 
                 html += `
-                    <a href="{{ url('/detail?id=') }}${post.id}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+                    <a href="{{ url('/read') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
@@ -281,7 +281,7 @@
                 }
 
                 html += `
-                    <a href="{{ url('/detail?id=') }}${post.id}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
+                    <a href="{{ url('/read') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
