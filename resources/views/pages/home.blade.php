@@ -590,12 +590,6 @@
                 const skeleton = createSkeleton();
                 container.appendChild(skeleton);
 
-                // Scroll skeleton into view
-                let skeletonSection = container.querySelector('.skeleton-section');
-                if (skeletonSection) {
-                    skeletonSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-
                 // Load posts via AJAX
                 const posts = await loadCategoryPosts(category.slug);
                 console.log(`Posts loaded for ${category.slug}:`, posts.length);
