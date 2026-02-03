@@ -18,10 +18,14 @@ class HomeController extends Controller
     {
         // Fetch latest posts for "Artikel Terbaru" section
         $latestPosts = $this->apiService->getLatestPosts(7, 'post', true);
-
+        // ambil 3 data awal untuk carousel
+        $featuredPosts = collect($latestPosts)->slice(0, 3)->values()->all();
+        // ambil 4 data selanjutnya untuk latest posts
+        $latestPosts = collect($latestPosts)->slice(3, 4)->values()->all();
         // Render view with latest posts data
         return view('pages.home', [
             'latestPosts' => $latestPosts,
+            'featuredPosts' => $featuredPosts,
         ]);
     }
 

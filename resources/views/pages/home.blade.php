@@ -20,17 +20,18 @@
             <div class="lg:col-span-2">
                 <div class="relative rounded-2xl overflow-hidden bg-white">
                     <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease" id="featuredSliderContainer">
-                        @php
-                            $featuredPosts = array_slice($latestPosts, 0, 3);
-                        @endphp
-                        @foreach($featuredPosts as $index => $post)
-                            <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
-                                 alt="{{ $post['title'] }}"
-                                 class="min-w-full h-full object-cover"
-                                 data-index="{{ $index }}">
-                        @endforeach
+                        @if(isset($featuredPosts) && count($featuredPosts) > 0)
+                            @foreach($featuredPosts as $index => $post)
+                                <div class="min-w-full h-full relative" data-index="{{ $index }}">
+                                    <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
+                                         alt="{{ $post['title'] }}"
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
-                    <span class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
+                    <span id="featuredChannel" class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
                         {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
                     </span>
                     <button class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
@@ -40,13 +41,12 @@
                         <span onclick="featuredNext()">›</span>
                     </button>
                     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
-                    <div class="absolute left-4 right-4 bottom-16 text-white">
-                        <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold">{{ $featuredPosts[0]['title'] ?? '' }}</h3>
+                    <div class="absolute left-4 right-4 bottom-16 text-white z-10">
+                        <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold"></h3>
                         <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
-                            <span id="featuredAuthor">{{ $featuredPosts[0]['author']['display_name'] ?? 'Redaksi' }}</span>
+                            <span id="featuredAuthor"></span>
                             <span class="w-2 h-2 bg-white/50 rounded-full"></span>
-                            <span id="featuredDate">{{ $featuredPosts[0]['date'] ? \Carbon\Carbon::parse($featuredPosts[0]['date'])->format('d/m, H.i') : '' }}</span>
+                            <span id="featuredDate"></span>
                         </div>
                     </div>
                 </div>
@@ -57,10 +57,7 @@
                 <div>
                     <h4 class="text-base font-semibold text-gray-900 mb-4">Terbaru</h4>
                     <div class="space-y-2">
-                        @php
-                            $listPosts = array_slice($latestPosts, 3, 4);
-                        @endphp
-                        @foreach($listPosts as $post)
+                        @foreach($latestPosts as $post)
                             <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                                 <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
                                      alt="{{ $post['title'] }}"
@@ -747,26 +744,44 @@
 
     let featuredCurrent = 0;
     const featuredContainer = document.getElementById('featuredSliderContainer');
-    const featuredTotal = featuredContainer ? featuredContainer.children.length : 0;
     const featuredDotsContainer = document.getElementById('featuredDots');
     const featuredTitleEl = document.getElementById('featuredTitle');
     const featuredAuthorEl = document.getElementById('featuredAuthor');
     const featuredDateEl = document.getElementById('featuredDate');
-    const featuredData = [
-        { title: 'Tubuh Warga Kecil Dipaksa Bicara', author: 'Khaerunnisa', date: '27/01, 08.00' },
-        { title: 'Spesies Baru Ditemukan dari Lini Masa', author: 'Khaerunnisa', date: '27/01, 05.00' },
-        { title: 'Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia', author: 'Yosal Iriantara', date: '27/01, 02.00' }
-    ];
+    const featuredChannelEl = document.getElementById('featuredChannel');
+
+    // Store post data from server-side rendered slides
+    const featuredData = @if(isset($featuredPosts) && count($featuredPosts) > 0)
+        {!! json_encode(collect($featuredPosts)->map(function($post) {
+            return [
+                'title' => $post['title'] ?? '',
+                'author' => $post['author']['display_name'] ?? 'Redaksi',
+                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '',
+                'channel' => $post['metadata']['_channel'] ?? 'Artikel'
+            ];
+        })->values()->toArray()) !!}
+    @else
+        []
+    @endif;
+
+    const featuredTotal = featuredData.length;
 
     function updateFeaturedSlider() {
-        if (!featuredContainer) return;
+        if (!featuredContainer || featuredTotal === 0) return;
+
+        // Update slide position
         featuredContainer.style.transform = `translateX(-${featuredCurrent * 100}%)`;
-        if (featuredTitleEl && featuredAuthorEl && featuredDateEl) {
-            const d = featuredData[featuredCurrent] || featuredData[0];
-            featuredTitleEl.textContent = d.title;
-            featuredAuthorEl.textContent = d.author;
-            featuredDateEl.textContent = d.date;
+
+        // Update text content
+        if (featuredData[featuredCurrent]) {
+            const d = featuredData[featuredCurrent];
+            if (featuredTitleEl) featuredTitleEl.textContent = d.title;
+            if (featuredAuthorEl) featuredAuthorEl.textContent = d.author;
+            if (featuredDateEl) featuredDateEl.textContent = d.date;
+            if (featuredChannelEl) featuredChannelEl.textContent = d.channel;
         }
+
+        // Update dots
         if (featuredDotsContainer) {
             const dots = featuredDotsContainer.children;
             for (let i = 0; i < dots.length; i++) {
@@ -776,22 +791,24 @@
     }
 
     function featuredNext() {
-        if (!featuredContainer) return;
+        if (featuredTotal === 0) return;
         featuredCurrent = (featuredCurrent + 1) % featuredTotal;
         updateFeaturedSlider();
     }
 
     function featuredPrev() {
-        if (!featuredContainer) return;
+        if (featuredTotal === 0) return;
         featuredCurrent = (featuredCurrent - 1 + featuredTotal) % featuredTotal;
         updateFeaturedSlider();
     }
 
     function featuredGoTo(index) {
+        if (featuredTotal === 0) return;
         featuredCurrent = index;
         updateFeaturedSlider();
     }
 
+    // Initialize dots
     if (featuredDotsContainer && featuredTotal > 0) {
         for (let i = 0; i < featuredTotal; i++) {
             const dot = document.createElement('div');
@@ -801,8 +818,15 @@
         }
     }
 
-    if (featuredTotal > 1) setInterval(featuredNext, 7000);
-    updateFeaturedSlider();
+    // Auto-slide
+    if (featuredTotal > 1) {
+        setInterval(featuredNext, 7000);
+    }
+
+    // Initial update
+    if (featuredTotal > 0) {
+        updateFeaturedSlider();
+    }
 
     // Fallback image handler
     Array.from(document.querySelectorAll('img')).forEach(img => {
