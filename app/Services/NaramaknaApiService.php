@@ -25,7 +25,7 @@ class NaramaknaApiService
      */
     public function getCategories(int $limit = 50, bool $mainCategoriesOnly = true): array
     {
-        return Cache::remember("categories.{$limit}.{$mainCategoriesOnly}", $this->cacheTtl, function () use ($limit, $mainCategoriesOnly) {
+        return Cache::remember("categories", $this->cacheTtl, function () use ($limit, $mainCategoriesOnly) {
             $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/categories", [
                 'limit' => $limit,
                 'mainCategoriesOnly' => $mainCategoriesOnly,
@@ -48,9 +48,9 @@ class NaramaknaApiService
      * @param string $type
      * @return array
      */
-    public function getPostsByCategory(string $categorySlug, int $limit = 6, string $type = 'post'): array
+    public function getPostsByCategory(string $categorySlug, int $limit = 5, string $type = 'post'): array
     {
-        return Cache::remember("posts.{$categorySlug}.{$limit}.{$type}", $this->cacheTtl, function () use ($categorySlug, $limit, $type) {
+        return Cache::remember("posts.{$categorySlug}", $this->cacheTtl, function () use ($categorySlug, $limit, $type) {
             $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/feed", [
                 'limit' => $limit,
                 'type' => $type,
@@ -76,7 +76,7 @@ class NaramaknaApiService
      */
     public function getLatestPosts(int $limit = 7, string $type = 'post', bool $mainCategoriesOnly = true): array
     {
-        return Cache::remember("latest_posts.{$limit}.{$type}.{$mainCategoriesOnly}", $this->cacheTtl, function () use ($limit, $type, $mainCategoriesOnly) {
+        return Cache::remember("latest_posts", $this->cacheTtl, function () use ($limit, $type, $mainCategoriesOnly) {
             $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/feed", [
                 'limit' => $limit,
                 'type' => $type,
@@ -100,7 +100,7 @@ class NaramaknaApiService
      */
     public function getPostBySlug(string $slug): ?array
     {
-        return Cache::remember("post.{$slug}", $this->cacheTtl, function () use ($slug) {
+        return Cache::remember("read.{$slug}", $this->cacheTtl, function () use ($slug) {
             $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/posts/slug/{$slug}");
 
             if ($response->successful()) {
@@ -124,21 +124,19 @@ class NaramaknaApiService
      */
     public function getFeed(int $page = 1, int $limit = 12, string $sortBy = 'date', string $sortOrder = 'desc'): array
     {
-        return Cache::remember("feed.{$page}.{$limit}.{$sortBy}.{$sortOrder}", $this->cacheTtl, function () use ($page, $limit, $sortBy, $sortOrder) {
-            $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/feed", [
-                'page' => $page,
-                'limit' => $limit,
-                'sortBy' => $sortBy,
-                'sortOrder' => $sortOrder,
-            ]);
+        $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/feed", [
+            'page' => $page,
+            'limit' => $limit,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
+        ]);
 
-            if ($response->successful()) {
-                $data = $response->json();
-                return $data['data'] ?? [];
-            }
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['data'] ?? [];
+        }
 
-            return [];
-        });
+        return [];
     }
 
     /**
@@ -151,33 +149,14 @@ class NaramaknaApiService
      */
     public function getCategoryPostsWithPagination(string $categorySlug, int $limit = 10, int $offset = 0): array
     {
-        $cacheKey = "category_posts_{$categorySlug}_{$limit}_{$offset}";
+        $response = Http::timeout(10)->get("{$this->baseUrl}/api/category/{$categorySlug}/posts", [
+            'limit' => $limit,
+            'offset' => $offset,
+        ]);
 
-        return Cache::remember($cacheKey, $this->cacheTtl, function () use ($categorySlug, $limit, $offset) {
-            $response = Http::timeout(10)->get("{$this->baseUrl}/api/category/{$categorySlug}/posts", [
-                'limit' => $limit,
-                'offset' => $offset,
-            ]);
-
-            if ($response->successful()) {
-                $data = $response->json();
-                // Extract the data from the response wrapper
-                return $data['data'] ?? [
-                    'posts' => [],
-                    'pagination' => [
-                        'total' => 0,
-                        'limit' => $limit,
-                        'offset' => $offset,
-                        'hasMore' => false,
-                    ],
-                    'category' => [
-                        'slug' => $categorySlug,
-                        'name' => $categorySlug,
-                    ],
-                ];
-            }
-
-            return [
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['data'] ?? [
                 'posts' => [],
                 'pagination' => [
                     'total' => 0,
@@ -190,7 +169,21 @@ class NaramaknaApiService
                     'name' => $categorySlug,
                 ],
             ];
-        });
+        }
+
+        return [
+            'posts' => [],
+            'pagination' => [
+                'total' => 0,
+                'limit' => $limit,
+                'offset' => $offset,
+                'hasMore' => false,
+            ],
+            'category' => [
+                'slug' => $categorySlug,
+                'name' => $categorySlug,
+            ],
+        ];
     }
 
     /**
@@ -200,12 +193,53 @@ class NaramaknaApiService
      */
     public function clearCategoriesCache(): void
     {
-        // Clear all categories cache
         $categories = $this->getCategories();
         foreach ($categories as $category) {
-            Cache::forget("posts.{$category['slug']}.6.post");
+            Cache::forget("posts.{$category['slug']}");
         }
-        Cache::forget('categories.50.true');
-        Cache::forget('categories.50.false');
+        Cache::forget('categories');
+    }
+
+    /**
+     * Clear cache for specific category
+     *
+     * @param string $categorySlug
+     * @return void
+     */
+    public function clearCategoryCache(string $categorySlug): void
+    {
+        Cache::forget("posts.{$categorySlug}");
+    }
+
+    /**
+     * Clear cache for specific post
+     *
+     * @param string $slug
+     * @return void
+     */
+    public function clearPostCache(string $slug): void
+    {
+        Cache::forget("post.{$slug}");
+    }
+
+    /**
+     * Clear all feed cache
+     *
+     * @return void
+     */
+    public function clearFeedCache(): void
+    {
+        Cache::forget('latest_posts');
+    }
+
+    /**
+     * Clear all API cache
+     *
+     * @return void
+     */
+    public function clearAllCache(): void
+    {
+        $this->clearCategoriesCache();
+        $this->clearFeedCache();
     }
 }

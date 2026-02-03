@@ -532,7 +532,7 @@
     // Function to load category posts via AJAX
     async function loadCategoryPosts(categorySlug) {
         try {
-            const url = `${postsApiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=6`;
+            const url = `${postsApiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=5`;
             console.log('Fetching posts from:', url);
 
             const response = await fetch(url);

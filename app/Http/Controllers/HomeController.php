@@ -35,7 +35,7 @@ class HomeController extends Controller
     public function loadCategoryPosts(Request $request)
     {
         $slug = $request->query('slug');
-        $limit = $request->query('limit', 6);
+        $limit = $request->query('limit', 5);
 
         if (!$slug) {
             return response()->json([
