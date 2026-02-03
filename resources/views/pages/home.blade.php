@@ -256,80 +256,9 @@
 </section>
 
 {{-- List Berita Berdasarkan Kategori --}}
-{{-- Initial Categories (First 2 - Loaded immediately) --}}
-@if(isset($initialCategories) && count($initialCategories) > 0)
-    @foreach($initialCategories as $index => $category)
-        @if(isset($category['posts']) && count($category['posts']) > 0)
-            <section class="mb-10 category-section" data-category-slug="{{ $category['slug'] }}" data-category-index="{{ $index }}">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2">
-                        <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-                        <h2>{{ $category['name'] }}</h2>
-                    </div>
-                    <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-                        Artikel Lainnya
-                        <span>›</span>
-                    </a>
-                </div>
-                <div class="grid lg:grid-cols-12 gap-4 items-start mb-6">
-                    @php
-                        $firstPost = $category['posts'][0] ?? null;
-                        $otherPosts = array_slice($category['posts'], 1, 4);
-                    @endphp
-
-                    @if($firstPost)
-                        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-                            <img src="{{ $firstPost['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&h=630&fit=crop' }}"
-                                 alt="{{ $firstPost['title'] }}"
-                                 class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl"
-                                 loading="eager">
-                            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                            <div class="absolute bottom-3 left-3 right-3">
-                                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">{{ $firstPost['title'] }}</h3>
-                                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                                    <span>{{ $firstPost['author']['display_name'] ?? 'Redaksi' }}</span>
-                                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                                    <span>{{ \Carbon\Carbon::parse($firstPost['date'] ?? 'now')->format('d/m, H.i') }}</span>
-                                </div>
-                                <p class="text-sm text-white/90 mt-2">{{ Str::limit(strip_tags($firstPost['excerpt'] ?? $firstPost['content'] ?? ''), 100) }}</p>
-                            </div>
-                        </a>
-                    @endif
-
-                    <div class="lg:col-span-7">
-                        <div class="grid grid-cols-2 gap-3">
-                            @foreach($otherPosts as $post)
-                                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                                    <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop' }}"
-                                         alt="{{ $post['title'] }}"
-                                         class="w-20 h-20 object-cover rounded-lg"
-                                         loading="lazy">
-                                    <div class="flex-1">
-                                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title'] }}</div>
-                                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                            <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
-                                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                            <span>{{ \Carbon\Carbon::parse($post['date'] ?? 'now')->format('d/m, H.i') }}</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {{-- Add AdSense after every 2 categories --}}
-            @if(($index + 1) % 2 === 0)
-                <div class="bg-blue-100 border border-blue-300 rounded-lg py-6 text-center text-blue-800 text-sm font-medium my-8">AdSense</div>
-            @endif
-        @endif
-    @endforeach
-@endif
-
-{{-- Lazy Loaded Categories Container --}}
-<div id="lazy-categories-container">
-    {{-- Remaining categories will be loaded here via JavaScript --}}
+{{-- All categories will be loaded via AJAX --}}
+<div id="categories-container">
+    {{-- Categories will be loaded here via JavaScript --}}
 </div>
 
 {{-- Loading Skeleton Template --}}
@@ -470,139 +399,49 @@
 
 @push('scripts')
 <script>
-    // Carousel functionality
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('#carouselContainer > div');
-    const totalSlides = slides.length;
-    const container = document.getElementById('carouselContainer');
-    const dotsContainer = document.getElementById('carouselDots');
-
-    // Create dots
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
-    }
-
-    function updateCarousel() {
-        if (!container) return;
-        container.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-        // Update dots
-        if (dotsContainer) {
-            const dots = dotsContainer.children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === currentSlide ? ' bg-yellow-450 w-6' : '');
-            }
-        }
-    }
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateCarousel();
-    }
-
-    function goToSlide(index) {
-        currentSlide = index;
-        updateCarousel();
-    }
-
-    // Auto-play carousel (only if container exists)
-    if (container && totalSlides > 0) {
-        setInterval(nextSlide, 5000);
-    }
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
-    let featuredCurrent = 0;
-    const featuredContainer = document.getElementById('featuredSliderContainer');
-    const featuredTotal = featuredContainer ? featuredContainer.children.length : 0;
-    const featuredDotsContainer = document.getElementById('featuredDots');
-    const featuredTitleEl = document.getElementById('featuredTitle');
-    const featuredAuthorEl = document.getElementById('featuredAuthor');
-    const featuredDateEl = document.getElementById('featuredDate');
-    const featuredData = [
-        { title: 'Tubuh Warga Kecil Dipaksa Bicara', author: 'Khaerunnisa', date: '27/01, 08.00' },
-        { title: 'Spesies Baru Ditemukan dari Lini Masa', author: 'Khaerunnisa', date: '27/01, 05.00' },
-        { title: 'Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia', author: 'Yosal Iriantara', date: '27/01, 02.00' }
-    ];
-
-    function updateFeaturedSlider() {
-        if (!featuredContainer) return;
-        featuredContainer.style.transform = `translateX(-${featuredCurrent * 100}%)`;
-        if (featuredTitleEl && featuredAuthorEl && featuredDateEl) {
-            const d = featuredData[featuredCurrent] || featuredData[0];
-            featuredTitleEl.textContent = d.title;
-            featuredAuthorEl.textContent = d.author;
-            featuredDateEl.textContent = d.date;
-        }
-        if (featuredDotsContainer) {
-            const dots = featuredDotsContainer.children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === featuredCurrent ? ' bg-yellow-450 w-6' : '');
-            }
-        }
-    }
-
-    function featuredNext() {
-        if (!featuredContainer) return;
-        featuredCurrent = (featuredCurrent + 1) % featuredTotal;
-        updateFeaturedSlider();
-    }
-
-    function featuredPrev() {
-        if (!featuredContainer) return;
-        featuredCurrent = (featuredCurrent - 1 + featuredTotal) % featuredTotal;
-        updateFeaturedSlider();
-    }
-
-    function featuredGoTo(index) {
-        featuredCurrent = index;
-        updateFeaturedSlider();
-    }
-
-    if (featuredDotsContainer && featuredTotal > 0) {
-        for (let i = 0; i < featuredTotal; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
-            dot.onclick = () => featuredGoTo(i);
-            featuredDotsContainer.appendChild(dot);
-        }
-    }
-
-    if (featuredTotal > 1) setInterval(featuredNext, 7000);
-    updateFeaturedSlider();
+    // ==========================================
+    // AJAX-BASED CATEGORY LOADING
+    // ==========================================
 
     const FALLBACK_IMG = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="24">Image unavailable</text></svg>';
-    Array.from(document.querySelectorAll('img')).forEach(img => {
-        img.addEventListener('error', () => {
-            img.src = FALLBACK_IMG;
-        }, { once: true });
-    });
 
-    // ==========================================
-    // LAZY LOAD CATEGORIES WITH INTERSECTION OBSERVER
-    // ==========================================
+    const categoriesApiEndpoint = "{{ route('api.categories') }}";
+    const postsApiEndpoint = "{{ route('api.category.posts') }}";
 
-    // Remaining categories data from server
-    const remainingCategories = @js($remainingCategories ?? []);
+    let allCategories = [];
     let loadedCount = 0;
-    const apiEndpoint = "{{ route('api.category.posts') }}";
+    let isLoading = false;
+    const categoriesPerBatch = 2; // Load first 2 categories immediately
+
+    // Function to fetch all categories
+    async function fetchCategories() {
+        try {
+            const url = `${categoriesApiEndpoint}?limit=12&mainCategoriesOnly=true`;
+            console.log('Fetching categories from:', url);
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Categories API Response:', data);
+
+            if (!data.success) {
+                console.warn('API returned unsuccessful response');
+                return [];
+            }
+
+            allCategories = data.data.categories || [];
+            console.log('Categories fetched successfully:', allCategories.length);
+            return allCategories;
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            return [];
+        }
+    }
 
     // Function to create category HTML from data
     function createCategoryHTML(category, posts, index) {
@@ -683,7 +522,7 @@
             </section>
         `;
 
-        // Add AdSense after every 2 categories (total, including initial)
+        // Add AdSense after every 2 categories
         if ((index + 1) % 2 === 0) {
             html += `
                 <div class="bg-blue-100 border border-blue-300 rounded-lg py-6 text-center text-blue-800 text-sm font-medium my-8">AdSense</div>
@@ -699,21 +538,20 @@
         return template.content.cloneNode(true);
     }
 
-    // Function to load category posts
+    // Function to load category posts via AJAX
     async function loadCategoryPosts(categorySlug) {
         try {
-            const url = `${apiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=6`;
-            console.log('Fetching from:', url);
+            const url = `${postsApiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=6`;
+            console.log('Fetching posts from:', url);
 
             const response = await fetch(url);
-            console.log('Response status:', response.status);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log('API Response:', data);
+            console.log('Posts API Response for', categorySlug, ':', data);
 
             if (!data.success) {
                 console.warn('API returned unsuccessful response');
@@ -726,33 +564,25 @@
 
         } catch (error) {
             console.error('Error loading category posts:', error);
-            console.error('Error details:', {
-                message: error.message,
-                stack: error.stack
-            });
             return [];
         }
     }
 
     // Function to load next batch of categories
-    let isLoading = false; // Flag to prevent multiple simultaneous loads
-    const categoriesPerBatch = 3; // Load 3 categories at once instead of 1
-
     async function loadNextBatch() {
-        // Prevent multiple loads
-        if (loadedCount >= remainingCategories.length || isLoading) {
+        if (loadedCount >= allCategories.length || isLoading) {
             console.log('Load skipped:', {
                 loadedCount,
-                total: remainingCategories.length,
+                total: allCategories.length,
                 isLoading
             });
             return;
         }
 
-        isLoading = true; // Set loading flag
-        console.log('Starting load for categories:', loadedCount, 'to', Math.min(loadedCount + categoriesPerBatch, remainingCategories.length) - 1);
+        isLoading = true;
+        console.log('Starting load for categories:', loadedCount, 'to', Math.min(loadedCount + categoriesPerBatch, allCategories.length) - 1);
 
-        const container = document.getElementById('lazy-categories-container');
+        const container = document.getElementById('categories-container');
         if (!container) {
             console.error('Container not found');
             isLoading = false;
@@ -760,44 +590,35 @@
         }
 
         try {
-            // Load multiple categories in this batch
-            const categoriesToLoad = Math.min(categoriesPerBatch, remainingCategories.length - loadedCount);
+            const categoriesToLoad = Math.min(categoriesPerBatch, allCategories.length - loadedCount);
 
             for (let i = 0; i < categoriesToLoad; i++) {
                 const currentIndex = loadedCount + i;
-                const category = remainingCategories[currentIndex];
-                const actualIndex = currentIndex + 2; // +2 because we have 2 initial categories
+                const category = allCategories[currentIndex];
 
                 console.log(`Loading category ${i + 1}/${categoriesToLoad}:`, category.slug);
 
-                // Show skeleton for each category
+                // Show skeleton
                 const skeleton = createSkeleton();
                 container.appendChild(skeleton);
 
-                // Scroll skeleton into view smoothly
+                // Scroll skeleton into view
                 let skeletonSection = container.querySelector('.skeleton-section');
                 if (skeletonSection) {
                     skeletonSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
 
-                // Load posts for this category
+                // Load posts via AJAX
                 const posts = await loadCategoryPosts(category.slug);
                 console.log(`Posts loaded for ${category.slug}:`, posts.length);
 
-                // Add delay only for the first category
-                if (i === 0) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    console.log('Initial delay completed');
-                }
-
-                // Animate skeleton out
+                // Remove skeleton with animation
                 skeletonSection = container.querySelector('.skeleton-section');
                 if (skeletonSection) {
                     skeletonSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                     skeletonSection.style.opacity = '0';
                     skeletonSection.style.transform = 'translateY(-10px)';
 
-                    // Wait for exit animation to complete
                     await new Promise(resolve => setTimeout(resolve, 300));
                     skeletonSection.remove();
                     console.log(`Skeleton removed for ${category.slug}`);
@@ -806,25 +627,23 @@
                 // Check if we have posts
                 if (!posts || posts.length === 0) {
                     console.warn('No posts found for category:', category.slug);
-                    continue; // Skip this category but continue with next
+                    continue;
                 }
 
                 // Create and append category section
-                const categoryHTML = createCategoryHTML(category, posts, actualIndex);
+                const categoryHTML = createCategoryHTML(category, posts, currentIndex);
                 container.insertAdjacentHTML('beforeend', categoryHTML);
                 console.log(`Category HTML added for ${category.slug}`);
 
-                // Add enhanced fade-in animation
-                const newSection = container.lastElementChild.previousElementSibling;
+                // Add fade-in animation
+                const newSection = container.lastElementChild;
                 if (newSection && newSection.classList.contains('category-section')) {
                     newSection.style.opacity = '0';
                     newSection.style.transform = 'translateY(30px) scale(0.98)';
 
-                    // Small delay to ensure DOM is ready
                     await new Promise(resolve => setTimeout(resolve, 50));
 
-                    // Trigger reflow to ensure transition works
-                    newSection.offsetHeight;
+                    newSection.offsetHeight; // Trigger reflow
 
                     newSection.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     newSection.style.opacity = '1';
@@ -839,11 +658,10 @@
         } catch (error) {
             console.error('Error in loadNextBatch:', error);
 
-            // Remove all skeletons if exists
+            // Remove all skeletons
             const skeletonSections = container.querySelectorAll('.skeleton-section');
             skeletonSections.forEach(s => s.remove());
         } finally {
-            // Always reset loading flag
             isLoading = false;
             console.log('Loading flag reset');
 
@@ -862,23 +680,153 @@
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
 
-        // Trigger if within 200px of bottom
         return (scrollTop + windowHeight) >= (documentHeight - 200);
     }
 
     // Handle scroll event for lazy loading
     function handleScroll() {
-        if (loadedCount < remainingCategories.length && isNearBottom() && !isLoading) {
+        if (loadedCount < allCategories.length && isNearBottom() && !isLoading) {
             loadNextBatch();
         }
     }
 
-    // Add scroll event listener with passive option for better performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initialize: Fetch categories and load first batch
+    async function init() {
+        await fetchCategories();
 
-    // Also check on initial load in case user is already near bottom
-    if (loadedCount < remainingCategories.length && isNearBottom()) {
-        loadNextBatch();
+        if (allCategories.length > 0) {
+            // Load first batch immediately
+            await loadNextBatch();
+
+            // Add scroll event listener for lazy loading
+            window.addEventListener('scroll', handleScroll, { passive: true });
+        }
     }
+
+    // Start the app
+    init();
+
+    // Carousel functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('#carouselContainer > div');
+    const totalSlides = slides.length;
+    const container = document.getElementById('carouselContainer');
+    const dotsContainer = document.getElementById('carouselDots');
+
+    // Create dots
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+
+    function updateCarousel() {
+        if (!container) return;
+        container.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        if (dotsContainer) {
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === currentSlide ? ' bg-yellow-450 w-6' : '');
+            }
+        }
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarousel();
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+    }
+
+    if (container && totalSlides > 0) {
+        setInterval(nextSlide, 5000);
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    let featuredCurrent = 0;
+    const featuredContainer = document.getElementById('featuredSliderContainer');
+    const featuredTotal = featuredContainer ? featuredContainer.children.length : 0;
+    const featuredDotsContainer = document.getElementById('featuredDots');
+    const featuredTitleEl = document.getElementById('featuredTitle');
+    const featuredAuthorEl = document.getElementById('featuredAuthor');
+    const featuredDateEl = document.getElementById('featuredDate');
+    const featuredData = [
+        { title: 'Tubuh Warga Kecil Dipaksa Bicara', author: 'Khaerunnisa', date: '27/01, 08.00' },
+        { title: 'Spesies Baru Ditemukan dari Lini Masa', author: 'Khaerunnisa', date: '27/01, 05.00' },
+        { title: 'Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia', author: 'Yosal Iriantara', date: '27/01, 02.00' }
+    ];
+
+    function updateFeaturedSlider() {
+        if (!featuredContainer) return;
+        featuredContainer.style.transform = `translateX(-${featuredCurrent * 100}%)`;
+        if (featuredTitleEl && featuredAuthorEl && featuredDateEl) {
+            const d = featuredData[featuredCurrent] || featuredData[0];
+            featuredTitleEl.textContent = d.title;
+            featuredAuthorEl.textContent = d.author;
+            featuredDateEl.textContent = d.date;
+        }
+        if (featuredDotsContainer) {
+            const dots = featuredDotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === featuredCurrent ? ' bg-yellow-450 w-6' : '');
+            }
+        }
+    }
+
+    function featuredNext() {
+        if (!featuredContainer) return;
+        featuredCurrent = (featuredCurrent + 1) % featuredTotal;
+        updateFeaturedSlider();
+    }
+
+    function featuredPrev() {
+        if (!featuredContainer) return;
+        featuredCurrent = (featuredCurrent - 1 + featuredTotal) % featuredTotal;
+        updateFeaturedSlider();
+    }
+
+    function featuredGoTo(index) {
+        featuredCurrent = index;
+        updateFeaturedSlider();
+    }
+
+    if (featuredDotsContainer && featuredTotal > 0) {
+        for (let i = 0; i < featuredTotal; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
+            dot.onclick = () => featuredGoTo(i);
+            featuredDotsContainer.appendChild(dot);
+        }
+    }
+
+    if (featuredTotal > 1) setInterval(featuredNext, 7000);
+    updateFeaturedSlider();
+
+    // Fallback image handler
+    Array.from(document.querySelectorAll('img')).forEach(img => {
+        img.addEventListener('error', () => {
+            img.src = FALLBACK_IMG;
+        }, { once: true });
+    });
 </script>
 @endpush

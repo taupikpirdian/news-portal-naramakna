@@ -16,38 +16,8 @@ class HomeController extends Controller
 
     public function home()
     {
-        // Fetch all categories (metadata only, for lazy loading)
-        $categories = $this->apiService->getCategories(12, true);
-
-        // Fetch posts only for the first 2 categories (for initial load)
-        $initialCategories = [];
-        $remainingCategories = [];
-
-        foreach ($categories as $index => $category) {
-            $categoryData = [
-                'id' => $category['id'],
-                'name' => $category['name'],
-                'slug' => $category['slug'],
-                'count' => $category['count'],
-            ];
-
-            if ($index < 2) {
-                // Fetch posts for first 2 categories
-                $posts = $this->apiService->getPostsByCategory($category['slug'], 6, 'post');
-                $categoryData['posts'] = $posts;
-                $initialCategories[] = $categoryData;
-            } else {
-                // Only metadata for remaining categories
-                $categoryData['posts'] = [];
-                $remainingCategories[] = $categoryData;
-            }
-        }
-
-        return view('pages.home', [
-            'initialCategories' => $initialCategories,
-            'remainingCategories' => $remainingCategories,
-            'allCategories' => array_merge($initialCategories, $remainingCategories),
-        ]);
+        // Render view without fetching data - all data will be loaded via AJAX
+        return view('pages.home');
     }
 
     /**
@@ -71,6 +41,24 @@ class HomeController extends Controller
             'success' => true,
             'data' => [
                 'posts' => $posts,
+            ],
+        ]);
+    }
+
+    /**
+     * API endpoint for fetching all categories
+     */
+    public function getCategories(Request $request)
+    {
+        $limit = $request->query('limit', 12);
+        $mainCategoriesOnly = $request->query('mainCategoriesOnly', true);
+
+        $categories = $this->apiService->getCategories((int)$limit, filter_var($mainCategoriesOnly, FILTER_VALIDATE_BOOLEAN));
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'categories' => $categories,
             ],
         ]);
     }
