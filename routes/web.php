@@ -9,11 +9,12 @@ Route::get('/api/categories', [\App\Http\Controllers\HomeController::class, 'get
 Route::get('/api/category/posts', [\App\Http\Controllers\HomeController::class, 'loadCategoryPosts'])->name('api.category.posts');
 // API endpoint for fetching category posts with pagination
 Route::get('/api/category/{slug}/posts', [\App\Http\Controllers\HomeController::class, 'getCategoryPosts'])->name('api.category.posts.pagination');
+Route::get('/api/feed', [\App\Http\Controllers\HomeController::class, 'getFeedPosts'])->name('api.feed');
 // index-berita.html
 Route::get('/kategori/{slug}', [\App\Http\Controllers\HomeController::class, 'category'])->name('category');
 Route::get('/index', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 // artikel.html
-Route::get('/detail', [\App\Http\Controllers\HomeController::class, 'detail'])->name('detail');
+Route::get('/read/{slug}', [\App\Http\Controllers\HomeController::class, 'detail'])->name('detail');
 // bantu.html
 Route::get('/bantuan', [\App\Http\Controllers\HomeController::class, 'bantuan'])->name('bantuan');
 // kerja-sa.html

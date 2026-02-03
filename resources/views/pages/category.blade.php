@@ -79,13 +79,13 @@
     (function() {
         const slug = '{{ $slug }}';
         const apiBaseUrl = '{{ url('/api') }}';
-        let currentOffset = 0;
         let limit = 10;
         let totalPages = 1;
-        let currentPage = 1;
+        let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 
         // Function to fetch category posts
-        async function fetchCategoryPosts(offset = 0) {
+        async function fetchCategoryPosts(page = 1) {
+            const offset = (page - 1) * limit;
             try {
                 const response = await fetch(`${apiBaseUrl}/category/${slug}/posts?limit=${limit}&offset=${offset}`);
                 const result = await response.json();
@@ -129,7 +129,7 @@
         }
 
         // Function to render posts
-        function renderPosts(posts, startIndex = 1) {
+        function renderPosts(posts, page = 1) {
             const container = document.getElementById('posts-container');
             if (!posts || posts.length === 0) {
                 container.innerHTML = '<div class="p-8 text-center"><p class="text-gray-500">Tidak ada berita ditemukan.</p></div>';
@@ -137,18 +137,30 @@
             }
 
             let html = '';
-            posts.forEach((post, index) => {
+            posts.forEach((post) => {
                 const date = new Date(post.date);
                 const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}, ${date.getHours().toString().padStart(2, '0')}.${date.getMinutes().toString().padStart(2, '0')}`;
 
+                // Get author name - handle both old and new API response formats
+                const authorName = post.author?.display_name || post.author_name || 'Admin';
+
+                let featuredImage = 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=240&h=240&fit=crop';
+                if (post.featured_image) {
+                    if (typeof post.featured_image === 'object' && post.featured_image.url) {
+                        featuredImage = post.featured_image.url;
+                    } else if (typeof post.featured_image === 'string') {
+                        featuredImage = post.featured_image;
+                    }
+                }
+
                 html += `
                     <a href="{{ url('/detail?id=') }}${post.id}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
-                        <img src="${post.featured_image || 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=240&h=240&fit=crop'}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
+                        <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
                             <div class="text-sm text-gray-600 line-clamp-2 mt-1">${post.excerpt || ''}</div>
                             <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                <span>${post.author_name}</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>${formattedDate}</span>
+                                <span>${authorName}</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>${formattedDate}</span>
                             </div>
                         </div>
                     </a>
@@ -171,11 +183,15 @@
             const hasMore = pagination.hasMore || false;
             totalPages = Math.ceil(total / limit);
 
+            // Get current page from URL to ensure it's always correct
+            const urlParams = new URLSearchParams(window.location.search);
+            const activePage = parseInt(urlParams.get('page')) || 1;
+
             let html = '';
 
             // Previous button
-            if (currentPage > 1) {
-                html += `<a href="#" data-page="${currentPage - 1}" class="pagination-nav px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 no-underline">‹ Sebelumnya</a>`;
+            if (activePage > 1) {
+                html += `<a href="?page=${activePage - 1}" class="pagination-nav px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 no-underline">‹ Sebelumnya</a>`;
             } else {
                 html += `<span class="px-4 py-2 text-sm font-medium text-gray-400 border border-gray-300 bg-gray-50 rounded-lg">‹ Sebelumnya</span>`;
             }
@@ -183,35 +199,22 @@
             // Page numbers
             html += '<div class="flex gap-2">';
             for (let i = 1; i <= Math.min(totalPages, 5); i++) {
-                if (i === currentPage) {
+                if (i === activePage) {
                     html += `<span class="px-3 py-2 text-sm font-medium rounded-lg border border-yellow-450 bg-yellow-450 text-white">${i}</span>`;
                 } else {
-                    html += `<a href="#" data-page="${i}" class="pagination-link px-3 py-2 text-sm font-medium rounded-lg no-underline border border-gray-300 bg-white text-gray-700 hover:bg-yellow-50 hover:text-yellow-700">${i}</a>`;
+                    html += `<a href="?page=${i}" class="pagination-link px-3 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-yellow-50 hover:text-yellow-700 no-underline">${i}</a>`;
                 }
             }
             html += '</div>';
 
             // Next button
-            if (hasMore) {
-                html += `<a href="#" data-page="${currentPage + 1}" class="pagination-nav px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 no-underline">Berikutnya ›</a>`;
+            if (hasMore && activePage < totalPages) {
+                html += `<a href="?page=${activePage + 1}" class="pagination-nav px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white rounded-lg hover:bg-gray-50 no-underline">Berikutnya ›</a>`;
             } else {
-                html += `<span class="px-4 py-2 text-sm font-medium text-gray-400 border border-gray-300 bg-gray-50 rounded-lg">Berikutnya ›</span>`;
+                html += `<span class="px-4 py-2 text-sm font-medium text-gray-400 border border-gray-300 bg-gray-50 rounded-lg cursor-not-allowed">Berikutnya ›</span>`;
             }
 
             container.innerHTML = html;
-
-            // Add click handlers for pagination
-            document.querySelectorAll('.pagination-link, .pagination-nav').forEach(link => {
-                link.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const page = parseInt(e.target.dataset.page, 10);
-                    if (page && page !== currentPage) {
-                        currentPage = page;
-                        currentOffset = (page - 1) * limit;
-                        await loadPosts();
-                    }
-                });
-            });
         }
 
         // Function to render categories
@@ -243,13 +246,25 @@
                 const date = new Date(post.date);
                 const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}, ${date.getHours().toString().padStart(2, '0')}.${date.getMinutes().toString().padStart(2, '0')}`;
 
+                // Get author name - handle both old and new API response formats
+                const authorName = post.author?.display_name || post.author_name || 'Admin';
+
+                let featuredImage = 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=120&h=120&fit=crop';
+                if (post.featured_image) {
+                    if (typeof post.featured_image === 'object' && post.featured_image.url) {
+                        featuredImage = post.featured_image.url;
+                    } else if (typeof post.featured_image === 'string') {
+                        featuredImage = post.featured_image;
+                    }
+                }
+
                 html += `
                     <a href="{{ url('/detail?id=') }}${post.id}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
-                        <img src="${post.featured_image || 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=120&h=120&fit=crop'}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
+                        <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
                             <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                <span>${post.author_name}</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>${formattedDate}</span>
+                                <span>${authorName}</span><span class="w-1 h-1 bg-gray-300 rounded-full"></span><span>${formattedDate}</span>
                             </div>
                         </div>
                     </a>
@@ -260,30 +275,42 @@
         }
 
         // Function to load posts
-        async function loadPosts() {
-            const data = await fetchCategoryPosts(currentOffset);
+        async function loadPosts(page) {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '<div class="p-8 text-center"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-450"></div><p class="text-gray-500 mt-2">Memuat berita...</p></div>';
+
+            const data = await fetchCategoryPosts(page);
             if (data && data.posts) {
                 // Start from index 1 (skip the first post as it's shown in headline)
                 const posts = Array.isArray(data.posts) ? data.posts.slice(1) : [];
-                renderPosts(posts);
+                renderPosts(posts, page);
                 renderPagination(data.pagination);
+
+                // Scroll to headline section after content loads
+                const headlineSection = document.getElementById('headline-section');
+                if (headlineSection) {
+                    // Smooth scroll with offset for better UX
+                    const yOffset = -80; // Offset for fixed header if any
+                    const y = headlineSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
             } else {
-                renderPosts([]);
+                renderPosts([], page);
                 renderPagination(null);
             }
         }
 
         // Initialize
         async function init() {
-            // Load posts (skip first post)
-            await loadPosts();
+            // Load posts from query parameter
+            await loadPosts(currentPage);
 
             // Load categories
             const categories = await fetchCategories();
             renderCategories(categories);
 
-            // Load trending (use latest posts)
-            const trendingData = await fetchCategoryPosts(0);
+            // Load trending (use page 1 posts)
+            const trendingData = await fetchCategoryPosts(1);
             if (trendingData && trendingData.posts && Array.isArray(trendingData.posts)) {
                 renderTrending(trendingData.posts);
             } else {

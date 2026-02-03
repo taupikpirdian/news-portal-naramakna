@@ -51,7 +51,7 @@
                             @php
                                 $color = $colors[$index % count($colors)];
                             @endphp
-                            <a href="{{ route('index', ['slug' => $category['slug']]) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                            <a href="{{ route('category', ['slug' => $category['slug']]) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
                                 <span class="w-8 h-8 rounded-full {{ $color['bg'] }} {{ $color['text'] }} flex items-center justify-center text-xs">{{ strtoupper(substr($category['name'], 0, 1)) }}</span>
                                 <span class="text-sm text-gray-800 font-medium line-clamp-1">{{ $category['name'] }}</span>
                             </a>
