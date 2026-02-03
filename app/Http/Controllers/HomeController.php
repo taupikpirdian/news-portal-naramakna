@@ -71,9 +71,34 @@ class HomeController extends Controller
         ]);
     }
 
-    public function index()
+    public function index(string $slug)
     {
-        return view('pages.index');
+        // Fetch first post for Headline section (SSR)
+        $categoryData = $this->apiService->getCategoryPostsWithPagination($slug, 10, 0);
+        $firstPost = $categoryData['posts'][0] ?? null;
+
+        return view('pages.index', [
+            'slug' => $slug,
+            'title' => ucwords(str_replace('-', ' ', $slug)),
+            'firstPost' => $firstPost,
+            'category' => $categoryData['category'] ?? null,
+        ]);
+    }
+
+    /**
+     * API endpoint for fetching category posts with pagination (AJAX)
+     */
+    public function getCategoryPosts(Request $request, string $slug)
+    {
+        $limit = $request->query('limit', 10);
+        $offset = $request->query('offset', 0);
+
+        $data = $this->apiService->getCategoryPostsWithPagination($slug, (int)$limit, (int)$offset);
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
     }
 
     public function detail()

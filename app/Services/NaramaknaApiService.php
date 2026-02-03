@@ -93,6 +93,58 @@ class NaramaknaApiService
     }
 
     /**
+     * Fetch category posts with pagination
+     *
+     * @param string $categorySlug
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
+    public function getCategoryPostsWithPagination(string $categorySlug, int $limit = 10, int $offset = 0): array
+    {
+        $cacheKey = "category_posts_{$categorySlug}_{$limit}_{$offset}";
+
+        return Cache::remember($cacheKey, $this->cacheTtl, function () use ($categorySlug, $limit, $offset) {
+            $response = Http::timeout(10)->get("{$this->baseUrl}/api/category/{$categorySlug}/posts", [
+                'limit' => $limit,
+                'offset' => $offset,
+            ]);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                // Extract the data from the response wrapper
+                return $data['data'] ?? [
+                    'posts' => [],
+                    'pagination' => [
+                        'total' => 0,
+                        'limit' => $limit,
+                        'offset' => $offset,
+                        'hasMore' => false,
+                    ],
+                    'category' => [
+                        'slug' => $categorySlug,
+                        'name' => $categorySlug,
+                    ],
+                ];
+            }
+
+            return [
+                'posts' => [],
+                'pagination' => [
+                    'total' => 0,
+                    'limit' => $limit,
+                    'offset' => $offset,
+                    'hasMore' => false,
+                ],
+                'category' => [
+                    'slug' => $categorySlug,
+                    'name' => $categorySlug,
+                ],
+            ];
+        });
+    }
+
+    /**
      * Clear cache for categories
      *
      * @return void
