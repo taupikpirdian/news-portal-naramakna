@@ -32,42 +32,38 @@
             <div>
                 <div class="text-sm font-semibold text-gray-700 mb-3">Kategori</div>
                 <div class="grid grid-cols-2 gap-3">
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs">N</span>
-                        <span class="text-sm text-gray-800 font-medium">Narapandang</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs">P</span>
-                        <span class="text-sm text-gray-800 font-medium">Pelakon</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs">L</span>
-                        <span class="text-sm text-gray-800 font-medium">Laga & Gaya</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-xs">W</span>
-                        <span class="text-sm text-gray-800 font-medium">Wahana</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">O</span>
-                        <span class="text-sm text-gray-800 font-medium">Olah Bola</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center text-xs">C</span>
-                        <span class="text-sm text-gray-800 font-medium">Cerita Rasa</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">H</span>
-                        <span class="text-sm text-gray-800 font-medium">Horison</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">J</span>
-                        <span class="text-sm text-gray-800 font-medium">Jagat Kita</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
-                        <span class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xs">M</span>
-                        <span class="text-sm text-gray-800 font-medium">Mata Elang</span>
-                    </a>
+                    @if(isset($sidebarCategories))
+                        @php
+                            $colors = [
+                                ['bg' => 'bg-purple-100', 'text' => 'text-purple-600'],
+                                ['bg' => 'bg-pink-100', 'text' => 'text-pink-600'],
+                                ['bg' => 'bg-orange-100', 'text' => 'text-orange-600'],
+                                ['bg' => 'bg-teal-100', 'text' => 'text-teal-600'],
+                                ['bg' => 'bg-indigo-100', 'text' => 'text-indigo-600'],
+                                ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-600'],
+                                ['bg' => 'bg-blue-100', 'text' => 'text-blue-600'],
+                                ['bg' => 'bg-green-100', 'text' => 'text-green-600'],
+                                ['bg' => 'bg-rose-100', 'text' => 'text-rose-600'],
+                                ['bg' => 'bg-red-100', 'text' => 'text-red-600'],
+                            ];
+                        @endphp
+                        @foreach($sidebarCategories as $index => $category)
+                            @php
+                                $color = $colors[$index % count($colors)];
+                            @endphp
+                            <a href="{{ route('index', ['slug' => $category['slug']]) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                                <span class="w-8 h-8 rounded-full {{ $color['bg'] }} {{ $color['text'] }} flex items-center justify-center text-xs">{{ strtoupper(substr($category['name'], 0, 1)) }}</span>
+                                <span class="text-sm text-gray-800 font-medium line-clamp-1">{{ $category['name'] }}</span>
+                            </a>
+                        @endforeach
+                    @else
+                        {{-- Fallback --}}
+                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 no-underline">
+                            <span class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs">N</span>
+                            <span class="text-sm text-gray-800 font-medium">Narapandang</span>
+                        </a>
+                        {{-- Other fallback items can remain or be simplified --}}
+                    @endif
                 </div>
             </div>
             <div class="border-t border-gray-200"></div>

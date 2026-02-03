@@ -75,13 +75,18 @@ class HomeController extends Controller
         ]);
     }
 
-    public function index(string $slug)
+    public function index()
+    {
+        return view('pages.index');
+    }
+
+    public function category(string $slug)
     {
         // Fetch first post for Headline section (SSR)
         $categoryData = $this->apiService->getCategoryPostsWithPagination($slug, 10, 0);
         $firstPost = $categoryData['posts'][0] ?? null;
 
-        return view('pages.index', [
+        return view('pages.category', [
             'slug' => $slug,
             'title' => ucwords(str_replace('-', ' ', $slug)),
             'firstPost' => $firstPost,

@@ -16,15 +16,22 @@
         </div>
         <nav class="border-t border-gray-200 py-3">
             <ul class="flex gap-6 list-none flex-wrap">
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Narapandang</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Pelakon</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Laga & Gaya</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Wahana</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Olah Bola</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Cerita Rasa</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Horison</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Jagat Kita</a></li>
-                <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Mata Elang</a></li>
+                @if(isset($headerCategories))
+                    @foreach($headerCategories as $category)
+                    <li><a href="{{ route('category', ['slug' => $category['slug']]) }}" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">{{ $category['name'] }}</a></li>
+                    @endforeach
+                @else
+                    {{-- Fallback if categories fail to load --}}
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Narapandang</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Pelakon</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Laga & Gaya</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Wahana</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Olah Bola</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Cerita Rasa</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Horison</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Jagat Kita</a></li>
+                    <li><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors">Mata Elang</a></li>
+                @endif
                 <li>
                     <a href="#" onclick="openMoreSidebar()" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors inline-flex items-center gap-1">
                         <span>Lainnya</span>
@@ -39,14 +46,21 @@
         </nav>
         <div class="bg-gray-50 border-t border-gray-200 py-2">
             <ul class="flex flex-wrap gap-3 list-none">
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-red-100 text-red-800">Index Berita</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-blue-100 text-blue-800">Video Story</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-green-100 text-green-800">Polling</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Budaya</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Pendidikan</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Teknologi</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Data Bicara</a></li>
-                <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Liputan Khusus</a></li>
+                <li><a href="{{ route('index') }}" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-red-100 text-red-800">Index Berita</a></li>
+                {{-- <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-blue-100 text-blue-800">Video Story</a></li> --}}
+                {{-- <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline bg-green-100 text-green-800">Polling</a></li> --}}
+                @if(isset($subHeaderCategories))
+                    @foreach($subHeaderCategories as $category)
+                    <li><a href="{{ route('category', ['slug' => $category['slug']]) }}" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">{{ $category['name'] }}</a></li>
+                    @endforeach
+                @else
+                    {{-- Fallback --}}
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Budaya</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Pendidikan</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Teknologi</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Data Bicara</a></li>
+                    <li><a href="#" class="px-4 py-1.5 text-xs font-medium rounded-full no-underline text-gray-600">Liputan Khusus</a></li>
+                @endif
             </ul>
         </div>
     </div>
