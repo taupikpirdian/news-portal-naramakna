@@ -224,7 +224,7 @@
 
             let html = '';
             categories.forEach(cat => {
-                html += `<a href="{{ url('/index/') }}${cat.slug}" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline ${cat.slug === slug ? 'bg-yellow-450 text-white' : 'bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700'}">${cat.name}</a>`;
+                html += `<a href="{{ url('/index') }}/${cat.slug}" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline ${cat.slug === slug ? 'bg-yellow-450 text-white' : 'bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700'}">${cat.name}</a>`;
             });
 
             container.innerHTML = html;
