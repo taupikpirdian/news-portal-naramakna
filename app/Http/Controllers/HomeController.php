@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function home()
     {
         // Fetch all categories (metadata only, for lazy loading)
-        $categories = $this->apiService->getCategories(50, true);
+        $categories = $this->apiService->getCategories(12, true);
 
         // Fetch posts only for the first 2 categories (for initial load)
         $initialCategories = [];
