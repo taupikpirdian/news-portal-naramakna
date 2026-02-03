@@ -2,7 +2,7 @@
 @section('title', 'Naramakna - Cerdas Memaknai')
 @section('content')
 <!-- Artikel Terbaru -->
-<section class="mb-16">
+<section class="mb-16" id="latest-posts-section">
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-2">
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
@@ -13,85 +13,73 @@
             <span>›</span>
         </a>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2">
-            <div class="relative rounded-2xl overflow-hidden bg-white">
-                <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease" id="featuredSliderContainer">
-                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop" alt="Unggulan 1" class="min-w-full h-full object-cover">
-                    <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=1200&h=600&fit=crop" alt="Unggulan 2" class="min-w-full h-full object-cover">
-                    <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=1200&h=600&fit=crop" alt="Unggulan 3" class="min-w-full h-full object-cover">
+
+    @if(isset($latestPosts) && count($latestPosts) > 0)
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {{-- Featured Slider (left side - 2 columns) --}}
+            <div class="lg:col-span-2">
+                <div class="relative rounded-2xl overflow-hidden bg-white">
+                    <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease" id="featuredSliderContainer">
+                        @php
+                            $featuredPosts = array_slice($latestPosts, 0, 3);
+                        @endphp
+                        @foreach($featuredPosts as $index => $post)
+                            <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
+                                 alt="{{ $post['title'] }}"
+                                 class="min-w-full h-full object-cover"
+                                 data-index="{{ $index }}">
+                        @endforeach
+                    </div>
+                    <span class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
+                        {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
+                    </span>
+                    <button class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
+                        <span onclick="featuredPrev()">‹</span>
+                    </button>
+                    <button class="absolute top-1/2 -translate-y-1/2 right-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
+                        <span onclick="featuredNext()">›</span>
+                    </button>
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
+                    <div class="absolute left-4 right-4 bottom-16 text-white">
+                        <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold">{{ $featuredPosts[0]['title'] ?? '' }}</h3>
+                        <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
+                            <span id="featuredAuthor">{{ $featuredPosts[0]['author']['display_name'] ?? 'Redaksi' }}</span>
+                            <span class="w-2 h-2 bg-white/50 rounded-full"></span>
+                            <span id="featuredDate">{{ $featuredPosts[0]['date'] ? \Carbon\Carbon::parse($featuredPosts[0]['date'])->format('d/m, H.i') : '' }}</span>
+                        </div>
+                    </div>
                 </div>
-                <span class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">Horison</span>
-                <button class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                    <span onclick="featuredPrev()">‹</span>
-                </button>
-                <button class="absolute top-1/2 -translate-y-1/2 right-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                    <span onclick="featuredNext()">›</span>
-                </button>
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none"></div>
-                <div class="absolute left-4 right-4 bottom-16 text-white">
-                    <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold">Tubuh Warga Kecil Dipaksa Bicara</h3>
-                    <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
-                        <span id="featuredAuthor">Khaerunnisa</span>
-                        <span class="w-2 h-2 bg-white/50 rounded-full"></span>
-                        <span id="featuredDate">27/01, 08.00</span>
+            </div>
+
+            {{-- Latest Posts List (right side - 1 column) --}}
+            <div>
+                <div>
+                    <h4 class="text-base font-semibold text-gray-900 mb-4">Terbaru</h4>
+                    <div class="space-y-2">
+                        @php
+                            $listPosts = array_slice($latestPosts, 3, 4);
+                        @endphp
+                        @foreach($listPosts as $post)
+                            <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
+                                <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
+                                     alt="{{ $post['title'] }}"
+                                     class="w-20 h-20 object-cover rounded-lg">
+                                <div class="flex-1">
+                                    <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title'] }}</div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                        <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
+                                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                        <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '' }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
-        <div>
-            <div>
-                <h4 class="text-base font-semibold text-gray-900 mb-4">Terbaru</h4>
-                <div class="space-y-2">
-                    <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                        <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop" alt="Populer 1" class="w-20 h-20 object-cover rounded-lg">
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Spesies Baru Ditemukan dari Lini Masa</div>
-                            <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                <span>Khaerunnisa</span>
-                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                <span>27/01, 05.00</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                        <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=200&h=200&fit=crop" alt="Populer 2" class="w-20 h-20 object-cover rounded-lg">
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Sentuhan Orang Indonesia Dalam Lagu Kebangsaan Malaysia</div>
-                            <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                <span>Yosal Iriantara</span>
-                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                <span>27/01, 02.00</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=200&h=200&fit=crop" alt="Populer 3" class="w-20 h-20 object-cover rounded-lg">
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Mendapatkan Uang Dalam Karung</div>
-                            <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                <span>Yosal Iriantara</span>
-                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                <span>26/01, 05.00</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=200&h=200&fit=crop" alt="Populer 3" class="w-20 h-20 object-cover rounded-lg">
-                        <div class="flex-1">
-                            <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Mendapatkan Uang Dalam Karung</div>
-                            <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                <span>Yosal Iriantara</span>
-                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                <span>26/01, 05.00</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endif
 </section>
 
 <!-- TODO: Feed Instagram -->
@@ -416,7 +404,7 @@
     // Function to fetch all categories
     async function fetchCategories() {
         try {
-            const url = `${categoriesApiEndpoint}?limit=12&mainCategoriesOnly=true`;
+            const url = `${categoriesApiEndpoint}?limit=50&mainCategoriesOnly=true`;
             console.log('Fetching categories from:', url);
 
             const response = await fetch(url);

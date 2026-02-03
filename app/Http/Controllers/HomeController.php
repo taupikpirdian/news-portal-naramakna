@@ -16,8 +16,13 @@ class HomeController extends Controller
 
     public function home()
     {
-        // Render view without fetching data - all data will be loaded via AJAX
-        return view('pages.home');
+        // Fetch latest posts for "Artikel Terbaru" section
+        $latestPosts = $this->apiService->getLatestPosts(7, 'post', true);
+
+        // Render view with latest posts data
+        return view('pages.home', [
+            'latestPosts' => $latestPosts,
+        ]);
     }
 
     /**
@@ -50,10 +55,13 @@ class HomeController extends Controller
      */
     public function getCategories(Request $request)
     {
-        $limit = $request->query('limit', 12);
+        $limit = $request->query('limit', 50);
         $mainCategoriesOnly = $request->query('mainCategoriesOnly', true);
 
         $categories = $this->apiService->getCategories((int)$limit, filter_var($mainCategoriesOnly, FILTER_VALIDATE_BOOLEAN));
+
+        // limit 12 dan random order
+        $categories = collect($categories)->random(12)->values()->all();
 
         return response()->json([
             'success' => true,
