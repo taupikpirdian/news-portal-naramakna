@@ -255,566 +255,217 @@
     </div>
 </section>
 
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Narapandang</h2>
-        </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Ketahanan Sosial di Tengah Perubahan</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Redaksi</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 09.00</span>
+{{-- List Berita Berdasarkan Kategori --}}
+{{-- Initial Categories (First 2 - Loaded immediately) --}}
+@if(isset($initialCategories) && count($initialCategories) > 0)
+    @foreach($initialCategories as $index => $category)
+        @if(isset($category['posts']) && count($category['posts']) > 0)
+            <section class="mb-10 category-section" data-category-slug="{{ $category['slug'] }}" data-category-index="{{ $index }}">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
+                        <h2>{{ $category['name'] }}</h2>
+                    </div>
+                    <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
+                        Artikel Lainnya
+                        <span>›</span>
+                    </a>
                 </div>
-                <p class="text-sm text-white/90 mt-2">Ulasan perspektif warga terhadap kebijakan baru yang memengaruhi keseharian.</p>
-            </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Warga Menilai Program Bantuan Tepat Sasaran?</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.45</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Dampak Ekonomi Mikro di Lingkungan Kota</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.10</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Komunitas Berperan dalam Edukasi Lingkungan</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.40</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1487014679447-9f8336841d58?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Ruang Publik Aman untuk Diskusi Warga</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.15</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+                <div class="grid lg:grid-cols-12 gap-4 items-start mb-6">
+                    @php
+                        $firstPost = $category['posts'][0] ?? null;
+                        $otherPosts = array_slice($category['posts'], 1, 4);
+                    @endphp
 
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Olah Bola</h2>
-        </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Strategi Baru Klub untuk Musim Panas</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Redaksi</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 09.20</span>
+                    @if($firstPost)
+                        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
+                            <img src="{{ $firstPost['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&h=630&fit=crop' }}"
+                                 alt="{{ $firstPost['title'] }}"
+                                 class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl"
+                                 loading="eager">
+                            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-3 left-3 right-3">
+                                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">{{ $firstPost['title'] }}</h3>
+                                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
+                                    <span>{{ $firstPost['author']['display_name'] ?? 'Redaksi' }}</span>
+                                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
+                                    <span>{{ \Carbon\Carbon::parse($firstPost['date'] ?? 'now')->format('d/m, H.i') }}</span>
+                                </div>
+                                <p class="text-sm text-white/90 mt-2">{{ Str::limit(strip_tags($firstPost['excerpt'] ?? $firstPost['content'] ?? ''), 100) }}</p>
+                            </div>
+                        </a>
+                    @endif
+
+                    <div class="lg:col-span-7">
+                        <div class="grid grid-cols-2 gap-3">
+                            @foreach($otherPosts as $post)
+                                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
+                                    <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop' }}"
+                                         alt="{{ $post['title'] }}"
+                                         class="w-20 h-20 object-cover rounded-lg"
+                                         loading="lazy">
+                                    <div class="flex-1">
+                                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title'] }}</div>
+                                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                            <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
+                                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                            <span>{{ \Carbon\Carbon::parse($post['date'] ?? 'now')->format('d/m, H.i') }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
-                <p class="text-sm text-white/90 mt-2">Analisis pergantian pemain dan pola permainan yang diusung pelatih.</p>
-            </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Laporan Latihan Pramusim Klub Utama</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.50</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1521417531732-2030430fbb3c?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Prediksi Liga: Peluang Juara dan Kuda Hitam</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.05</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1512601091-8b2b1c49a2ee?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Peran Akademi dalam Pasokan Pemain Muda</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.35</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Efisiensi Anggaran Klub di Musim Transisi</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.05</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
 
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Wahana</h2>
+            {{-- Add AdSense after every 2 categories --}}
+            @if(($index + 1) % 2 === 0)
+                <div class="bg-blue-100 border border-blue-300 rounded-lg py-6 text-center text-blue-800 text-sm font-medium my-8">AdSense</div>
+            @endif
+        @endif
+    @endforeach
+@endif
+
+{{-- Lazy Loaded Categories Container --}}
+<div id="lazy-categories-container">
+    {{-- Remaining categories will be loaded here via JavaScript --}}
+</div>
+
+{{-- Loading Skeleton Template --}}
+<template id="category-skeleton">
+    <section class="mb-10 category-section skeleton-section">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-1 h-8 bg-gray-200 rounded-full shimmer"></div>
+                <div class="h-6 w-32 bg-gray-200 rounded shimmer"></div>
+            </div>
+            <div class="h-4 w-24 bg-gray-200 rounded shimmer"></div>
         </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1515847049296-a281d6401047?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Transportasi Publik: Rute dan Kenyamanan Baru</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Redaksi</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 09.10</span>
+        <div class="grid lg:grid-cols-12 gap-4 items-start mb-6">
+            <div class="lg:col-span-5">
+                <div class="rounded-2xl overflow-hidden bg-gray-200 h-[240px] sm:h-[280px] shimmer relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-300/30 to-transparent"></div>
+                    <div class="absolute bottom-3 left-3 right-3 space-y-2">
+                        <div class="h-6 bg-gray-300 rounded w-3/4 shimmer"></div>
+                        <div class="h-4 bg-gray-300 rounded w-1/2 shimmer"></div>
+                        <div class="h-3 bg-gray-300 rounded w-full shimmer"></div>
+                    </div>
                 </div>
-                <p class="text-sm text-white/90 mt-2">Menguji layanan baru pada rute utama dan dampaknya bagi mobilitas warga.</p>
             </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Konektivitas Antar Moda Semakin Baik</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.40</span>
+            <div class="lg:col-span-7">
+                <div class="grid grid-cols-2 gap-3">
+                    @for($i = 0; $i < 4; $i++)
+                        <div class="flex gap-3 rounded-xl px-2 pt-0.5 pb-1.5">
+                            <div class="w-20 h-20 bg-gray-200 rounded-lg shimmer"></div>
+                            <div class="flex-1 space-y-2">
+                                <div class="h-4 bg-gray-200 rounded shimmer"></div>
+                                <div class="h-3 bg-gray-200 rounded w-3/4 shimmer"></div>
+                            </div>
                         </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Uji Coba Tiket Terintegrasi</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Kenyamanan Stasiun Ditingkatkan</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.30</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Riset Pola Perjalanan Harian Warga</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.00</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Cerita Rasa</h2>
-        </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Jejak Rasa di Warung Pinggir Kota</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Redaksi</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 09.05</span>
+                    @endfor
                 </div>
-                <p class="text-sm text-white/90 mt-2">Eksplorasi menu sederhana yang menyimpan cerita keluarga dan budaya.</p>
-            </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1511690654501-1e8a65ea7e33?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Resep Rahasia Sambal Keluarga</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.30</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Kopi Lokal Menembus Pasar Dunia</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Kuliner Jalanan Ramah Dompet</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.25</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1495197354-3980bd7b118d?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Mencicipi Varian Nusantara di Satu Meja</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 06.55</span>
-                        </div>
-                    </div>
-                </a>
             </div>
         </div>
-    </div>
-</section>
+        {{-- Loading Spinner --}}
+        <div class="flex items-center justify-center py-6">
+            <div class="loading-spinner"></div>
+        </div>
+    </section>
+</template>
 
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Jagat Kita</h2>
-        </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Gerakan Komunitas Menghijaukan Lingkungan</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Redaksi</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 09.40</span>
-                </div>
-                <p class="text-sm text-white/90 mt-2">Aksi nyata warga dalam merawat ruang hijau dan kualitas udara.</p>
-            </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1520971342614-5f8c1f3c3a2b?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Edukasi Daur Ulang di Sekolah</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 09.15</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Bank Sampah Digital</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.50</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Pertanian Urban Memanfaatkan Lahan Sempit</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.20</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Jalur Sepeda Ramah Anak</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.55</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+<style>
+/* Shimmer Loading Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
 
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Politik</h2>
-        </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1529101091764-c3526daf38fe?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Masih Efektifkah Normalisasi Sungai Mengatasi Banjir Jakarta</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Redaksi</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 09.30</span>
-                </div>
-                <p class="text-sm text-white/90 mt-2">Normalisasi tiga sungai menjadi cara pemerintah menangani banjir. Efektifkah?</p>
-            </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Menkes: Hasil CKG Anak Terbanyak Masalah Gigi dan Hipertensi</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 08.20</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">DPR Sahkan 9 Anggota Ombudsman RI Periode 2026-2031</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 07.10</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1457296898342-cdd24585d095?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Tim SAR Evakuasi 47 Jenazah Korban Longsor Cisarua</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 06.30</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1516245834210-c4c142787335?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Kebijakan Baru Pengelolaan Sampah Perkotaan</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Redaksi</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>27/01, 06.00</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+.shimmer {
+    background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 20%, #f3f4f6 40%, #e5e7eb 60%, #f3f4f6 80%, #e5e7eb 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
 
-<!-- Ad Placeholder -->
-<div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium my-12">AdSense</div>
+/* Fade In Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-<!-- Horison -->
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2>Horison</h2>
-        </div>
-        <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            Artikel Lainnya
-            <span>›</span>
-        </a>
-    </div>
-    <div class="grid lg:grid-cols-12 gap-4 items-start mb-8">
-        <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
-            <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=630&fit=crop" alt="Artikel" class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl">
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-3 left-3 right-3">
-                <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">Naluri Melindungi Keluarga Berujung Masalah</h3>
-                <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
-                    <span>Khaerunnisa</span>
-                    <span class="w-1 h-1 bg-white/60 rounded-full"></span>
-                    <span>27/01, 08.00</span>
-                </div>
-                <p class="text-sm text-white/90 mt-2">Normalisasi tiga sungai menjadi cara pemerintah menangani banjir. Efektifkah? Rangkuman perspektif dan data lapangan dalam satu bacaan.</p>
-            </div>
-        </a>
-        <div class="lg:col-span-7">
-            <div class="grid grid-cols-2 gap-3">
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Belajar Mendaki Di Pangradinan</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Yosal Iriantara</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>25/01, 19.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Mendapatkan Uang Dalam Karung</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Yosal Iriantara</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>26/01, 05.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1487014679447-9f8336841d58?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Gaya Hidup Cepat Membuat Malas Berpikir</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Khaerunnisa</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>25/01, 23.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Tim SAR Evakuasi 47 Jenazah Korban Longsor Cisarua</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Khaerunnisa</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>26/01, 23.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Tim SAR Evakuasi 47 Jenazah Korban Longsor Cisarua</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Khaerunnisa</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>26/01, 23.00</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop" alt="Artikel" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">Tim SAR Evakuasi 47 Jenazah Korban Longsor Cisarua</div>
-                        <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                            <span>Khaerunnisa</span>
-                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                            <span>26/01, 23.00</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+.fade-in-section {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
 
-<!-- Ad Placeholder -->
-<div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium my-12">AdSense</div>
+/* Loading Spinner */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #fbbf24;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Smooth Loading Indicator */
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+.loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+}
+
+.loading-indicator span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fbbf24;
+    animation: pulse-ring 1.5s ease-in-out infinite;
+}
+
+.loading-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+</style>
 @endsection
 
 @push('scripts')
@@ -835,12 +486,15 @@
     }
 
     function updateCarousel() {
+        if (!container) return;
         container.style.transform = `translateX(-${currentSlide * 100}%)`;
 
         // Update dots
-        const dots = dotsContainer.children;
-        for (let i = 0; i < dots.length; i++) {
-            dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === currentSlide ? ' bg-yellow-450 w-6' : '');
+        if (dotsContainer) {
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === currentSlide ? ' bg-yellow-450 w-6' : '');
+            }
         }
     }
 
@@ -859,8 +513,10 @@
         updateCarousel();
     }
 
-    // Auto-play carousel
-    setInterval(nextSlide, 5000);
+    // Auto-play carousel (only if container exists)
+    if (container && totalSlides > 0) {
+        setInterval(nextSlide, 5000);
+    }
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -938,5 +594,291 @@
             img.src = FALLBACK_IMG;
         }, { once: true });
     });
+
+    // ==========================================
+    // LAZY LOAD CATEGORIES WITH INTERSECTION OBSERVER
+    // ==========================================
+
+    // Remaining categories data from server
+    const remainingCategories = @js($remainingCategories ?? []);
+    let loadedCount = 0;
+    const apiEndpoint = "{{ route('api.category.posts') }}";
+
+    // Function to create category HTML from data
+    function createCategoryHTML(category, posts, index) {
+        const firstPost = posts[0] || null;
+        const otherPosts = posts.slice(1, 5);
+
+        let html = `
+            <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
+                        <h2>${category.name}</h2>
+                    </div>
+                    <a href="#" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
+                        Artikel Lainnya
+                        <span>›</span>
+                    </a>
+                </div>
+                <div class="grid lg:grid-cols-12 gap-4 items-start mb-6">
+        `;
+
+        if (firstPost) {
+            const excerpt = firstPost.excerpt ?
+                firstPost.excerpt.substring(0, 100) + '...' :
+                (firstPost.content ? firstPost.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : '');
+            const date = firstPost.date ? new Date(firstPost.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+
+            html += `
+                    <a href="#" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
+                        <img src="${firstPost.featured_image?.url || 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&h=630&fit=crop'}"
+                             alt="${firstPost.title}"
+                             class="w-full h-[240px] sm:h-[280px] object-cover rounded-2xl"
+                             loading="lazy">
+                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-3 left-3 right-3">
+                            <h3 class="text-xl sm:text-2xl font-bold text-white leading-tight">${firstPost.title}</h3>
+                            <div class="flex gap-3 items-center text-white/80 text-xs mt-2">
+                                <span>${firstPost.author?.display_name || 'Redaksi'}</span>
+                                <span class="w-1 h-1 bg-white/60 rounded-full"></span>
+                                <span>${date}</span>
+                            </div>
+                            <p class="text-sm text-white/90 mt-2">${excerpt}</p>
+                        </div>
+                    </a>
+            `;
+        }
+
+        html += `
+                    <div class="lg:col-span-7">
+                        <div class="grid grid-cols-2 gap-3">
+        `;
+
+        otherPosts.forEach(post => {
+            const date = post.date ? new Date(post.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+
+            html += `
+                            <a href="#" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
+                                <img src="${post.featured_image?.url || 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop'}"
+                                     alt="${post.title}"
+                                     class="w-20 h-20 object-cover rounded-lg"
+                                     loading="lazy">
+                                <div class="flex-1">
+                                    <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                        <span>${post.author?.display_name || 'Redaksi'}</span>
+                                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                        <span>${date}</span>
+                                    </div>
+                                </div>
+                            </a>
+            `;
+        });
+
+        html += `
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+
+        // Add AdSense after every 2 categories (total, including initial)
+        if ((index + 1) % 2 === 0) {
+            html += `
+                <div class="bg-blue-100 border border-blue-300 rounded-lg py-6 text-center text-blue-800 text-sm font-medium my-8">AdSense</div>
+            `;
+        }
+
+        return html;
+    }
+
+    // Function to create skeleton loader
+    function createSkeleton() {
+        const template = document.getElementById('category-skeleton');
+        return template.content.cloneNode(true);
+    }
+
+    // Function to load category posts
+    async function loadCategoryPosts(categorySlug) {
+        try {
+            const url = `${apiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=6`;
+            console.log('Fetching from:', url);
+
+            const response = await fetch(url);
+            console.log('Response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('API Response:', data);
+
+            if (!data.success) {
+                console.warn('API returned unsuccessful response');
+                return [];
+            }
+
+            const posts = data.data.posts || [];
+            console.log('Posts fetched successfully:', posts.length);
+            return posts;
+
+        } catch (error) {
+            console.error('Error loading category posts:', error);
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack
+            });
+            return [];
+        }
+    }
+
+    // Function to load next batch of categories
+    let isLoading = false; // Flag to prevent multiple simultaneous loads
+    const categoriesPerBatch = 3; // Load 3 categories at once instead of 1
+
+    async function loadNextBatch() {
+        // Prevent multiple loads
+        if (loadedCount >= remainingCategories.length || isLoading) {
+            console.log('Load skipped:', {
+                loadedCount,
+                total: remainingCategories.length,
+                isLoading
+            });
+            return;
+        }
+
+        isLoading = true; // Set loading flag
+        console.log('Starting load for categories:', loadedCount, 'to', Math.min(loadedCount + categoriesPerBatch, remainingCategories.length) - 1);
+
+        const container = document.getElementById('lazy-categories-container');
+        if (!container) {
+            console.error('Container not found');
+            isLoading = false;
+            return;
+        }
+
+        try {
+            // Load multiple categories in this batch
+            const categoriesToLoad = Math.min(categoriesPerBatch, remainingCategories.length - loadedCount);
+
+            for (let i = 0; i < categoriesToLoad; i++) {
+                const currentIndex = loadedCount + i;
+                const category = remainingCategories[currentIndex];
+                const actualIndex = currentIndex + 2; // +2 because we have 2 initial categories
+
+                console.log(`Loading category ${i + 1}/${categoriesToLoad}:`, category.slug);
+
+                // Show skeleton for each category
+                const skeleton = createSkeleton();
+                container.appendChild(skeleton);
+
+                // Scroll skeleton into view smoothly
+                let skeletonSection = container.querySelector('.skeleton-section');
+                if (skeletonSection) {
+                    skeletonSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                // Load posts for this category
+                const posts = await loadCategoryPosts(category.slug);
+                console.log(`Posts loaded for ${category.slug}:`, posts.length);
+
+                // Add delay only for the first category
+                if (i === 0) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    console.log('Initial delay completed');
+                }
+
+                // Animate skeleton out
+                skeletonSection = container.querySelector('.skeleton-section');
+                if (skeletonSection) {
+                    skeletonSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    skeletonSection.style.opacity = '0';
+                    skeletonSection.style.transform = 'translateY(-10px)';
+
+                    // Wait for exit animation to complete
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    skeletonSection.remove();
+                    console.log(`Skeleton removed for ${category.slug}`);
+                }
+
+                // Check if we have posts
+                if (!posts || posts.length === 0) {
+                    console.warn('No posts found for category:', category.slug);
+                    continue; // Skip this category but continue with next
+                }
+
+                // Create and append category section
+                const categoryHTML = createCategoryHTML(category, posts, actualIndex);
+                container.insertAdjacentHTML('beforeend', categoryHTML);
+                console.log(`Category HTML added for ${category.slug}`);
+
+                // Add enhanced fade-in animation
+                const newSection = container.lastElementChild.previousElementSibling;
+                if (newSection && newSection.classList.contains('category-section')) {
+                    newSection.style.opacity = '0';
+                    newSection.style.transform = 'translateY(30px) scale(0.98)';
+
+                    // Small delay to ensure DOM is ready
+                    await new Promise(resolve => setTimeout(resolve, 50));
+
+                    // Trigger reflow to ensure transition works
+                    newSection.offsetHeight;
+
+                    newSection.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    newSection.style.opacity = '1';
+                    newSection.style.transform = 'translateY(0) scale(1)';
+                    console.log(`Animation applied for ${category.slug}`);
+                }
+            }
+
+            loadedCount += categoriesToLoad;
+            console.log('Batch load completed. Total loaded:', loadedCount);
+
+        } catch (error) {
+            console.error('Error in loadNextBatch:', error);
+
+            // Remove all skeletons if exists
+            const skeletonSections = container.querySelectorAll('.skeleton-section');
+            skeletonSections.forEach(s => s.remove());
+        } finally {
+            // Always reset loading flag
+            isLoading = false;
+            console.log('Loading flag reset');
+
+            // Attach error handlers to new images
+            container.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', () => {
+                    img.src = FALLBACK_IMG;
+                }, { once: true });
+            });
+        }
+    }
+
+    // Check if user is near bottom of page
+    function isNearBottom() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+
+        // Trigger if within 200px of bottom
+        return (scrollTop + windowHeight) >= (documentHeight - 200);
+    }
+
+    // Handle scroll event for lazy loading
+    function handleScroll() {
+        if (loadedCount < remainingCategories.length && isNearBottom() && !isLoading) {
+            loadNextBatch();
+        }
+    }
+
+    // Add scroll event listener with passive option for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Also check on initial load in case user is already near bottom
+    if (loadedCount < remainingCategories.length && isNearBottom()) {
+        loadNextBatch();
+    }
 </script>
 @endpush

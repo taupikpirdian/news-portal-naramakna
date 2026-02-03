@@ -59,12 +59,12 @@
     @include("components.header")
     @include('components.sidebar')
 
-    <div class="ad-sidebar-left">
+    {{-- <div class="ad-sidebar-left">
         <img src="https://placehold.co/160x600/e2e8f0/64748b?text=Advertisement" alt="Advertisement" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
     </div>
     <div class="ad-sidebar-right">
         <img src="https://placehold.co/160x600/e2e8f0/64748b?text=Advertisement" alt="Advertisement" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
-    </div>
+    </div> --}}
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mt-6">

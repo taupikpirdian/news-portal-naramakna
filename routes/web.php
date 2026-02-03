@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 // home.html
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'home']);
+// API endpoint for lazy loading category posts
+Route::get('/api/category/posts', [\App\Http\Controllers\HomeController::class, 'loadCategoryPosts'])->name('api.category.posts');
 // index-berita.html
 Route::get('/index', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 // artikel.html

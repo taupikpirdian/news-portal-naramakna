@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'naramakna' => [
+        'base_url' => env('NARAMAKNA_API_BASE_URL', 'https://api.naramakna.id'),
+        'cache_ttl' => env('NARAMAKNA_CACHE_TTL', 3600), // 1 hour in seconds
+    ],
+
 ];
