@@ -23,4 +23,8 @@ Route::get('/kerja-sama', [\App\Http\Controllers\HomeController::class, 'kerjaSa
 Route::get('/tentang-kami', [\App\Http\Controllers\HomeController::class, 'tentangKami'])->name('tentangKami');
 // cara-menulis.html
 Route::get('/cara-menulis', [\App\Http\Controllers\HomeController::class, 'caraMenulis'])->name('caraMenulis');
+// Health Check Route
+Route::get('/health', function () {
+    return response()->json(['status' => 'OK'], 200);
+});
 
