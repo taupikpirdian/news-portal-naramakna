@@ -177,7 +177,142 @@ class HomeController extends Controller
 
     public function tentangKami()
     {
-        return view('pages.tentang-kami');
+        $about = $this->apiService->getAbout();
+
+        // Parse hero subtitle for intro content
+        $heroParagraphs = [];
+        if ($about && !empty($about['hero_subtitle'])) {
+            // Extract paragraphs
+            preg_match_all('/<p[^>]*>(.*?)<\/p>/is', $about['hero_subtitle'], $matches);
+            if (!empty($matches[1])) {
+                foreach ($matches[1] as $p) {
+                    $heroParagraphs[] = trim(strip_tags($p));
+                }
+            }
+        }
+
+        // Parse mission content to extract items
+        $missionItems = [];
+        if ($about && !empty($about['mission_content'])) {
+            // Remove <ul> and </ul> tags
+            $content = preg_replace('/<\/?ul[^>]*>/i', '', $about['mission_content']);
+            // Extract all <li> items
+            preg_match_all('/<li[^>]*>(.*?)<\/li>/is', $content, $matches);
+            if (!empty($matches[1])) {
+                foreach ($matches[1] as $item) {
+                    // Get text before <strong> tag as title/prefix
+                    $parts = preg_split('/<strong[^>]*>.*?<\/strong>/is', $item, 2);
+                    $title = !empty($parts[0]) ? trim(strip_tags($parts[0])) : '';
+
+                    // Extract the bold text from <strong> tag
+                    preg_match('/<strong[^>]*>(.*?)<\/strong>/is', $item, $strongMatch);
+                    $boldText = !empty($strongMatch[1]) ? strip_tags($strongMatch[1]) : '';
+
+                    // Get text after <strong> tag
+                    preg_match('/<\/strong>(.*?)$/is', $item, $afterMatch);
+                    $afterText = !empty($afterMatch[1]) ? trim(strip_tags($afterMatch[1])) : '';
+
+                    // Combine for description
+                    $description = $boldText . ' ' . $afterText;
+                    $description = trim($description);
+
+                    // Ensure title has capital first letter for each word (Title Case)
+                    if ($title && mb_strlen($title) > 0) {
+                        $title = ucwords(mb_strtolower($title));
+                    }
+
+                    $missionItems[] = [
+                        'title' => $title,
+                        'description' => $description
+                    ];
+                }
+            }
+        }
+
+        // Parse values content to extract service items
+        $valueItems = [];
+        if ($about && !empty($about['values_content'])) {
+            // Split by <p> tags
+            preg_match_all('/<p[^>]*>(.*?)<\/p>/is', $about['values_content'], $matches);
+            if (!empty($matches[1])) {
+                foreach ($matches[1] as $index => $item) {
+                    // Skip the first item as it's the title "Solusi komprehensif..."
+                    if ($index === 0) continue;
+
+                    // Extract title from <strong> tag
+                    preg_match('/<strong[^>]*>(.*?)<\/strong>/is', $item, $titleMatch);
+                    $title = !empty($titleMatch[1]) ? strip_tags($titleMatch[1]) : '';
+
+                    // Get description by removing the title part
+                    $description = preg_replace('/<strong[^>]*>.*?<\/strong>/is', '', $item);
+                    $description = trim(strip_tags($description));
+
+                    // Ensure title has capital first letter for each word (Title Case)
+                    if ($title && mb_strlen($title) > 0) {
+                        $title = ucwords(mb_strtolower($title));
+                    }
+
+                    if (!empty($title)) {
+                        $valueItems[] = [
+                            'title' => $title,
+                            'description' => $description
+                        ];
+                    }
+                }
+            }
+        }
+
+        // Parse team content to extract team members by role
+        $teamMembersMap = []; // Use associative array to merge duplicate members
+        if ($about && !empty($about['team_content'])) {
+            // Find all role sections (pattern: <strong>Role:</strong> followed by <ol>)
+            // The pattern needs to handle optional <p> tags
+            preg_match_all('/<strong>([^<]+):<\/strong>.*?<ol>(.*?)<\/ol>/is', $about['team_content'], $roleMatches, PREG_SET_ORDER);
+
+            foreach ($roleMatches as $roleMatch) {
+                $role = trim(strip_tags($roleMatch[1]));
+                $listContent = $roleMatch[2];
+
+                // Extract all <li> items for this role
+                preg_match_all('/<li[^>]*>(.*?)<\/li>/is', $listContent, $memberMatches);
+
+                if (!empty($memberMatches[1])) {
+                    foreach ($memberMatches[1] as $member) {
+                        $memberName = trim(strip_tags($member));
+                        if (!empty($memberName)) {
+                            // Use member name as key to merge duplicates
+                            if (!isset($teamMembersMap[$memberName])) {
+                                $teamMembersMap[$memberName] = [
+                                    'name' => $memberName,
+                                    'roles' => [],
+                                    'image' => null
+                                ];
+                            }
+                            // Add role if not already exists
+                            if (!in_array($role, $teamMembersMap[$memberName]['roles'])) {
+                                $teamMembersMap[$memberName]['roles'][] = $role;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Convert map to array and format roles as comma-separated string
+        $teamMembers = [];
+        foreach ($teamMembersMap as $member) {
+            $member['role'] = implode(', ', $member['roles']);
+            unset($member['roles']);
+            $teamMembers[] = $member;
+        }
+
+        return view('pages.tentang-kami', [
+            'about' => $about,
+            'heroParagraphs' => $heroParagraphs,
+            'missionItems' => $missionItems,
+            'valueItems' => $valueItems,
+            'teamMembers' => $teamMembers,
+        ]);
     }
 
     public function caraMenulis()

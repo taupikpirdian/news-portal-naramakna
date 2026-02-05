@@ -223,6 +223,35 @@ class NaramaknaApiService
     }
 
     /**
+     * Fetch about data from the API
+     *
+     * @return array|null
+     */
+    public function getAbout(): ?array
+    {
+        return Cache::remember("about", $this->cacheTtl, function () {
+            $response = Http::timeout(10)->get("{$this->baseUrl}/api/about");
+
+            if ($response->successful()) {
+                $data = $response->json();
+                return $data['data'] ?? null;
+            }
+
+            return null;
+        });
+    }
+
+    /**
+     * Clear cache for about data
+     *
+     * @return void
+     */
+    public function clearAboutCache(): void
+    {
+        Cache::forget('about');
+    }
+
+    /**
      * Clear all feed cache
      *
      * @return void
