@@ -77,7 +77,7 @@
 <script>
     (function() {
         const slug = '{{ $slug }}';
-        const apiBaseUrl = '{{ url('/api') }}';
+        const apiBaseUrl = '{{ secure_url('/api') }}';
         let limit = 10;
         let totalPages = 1;
         let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
@@ -153,7 +153,7 @@
                 }
 
                 html += `
-                    <a href="{{ url('/read') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+                    <a href="{{ secure_url('/read') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
@@ -226,7 +226,7 @@
 
             let html = '';
             categories.forEach(cat => {
-                html += `<a href="{{ url('/kategori') }}/${cat.slug}" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline ${cat.slug === slug ? 'bg-yellow-450 text-white' : 'bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700'}">${cat.name}</a>`;
+                html += `<a href="{{ secure_url('/kategori') }}/${cat.slug}" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline ${cat.slug === slug ? 'bg-yellow-450 text-white' : 'bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700'}">${cat.name}</a>`;
             });
 
             container.innerHTML = html;
@@ -258,7 +258,7 @@
                 }
 
                 html += `
-                    <a href="{{ url('/read') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
+                    <a href="{{ secure_url('/read') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>

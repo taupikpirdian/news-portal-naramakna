@@ -438,8 +438,8 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
-        const readUrl = '{{ url('/read') }}';
-        const categoryUrl = '{{ url('/kategori') }}';
+        const readUrl = '{{ secure_url('/read') }}';
+        const categoryUrl = '{{ secure_url('/kategori') }}';
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -759,7 +759,7 @@
     const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
     const featuredLinkEl = document.getElementById('featuredLink');
-    const readUrl = '{{ url('/read') }}';
+    const readUrl = '{{ secure_url('/read') }}';
 
     // Store post data from server-side rendered slides
     const featuredData = @if(isset($featuredPosts) && count($featuredPosts) > 0)
