@@ -22,10 +22,25 @@ class HomeController extends Controller
         $featuredPosts = collect($latestPosts)->slice(0, 3)->values()->all();
         // ambil 4 data selanjutnya untuk latest posts
         $latestPosts = collect($latestPosts)->slice(3, 4)->values()->all();
+
+        // SEO Data
+        $seo = [
+            'title' => 'Naramakna - Cerdas Memaknai',
+            'description' => 'Naramakna adalah portal berita terpercaya yang menyajikan berita terbaru, artikel mendalam, dan analisis tajam dari berbagai kategori seperti politik, ekonomi, teknologi, olahraga, dan lainnya.',
+            'keywords' => 'naramakna, berita indonesia, berita terbaru, artikel, news portal, media online, berita terkini',
+            'og_title' => 'Naramakna - Cerdas Memaknai',
+            'og_description' => 'Naramakna adalah portal berita terpercaya yang menyajikan berita terbaru, artikel mendalam, dan analisis tajam dari berbagai kategori.',
+            'og_image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/'),
+            'canonical' => url('/'),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
+
         // Render view with latest posts data
         return view('pages.home', [
             'latestPosts' => $latestPosts,
             'featuredPosts' => $featuredPosts,
+            'seo' => $seo,
         ]);
     }
 
@@ -80,12 +95,26 @@ class HomeController extends Controller
         // Fetch feed data for the index page
         $feedData = $this->apiService->getFeed(1, 12, 'date', 'desc');
         $posts = $feedData['posts'] ?? [];
-        
+
         // First post for Headline
         $firstPost = $posts[0] ?? null;
-        
+
+        // SEO Data
+        $seo = [
+            'title' => 'Index Berita - Naramakna',
+            'description' => 'Kumpulan berita terbaru dan utama Naramakna. Dapatkan informasi terkini dari berbagai kategori dengan penyajian yang cepat, akurat, dan SEO-ready.',
+            'keywords' => 'index berita, berita utama, berita terkini, naramakna, berita indonesia, headlines, news feed',
+            'og_title' => 'Index Berita - Naramakna',
+            'og_description' => 'Kumpulan berita terbaru dan utama Naramakna. Cepat dibaca dan SEO-ready.',
+            'og_image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/index'),
+            'canonical' => url('/index'),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
+
         return view('pages.index', [
             'firstPost' => $firstPost,
+            'seo' => $seo,
         ]);
     }
 
@@ -112,12 +141,29 @@ class HomeController extends Controller
         // Fetch first post for Headline section (SSR)
         $categoryData = $this->apiService->getCategoryPostsWithPagination($slug, 10, 0);
         $firstPost = $categoryData['posts'][0] ?? null;
+        $category = $categoryData['category'] ?? null;
+
+        $categoryTitle = $category['name'] ?? ucwords(str_replace('-', ' ', $slug));
+
+        // SEO Data
+        $seo = [
+            'title' => "{$categoryTitle} - Naramakna",
+            'description' => "Berita terbaru dan artikel terlengkap dalam kategori {$categoryTitle} di Naramakna. Temukan informasi terkini yang relevan dan terpercaya.",
+            'keywords' => strtolower($categoryTitle) . ', berita ' . strtolower($categoryTitle) . ', artikel ' . strtolower($categoryTitle) . ', naramakna, berita indonesia',
+            'og_title' => "{$categoryTitle} - Naramakna",
+            'og_description' => "Berita terbaru dan artikel terlengkap dalam kategori {$categoryTitle} di Naramakna.",
+            'og_image' => $category['image'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/kategori/' . $slug),
+            'canonical' => url('/kategori/' . $slug),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
 
         return view('pages.category', [
             'slug' => $slug,
-            'title' => ucwords(str_replace('-', ' ', $slug)),
+            'title' => $categoryTitle,
             'firstPost' => $firstPost,
-            'category' => $categoryData['category'] ?? null,
+            'category' => $category,
+            'seo' => $seo,
         ]);
     }
 
@@ -141,11 +187,11 @@ class HomeController extends Controller
     {
         if (!$slug && request()->has('id')) {
             // Backward compatibility or redirect logic could go here
-            // For now, we abort or handle as needed. 
+            // For now, we abort or handle as needed.
             // If the user uses ID, we might not be able to fetch by slug unless we have a mapping.
             abort(404);
         }
-        
+
         if (!$slug) {
             abort(404);
         }
@@ -156,23 +202,84 @@ class HomeController extends Controller
             abort(404);
         }
 
+        // Track analytics when user views the article (server-side)
+        // We also track client-side for better accuracy
+        $postId = $post['id'] ?? $slug;
+        $this->apiService->trackAnalytics($postId, 'post', 'view');
+
         // Fetch latest posts for sidebar "Artikel Terbaru"
         $latestPosts = $this->apiService->getLatestPosts(5);
 
+        // SEO Data
+        $postTitle = $post['title'] ?? 'Artikel';
+        $postExcerpt = $post['excerpt'] ?? strip_tags($post['content'] ?? '');
+        $postExcerpt = mb_substr($postExcerpt, 0, 160) . '...';
+        $postImage = $post['metadata']['thumbnail_url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop';
+        $categoryName = $post['category']['name'] ?? 'Berita';
+
+        $seo = [
+            'title' => "{$postTitle} - Naramakna",
+            'description' => $postExcerpt,
+            'keywords' => $post['metadata']['keywords'] ?? 'naramakna, berita indonesia, artikel, news portal, media online',
+            'og_title' => $postTitle,
+            'og_description' => $postExcerpt,
+            'og_image' => $postImage,
+            'og_url' => url('/read/' . $slug),
+            'canonical' => url('/read/' . $slug),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+            'article' => true,
+            'article_published_time' => $post['published_at'] ?? now(),
+            'article_modified_time' => $post['updated_at'] ?? now(),
+            'article_section' => $categoryName,
+            'article_author' => $post['author']['name'] ?? 'Naramakna',
+        ];
+
         return view('pages.detail', [
             'post' => $post,
-            'latestPosts' => $latestPosts
+            'latestPosts' => $latestPosts,
+            'seo' => $seo,
+            'postId' => $postId,
         ]);
     }
 
     public function bantuan()
     {
-        return view('pages.bantuan');
+        // SEO Data
+        $seo = [
+            'title' => 'Bantuan - Naramakna',
+            'description' => 'Pusat bantuan Naramakna. Temukan jawaban untuk pertanyaan yang sering diajukan (FAQ), panduan penggunaan, dan informasi dukungan pelanggan.',
+            'keywords' => 'bantuan, help, faq, pertanyaan umum, dukungan, support, naramakna',
+            'og_title' => 'Bantuan - Naramakna',
+            'og_description' => 'Pusat bantuan Naramakna. Temukan jawaban untuk pertanyaan yang sering diajukan (FAQ) dan panduan penggunaan.',
+            'og_image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/bantuan'),
+            'canonical' => url('/bantuan'),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
+
+        return view('pages.bantuan', [
+            'seo' => $seo,
+        ]);
     }
 
     public function kerjaSama()
     {
-        return view('pages.kerja-sama');
+        // SEO Data
+        $seo = [
+            'title' => 'Kerja Sama - Naramakna',
+            'description' => 'Informasi kerja sama dan kemitraan dengan Naramakna. Peluang kerja sama dalam konten, iklan, distribusi berita, dan kemitraan strategis lainnya.',
+            'keywords' => 'kerja sama, partnership, kemitraan, sponsorship, iklan, kerjasama media, naramakna',
+            'og_title' => 'Kerja Sama - Naramakna',
+            'og_description' => 'Informasi kerja sama dan kemitraan dengan Naramakna. Peluang kerja sama dalam konten, iklan, dan distribusi berita.',
+            'og_image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/kerja-sama'),
+            'canonical' => url('/kerja-sama'),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
+
+        return view('pages.kerja-sama', [
+            'seo' => $seo,
+        ]);
     }
 
     public function tentangKami()
@@ -306,17 +413,46 @@ class HomeController extends Controller
             $teamMembers[] = $member;
         }
 
+        // SEO Data
+        $seo = [
+            'title' => 'Tentang Kami - Naramakna',
+            'description' => 'Tentang Naramakna - Portal berita terpercaya yang cerdas memaknai informasi. Kami berkomitmen menyajikan berita berkualitas, akurat, dan berimbang untuk pembaca Indonesia.',
+            'keywords' => 'tentang kami, about us, naramakna, profil perusahaan, visi misi, tim redaksi, media indonesia',
+            'og_title' => 'Tentang Kami - Naramakna',
+            'og_description' => 'Tentang Naramakna - Portal berita terpercaya yang cerdas memaknai informasi. Kami berkomitmen menyajikan berita berkualitas.',
+            'og_image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/tentang-kami'),
+            'canonical' => url('/tentang-kami'),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
+
         return view('pages.tentang-kami', [
             'about' => $about,
             'heroParagraphs' => $heroParagraphs,
             'missionItems' => $missionItems,
             'valueItems' => $valueItems,
             'teamMembers' => $teamMembers,
+            'seo' => $seo,
         ]);
     }
 
     public function caraMenulis()
     {
-        return view('pages.cara-menulis');
+        // SEO Data
+        $seo = [
+            'title' => 'Cara Menulis - Naramakna',
+            'description' => 'Panduan cara menulis dan berkontribusi di Naramakna. Pelajari cara menulis artikel yang berkualitas, pedoman penulisan, dan cara submit tulisan Anda untuk dipublikasikan.',
+            'keywords' => 'cara menulis, panduan penulisan, kontributor, write for us, jadi penulis, submit artikel, naramakna',
+            'og_title' => 'Cara Menulis - Naramakna',
+            'og_description' => 'Panduan cara menulis dan berkontribusi di Naramakna. Pelajari cara menulis artikel yang berkualitas.',
+            'og_image' => 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop',
+            'og_url' => url('/cara-menulis'),
+            'canonical' => url('/cara-menulis'),
+            'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+        ];
+
+        return view('pages.cara-menulis', [
+            'seo' => $seo,
+        ]);
     }
 }

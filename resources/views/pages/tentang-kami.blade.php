@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Naramakna - Cerdas Memaknai')
+
 @section('content')
 <section class="relative -mx-[calc(50%-50vw)] bg-gray-900">
     <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1600&h=900&fit=crop')] bg-cover bg-center"></div>

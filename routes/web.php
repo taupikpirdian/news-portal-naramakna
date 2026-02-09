@@ -28,3 +28,22 @@ Route::get('/health', function () {
     return response()->json(['status' => 'OK'], 200);
 });
 
+// Sitemap Routes
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-pages.xml', [\App\Http\Controllers\SitemapController::class, 'pages'])->name('sitemap.pages');
+Route::get('/sitemap-posts.xml', [\App\Http\Controllers\SitemapController::class, 'posts'])->name('sitemap.posts');
+Route::get('/sitemap-categories.xml', [\App\Http\Controllers\SitemapController::class, 'categories'])->name('sitemap.categories');
+
+// Robots.txt Route
+Route::get('/robots.txt', function () {
+    $content = "User-agent: *\n";
+    $content .= "Allow: /\n";
+    $content .= "\n";
+    $content .= "Sitemap: " . url('/sitemap.xml') . "\n";
+
+    return response($content, 200)->header('Content-Type', 'text/plain');
+})->name('robots.txt');
+
+// RSS Feed Route
+Route::get('/feed', [\App\Http\Controllers\RssController::class, 'index'])->name('rss.feed');
+

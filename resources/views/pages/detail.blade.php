@@ -9,24 +9,13 @@
             $imageUrl = $post['featured_image'];
         }
     }
-    
+
     $authorName = $post['author']['display_name'] ?? 'Redaksi';
     $date = isset($post['date']) ? \Carbon\Carbon::parse($post['date']) : now();
     $category = $post['categories'][0]['name'] ?? 'Artikel';
     $categorySlug = $post['categories'][0]['slug'] ?? 'artikel';
     $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? Str::limit(strip_tags($post['content']), 150);
 @endphp
-
-@section('title', $post['title'] . ' - Naramakna')
-
-@section('meta_tags')
-    <meta name="description" content="{{ $description }}">
-    <meta property="og:title" content="{{ $post['title'] }}">
-    <meta property="og:description" content="{{ $description }}">
-    <meta property="og:image" content="{{ $imageUrl }}">
-    <meta property="og:url" content="{{ request()->url() }}">
-    <meta property="og:type" content="article">
-@endsection
 
 @section('content')
 <div class="grid grid-cols-12 gap-8">
@@ -185,6 +174,42 @@
 @endsection
 
 @push('scripts')
+<script>
+(function() {
+    // Track analytics when user views the article (client-side)
+    const trackAnalytics = async () => {
+        const postId = '{{ $postId }}';
+        const analyticsUrl = 'https://api.naramakna.id/api/analytics/track';
+
+        try {
+            await fetch(analyticsUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify({
+                    content_id: postId,
+                    content_type: 'post',
+                    event_type: 'view'
+                }),
+                keepalive: true // Ensure request completes even if user navigates away
+            });
+        } catch (error) {
+            // Silently fail to not disrupt user experience
+            console.warn('Analytics tracking failed:', error);
+        }
+    };
+
+    // Track immediately when page loads
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', trackAnalytics);
+    } else {
+        trackAnalytics();
+    }
+})();
+</script>
+
 <script type="application/ld+json">
 {
   "@@context": "https://schema.org",

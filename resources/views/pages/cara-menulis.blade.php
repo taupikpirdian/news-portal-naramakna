@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title', 'Cara Menulis di Naramakna - Platform Media Digital Terdepan Indonesia')
 
 @push('styles')
 <!-- Tailwind CSS CDN -->

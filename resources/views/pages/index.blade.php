@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title', $title ?? 'Naramakna')
 
 @section('content')
 <div class="py-10">

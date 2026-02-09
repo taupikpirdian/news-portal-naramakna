@@ -271,4 +271,28 @@ class NaramaknaApiService
         $this->clearCategoriesCache();
         $this->clearFeedCache();
     }
+
+    /**
+     * Track analytics event
+     *
+     * @param string $contentId
+     * @param string $contentType
+     * @param string $eventType
+     * @return bool
+     */
+    public function trackAnalytics(string $contentId, string $contentType = 'post', string $eventType = 'view'): bool
+    {
+        try {
+            $response = Http::timeout(5)->post("{$this->baseUrl}/api/analytics/track", [
+                'content_id' => $contentId,
+                'content_type' => $contentType,
+                'event_type' => $eventType,
+            ]);
+
+            return $response->successful();
+        } catch (\Exception $e) {
+            // Silently fail to not disrupt user experience
+            return false;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Naramakna - Cerdas Memaknai')
+
 @section('content')
 <section class="relative -mx-[calc(50%-50vw)] bg-gray-900">
     <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-black/10"></div>
