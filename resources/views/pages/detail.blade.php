@@ -38,7 +38,7 @@
             <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
         </svg>
         </a>
-        <a id="sVerticalWhatsApp" href="https://wa.me/?text={{ urlencode($post['title']) }}%20{{ urlencode(request()->url()) }}" target="_blank" title="Bagikan di WhatsApp" aria-label="Bagikan di WhatsApp" class="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center no-underline">
+        <a id="sVerticalWhatsApp" href="https://api.whatsapp.com/send/?phone=628979132802&text={{ urlencode($post['title']) }}%20{{ urlencode(request()->url()) }}&type=phone_number&app_absent=0" target="_blank" title="Bagikan di WhatsApp" aria-label="Bagikan di WhatsApp" class="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center no-underline">
         <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.1.55 4.06 1.52 5.77L0 24l6.4-1.68A12 12 0 0012 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.48-8.52zM12 21.6c-1.86 0-3.6-.5-5.12-1.44l-.36-.22-3.8 1 1.02-3.7-.24-.38A9.6 9.6 0 1121.6 12c0 5.3-4.3 9.6-9.6 9.6zm5.44-6.68c-.3-.16-1.77-.87-2.05-.97-.27-.1-.47-.16-.68.16-.2.3-.78.96-.95 1.16-.18.2-.35.23-.65.08-.3-.16-1.27-.47-2.42-1.49-.9-.8-1.5-1.78-1.67-2.08-.17-.3-.02-.46.13-.62.14-.14.3-.34.46-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.54-.08-.16-.68-1.64-.94-2.25-.25-.6-.5-.52-.68-.53l-.58-.01c-.2 0-.53.08-.82.38-.28.3-1.08 1.06-1.08 2.58s1.11 2.98 1.27 3.18c.16.2 2.18 3.33 5.3 4.6.74.32 1.32.51 1.77.65.74.24 1.42.21 1.96.13.6-.09 1.77-.72 2.02-1.41.25-.68.25-1.26.18-1.38-.07-.12-.26-.2-.56-.36z"/>
         </svg>
@@ -88,13 +88,13 @@
         <h4 class="text-base font-semibold text-gray-900">Ikuti Naramakna.id di Media Sosial</h4>
         <p class="text-sm text-gray-600 mt-2">Dapatkan update berita terbaru dan konten menarik lainnya</p>
         <div class="flex justify-center items-center gap-5 mt-4 text-gray-600">
-        <a href="#" aria-label="Instagram" class="no-underline hover:text-yellow-450 transition-colors">
+        <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="no-underline hover:text-yellow-450 transition-colors">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
         </a>
-        <a href="#" aria-label="Facebook" class="no-underline hover:text-yellow-450 transition-colors">
+        <a href="https://www.facebook.com/naramakna.id/?_rdr" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="no-underline hover:text-yellow-450 transition-colors">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987H8.078v-2.89h2.36V9.845c0-2.33 1.392-3.617 3.523-3.617 1.021 0 2.09.182 2.09.182v2.297h-1.178c-1.162 0-1.523.72-1.523 1.458v1.75h2.59l-.414 2.89h-2.176v6.987C18.343 21.128 22 16.991 22 12z" fill="currentColor"/></svg>
         </a>
-        <a href="#" aria-label="Twitter" class="no-underline hover:text-yellow-450 transition-colors">
+        <a href="https://x.com/apcomsolutions?s=21" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="no-underline hover:text-yellow-450 transition-colors">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M23 3.5a9.5 9.5 0 01-2.74.75A4.76 4.76 0 0022.4 2a9.43 9.43 0 01-3 1.14A4.74 4.74 0 0016.04 2c-2.63 0-4.76 2.19-4.76 4.88 0 .38.04.76.12 1.12A13.4 13.4 0 013 3.05a4.92 4.92 0 00-.64 2.45 4.9 4.9 0 002.1 4.07 4.64 4.64 0 01-2.16-.62v.06c0 2.41 1.67 4.42 3.88 4.88a4.7 4.7 0 01-2.15.09 4.76 4.76 0 004.44 3.35A9.51 9.51 0 012 19.54 13.35 13.35 0 009.29 22c8.3 0 12.85-7.1 12.85-13.26 0-.2 0-.39-.01-.59A9.3 9.3 0 0023 3.5z" fill="currentColor"/></svg>
         </a>
         <a href="#" aria-label="YouTube" class="no-underline hover:text-yellow-450 transition-colors">

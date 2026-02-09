@@ -62,7 +62,7 @@
             <p class="mt-2 text-white/90 text-sm sm:text-base">Hubungi tim kami, atau kunjungi alamat kantor kami di Bandung</p>
             <div class="mt-4 text-white/90 text-xs">Jl. Sanggar Kencana Utama No. 1C, Sanggar Hurip Estate, Jatisari, Buahbatu, Kota Bandung, Jawa Barat 40286</div>
             <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-                <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                <a href="https://api.whatsapp.com/send/?phone=628979132802&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
@@ -81,7 +81,7 @@
                     </div>
                     <div class="mt-1 text-xs text-white/80 text-center">Kirim email ke tim support kami</div>
                 </a>
-                <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="mt-1 text-xs text-white/80 text-center">DM kami di instagram untuk bantuan</div>
                 </a>
-                <a href="#" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
+                <a href="https://www.facebook.com/naramakna.id/?_rdr" target="_blank" rel="noopener noreferrer" class="no-underline rounded-xl border border-white/80 px-4 py-3 text-white hover:bg-white/10">
                     <div class="flex flex-col items-center gap-2">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>

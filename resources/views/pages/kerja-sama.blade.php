@@ -22,7 +22,7 @@
     </div>
     <p class="text-sm text-gray-600">Kami siap mendiskusikan peluang kolaborasi yang menarik</p>
     <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="#" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-600 shadow hover:opacity-95 transition">
+        <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-600 shadow hover:opacity-95 transition">
             <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <rect x="4" y="4" width="16" height="16" rx="4" stroke="white" stroke-width="2"/>
@@ -31,7 +31,7 @@
             </div>
             <div class="text-sm font-semibold">Instagram</div>
         </a>
-        <a href="#" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-blue-500 to-indigo-600 shadow hover:opacity-95 transition">
+        <a href="https://www.facebook.com/naramakna.id/?_rdr" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-blue-500 to-indigo-600 shadow hover:opacity-95 transition">
             <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/>
@@ -40,7 +40,7 @@
             </div>
             <div class="text-sm font-semibold">Facebook</div>
         </a>
-        <a href="#" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-gray-800 to-gray-900 shadow hover:opacity-95 transition">
+        <a href="https://x.com/apcomsolutions?s=21" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-gray-800 to-gray-900 shadow hover:opacity-95 transition">
             <div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M4 4l7 7-7 9 9-7 7 7-7-9 7-7-9 7-7-7z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
@@ -48,7 +48,7 @@
             </div>
             <div class="text-sm font-semibold">X (Twitter)</div>
         </a>
-        <a href="#" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-green-500 to-emerald-600 shadow hover:opacity-95 transition">
+        <a href="https://api.whatsapp.com/send/?phone=628979132802&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-green-500 to-emerald-600 shadow hover:opacity-95 transition">
             <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/>
@@ -199,7 +199,7 @@
             <h2 class="text-2xl sm:text-3xl font-bold">Siap Memulai Kolaborasi?</h2>
             <p class="mt-2 text-white/90 text-sm sm:text-base">Mari diskusikan ide dan peluang kerja sama yang bisa kita wujudkan bersama</p>
             <div class="mt-6 flex justify-center gap-3">
-                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/80 text-white no-underline hover:bg-white/10">
+                <a href="https://api.whatsapp.com/send/?phone=628979132802&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/80 text-white no-underline hover:bg-white/10">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
                         <path d="M16.5 14.5c-.5-.25-1.5-.75-1.75-.85-.25-.1-.4-.1-.55.1-.15.2-.6.7-.75.85-.15.15-.3.15-.5.05-.2-.1-.85-.3-1.6-.95-.6-.55-1.05-1.23-1.17-1.43-.12-.2-.01-.31.09-.41.1-.1.2-.24.3-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.37-.05-.11-.49-1.16-.67-1.59-.18-.41-.36-.36-.49-.37h-.42c-.15 0-.39.06-.59.26-.2.2-.78.74-.78 1.8 0 1.06.8 2.09.91 2.24.11.15 1.58 2.35 3.83 3.29.54.22.95.36 1.27.46.53.17 1.02.14 1.4.09.43-.06 1.31-.53 1.5-1.04.19-.51.19-.95.13-1.04-.06-.09-.2-.15-.45-.27z" fill="currentColor"/>

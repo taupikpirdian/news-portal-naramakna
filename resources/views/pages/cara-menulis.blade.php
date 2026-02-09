@@ -518,18 +518,18 @@
                     </p>
                     
                     <div class="flex flex-wrap justify-center gap-4">
-                        <button class="inline-flex items-center gap-2 px-6 py-3 bg-white text-orange-600 rounded-lg hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold">
+                        <a href="https://api.whatsapp.com/send/?phone=628979132802&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-orange-600 rounded-lg hover:bg-orange-50 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold no-underline">
                             <i data-lucide="message-circle" class="w-5 h-5"></i>
                             Hubungi Kami
-                        </button>
-                        <button class="inline-flex items-center gap-2 px-6 py-3 bg-transparent text-white border-2 border-white rounded-lg hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold">
+                        </a>
+                        <a href="https://naramakna.id/register" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-transparent text-white border-2 border-white rounded-lg hover:bg-white hover:text-orange-600 shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold no-underline">
                             <i data-lucide="user-plus" class="w-5 h-5"></i>
                             Daftar Sekarang
-                        </button>
-                        <button class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white border-2 border-white/30 rounded-lg hover:bg-white hover:text-orange-600 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold">
+                        </a>
+                        <a href="https://naramakna.id/login" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white border-2 border-white/30 rounded-lg hover:bg-white hover:text-orange-600 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all hover:scale-105 font-semibold no-underline">
                             <i data-lucide="log-in" class="w-5 h-5"></i>
                             Sudah Punya Akun? Login
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
