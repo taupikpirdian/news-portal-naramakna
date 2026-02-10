@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\URL;
 use App\Services\NaramaknaApiService;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(NaramaknaApiService $apiService): void
     {
+        if (config('app.env') !== 'local') {
+            URL::forceScheme('https');
+        }
         View::composer('components.header', function ($view) use ($apiService) {
             $categories = $apiService->getCategories(50, false);
             
