@@ -77,7 +77,7 @@
 <script>
     (function() {
         const slug = '{{ $slug }}';
-        const apiBaseUrl = '{{ secure_url('/api') }}';
+        const apiBaseUrl = '{{ secure_url('/api/v1') }}';
         let limit = 10;
         let totalPages = 1;
         let currentPage = new URLSearchParams(window.location.search).get('page') || 1;

@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Route;
 // home.html
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'home']);
 // API endpoints for category data (AJAX)
-Route::get('/api/categories', [\App\Http\Controllers\HomeController::class, 'getCategories'])->name('api.categories');
-Route::get('/api/category/posts', [\App\Http\Controllers\HomeController::class, 'loadCategoryPosts'])->name('api.category.posts');
+Route::get('/api/v1/categories', [\App\Http\Controllers\HomeController::class, 'getCategories'])->name('api.categories');
+Route::get('/api/v1/category/posts', [\App\Http\Controllers\HomeController::class, 'loadCategoryPosts'])->name('api.category.posts');
 // API endpoint for fetching category posts with pagination
-Route::get('/api/category/{slug}/posts', [\App\Http\Controllers\HomeController::class, 'getCategoryPosts'])->name('api.category.posts.pagination');
-Route::get('/api/feed', [\App\Http\Controllers\HomeController::class, 'getFeedPosts'])->name('api.feed');
+Route::get('/api/v1/category/{slug}/posts', [\App\Http\Controllers\HomeController::class, 'getCategoryPosts'])->name('api.category.posts.pagination');
+Route::get('/api/v1/feed', [\App\Http\Controllers\HomeController::class, 'getFeedPosts'])->name('api.feed');
 // index-berita.html
 Route::get('/kategori/{slug}', [\App\Http\Controllers\HomeController::class, 'category'])->name('category');
 Route::get('/index', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
