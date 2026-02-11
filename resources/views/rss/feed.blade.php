@@ -1,4 +1,4 @@
-{{ '<?xml version="1.0" encoding="UTF-8"?' }}
+@php echo '<?xml version="1.0" encoding="UTF-8"?>'; @endphp
 <rss version="2.0"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -7,7 +7,7 @@
         <title>Naramakna - Cerdas Memaknai</title>
         <description>Naramakna adalah portal berita terpercaya yang menyajikan berita terbaru, artikel mendalam, dan analisis tajam dari berbagai kategori.</description>
         <link>{{ url('/') }}</link>
-        <atom:link href="{{ url('/feed') }}" rel="self" type="application/rss+xml" />
+        <atom:link href="{{ url('/sitemap.rss') }}" rel="self" type="application/rss+xml" />
         <language>id</language>
         <lastBuildDate>{{ \Carbon\Carbon::now()->toRssString() }}</lastBuildDate>
 
@@ -16,7 +16,7 @@
             <title>{{ htmlspecialchars($post['title'] ?? '') }}</title>
             <link>{{ url('/read/' . ($post['slug'] ?? '')) }}</link>
             <description>{{ htmlspecialchars(strip_tags($post['excerpt'] ?? $post['content'] ?? '')) }}</description>
-            <content:encoded><![CDATA[{ $post['content'] ?? '' }]]></content:encoded>
+            <content:encoded><![CDATA[{!! $post['content'] ?? '' !!}]]></content:encoded>
             <category>{{ $post['category']['name'] ?? 'Berita' }}</category>
             <dc:creator>{{ $post['author']['display_name'] ?? 'Redaksi' }}</dc:creator>
             <pubDate>{{ isset($post['published_at']) ? \Carbon\Carbon::parse($post['published_at'])->toRssString() : \Carbon\Carbon::now()->toRssString() }}</pubDate>

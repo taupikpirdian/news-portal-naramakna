@@ -33,6 +33,7 @@ Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'ind
 Route::get('/sitemap-pages.xml', [\App\Http\Controllers\SitemapController::class, 'pages'])->name('sitemap.pages');
 Route::get('/sitemap-posts.xml', [\App\Http\Controllers\SitemapController::class, 'posts'])->name('sitemap.posts');
 Route::get('/sitemap-categories.xml', [\App\Http\Controllers\SitemapController::class, 'categories'])->name('sitemap.categories');
+Route::get('/sitemap.rss', [\App\Http\Controllers\RssController::class, 'index'])->name('sitemap.rss');
 
 // Robots.txt Route
 Route::get('/robots.txt', function () {
@@ -46,4 +47,3 @@ Route::get('/robots.txt', function () {
 
 // RSS Feed Route
 Route::get('/feed', [\App\Http\Controllers\RssController::class, 'index'])->name('rss.feed');
-
