@@ -57,3 +57,17 @@
 
 <!-- RSS Feed -->
 <link rel="alternate" type="application/rss+xml" title="Naramakna - RSS Feed" href="{{ url('/feed') }}">
+
+@php($gaId = config('analytics.measurement_id'))
+@if(!empty($gaId))
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+const __gaId = '{{ $gaId }}';
+gtag('config', __gaId, { anonymize_ip: true });
+const __gaMasked = __gaId.replace(/.(?=.{4})/g, '*');
+console.log('Google Analytics initialized', __gaMasked);
+</script>
+@endif
