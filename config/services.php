@@ -40,4 +40,17 @@ return [
         'cache_ttl' => env('NARAMAKNA_CACHE_TTL', 3600), // 1 hour in seconds
     ],
 
+    'google_ads' => [
+        'customer_id' => env('GOOGLE_ADS_CUSTOMER_ID'),
+        'customer_id_alt' => env('GOOGLE_ADS_CUSTOMER_ID_ALT'),
+        'client_id' => env('GOOGLE_ADS_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_ADS_CLIENT_SECRET'),
+        'refresh_token' => env('GOOGLE_ADS_REFRESH_TOKEN'),
+        'developer_token' => env('GOOGLE_ADS_DEVELOPER_TOKEN'),
+        'sync_token' => env('GOOGLE_ADS_SYNC_TOKEN'),
+        'api_version' => env('GOOGLE_ADS_API_VERSION', 'v21'),
+        'environment' => env('GOOGLE_ADS_ENVIRONMENT', 'production'),
+        'auto_sync' => env('GOOGLE_ADS_AUTO_SYNC', true),
+    ],
+
 ];

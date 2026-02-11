@@ -246,6 +246,13 @@
 </section>
 @endif
 
+{{-- In-Article Ad between Instagram and Categories --}}
+@if(config('ads.enabled'))
+<div class="mb-12">
+    <x-google-ads type="in_article" />
+</div>
+@endif
+
 {{-- List Berita Berdasarkan Kategori --}}
 {{-- All categories will be loaded via AJAX --}}
 <div id="categories-container">
@@ -519,7 +526,27 @@
         const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
         if (adsEnabled && (index + 1) % 2 === 0) {
             html += `
-                <div class="bg-blue-100 border border-blue-300 rounded-lg py-6 text-center text-blue-800 text-sm font-medium my-8">AdSense</div>
+                <div class="my-8">
+                    <div class="google-ads-container google-ads-leaderboard" id="google-ad-${index}">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-lg py-6 text-center">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="text-sm font-semibold text-blue-800">Advertisement</span>
+                                </div>
+                                <div class="mt-3 flex justify-center">
+                                    <div class="bg-white rounded shadow-sm border border-gray-200 px-8 py-3">
+                                        <p class="text-xs text-gray-500 mb-1">Sponsored Content</p>
+                                        <p class="text-sm font-medium text-gray-800">In-Article Ad</p>
+                                        <p class="text-xs text-gray-600 mt-1">Your ad could be here</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `;
         }
 

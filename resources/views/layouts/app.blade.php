@@ -66,10 +66,12 @@
     </div> --}}
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Leaderboard Ad --}}
         @if(config('ads.enabled'))
         <div class="mt-6">
-            <div class="bg-blue-100 border border-blue-300 rounded-lg py-8 text-center text-blue-800 text-sm font-medium mb-8">Google Ads</div>
+            <x-google-ads type="leaderboard" />
         </div>
+        <br>
         @else
         <br>
         @endif
