@@ -127,6 +127,32 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'request_log' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/request.log'),
+            'level' => 'debug',
+            'days' => env('LOG_REQUEST_DAYS', 30),
+            'replace_placeholders' => true,
+            'formatter' => \App\Logging\JsonFormatter::class,
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Skip Paths from Logging
+    |--------------------------------------------------------------------------
+    |
+    | Paths that should be skipped from request logging
+    |
+    */
+
+    'skip_paths' => [
+        'health',
+        'api/health',
+        'metrics',
+        '_debugbar',
+        'telescope',
     ],
 
 ];
