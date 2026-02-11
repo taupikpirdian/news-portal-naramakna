@@ -12,7 +12,7 @@ Route::get('/api/v1/category/{slug}/posts', [\App\Http\Controllers\HomeControlle
 Route::get('/api/v1/feed', [\App\Http\Controllers\HomeController::class, 'getFeedPosts'])->name('api.feed');
 // index-berita.html
 Route::get('/kategori/{slug}', [\App\Http\Controllers\HomeController::class, 'category'])->name('category');
-Route::get('/index', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/index-naramakna', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 // artikel.html
 Route::get('/read/{slug}', [\App\Http\Controllers\HomeController::class, 'detail'])->name('detail');
 // bantu.html
