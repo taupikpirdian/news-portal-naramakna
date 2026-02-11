@@ -100,7 +100,7 @@ class NaramaknaApiService
      */
     public function getPostBySlug(string $slug): ?array
     {
-        return Cache::remember("read.{$slug}", $this->cacheTtl, function () use ($slug) {
+        return Cache::remember("artikel.{$slug}", $this->cacheTtl, function () use ($slug) {
             $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/posts/slug/{$slug}");
 
             if ($response->successful()) {
@@ -290,7 +290,8 @@ class NaramaknaApiService
             ]);
 
             return $response->successful();
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             // Silently fail to not disrupt user experience
             return false;
         }

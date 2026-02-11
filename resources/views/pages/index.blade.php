@@ -14,19 +14,27 @@
                 <a href="{{ route('detail', ['slug' => $firstPost['slug']]) }}" class="group block no-underline">
                     <div class="relative rounded-2xl overflow-hidden">
                         @php
-                            $featuredImage = is_array($firstPost['featured_image'] ?? null)
-                                ? ($firstPost['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop')
-                                : ($firstPost['featured_image'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop');
+                        $featuredImage = is_array($firstPost['featured_image'] ?? null)
+                        ? ($firstPost['featured_image']['url'] ??
+                        'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop')
+                        : ($firstPost['featured_image'] ??
+                        'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop');
                         @endphp
-                        <img src="{{ $featuredImage }}" alt="{{ $firstPost['title'] }}" class="w-full h-[320px] sm:h-[380px] object-cover">
+                        <img src="{{ $featuredImage }}" alt="{{ $firstPost['title'] }}"
+                            class="w-full h-[320px] sm:h-[380px] object-cover">
                         @if(!empty($firstPost['categories']))
-                        <span class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">{{ $firstPost['categories'][0]['name'] ?? 'Berita' }}</span>
+                        <span
+                            class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">{{
+                            $firstPost['categories'][0]['name'] ?? 'Berita' }}</span>
                         @endif
                     </div>
-                    <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mt-4 leading-tight group-hover:text-yellow-450">{{ $firstPost['title'] }}</h3>
+                    <h3
+                        class="text-2xl sm:text-3xl font-bold text-gray-900 mt-4 leading-tight group-hover:text-yellow-450">
+                        {{ $firstPost['title'] }}</h3>
                     <div class="text-sm text-gray-600 line-clamp-2 mt-1">{{ $firstPost['excerpt'] }}</div>
                     <div class="flex gap-3 items-center text-gray-600 text-sm mt-2">
-                        <span>{{ $firstPost['author']['display_name'] ?? $firstPost['author_name'] ?? 'Redaksi' }}</span>
+                        <span>{{ $firstPost['author']['display_name'] ?? $firstPost['author_name'] ?? 'Redaksi'
+                            }}</span>
                         <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
                         <span>{{ \Carbon\Carbon::parse($firstPost['date'])->format('d/m, H.i') }}</span>
                     </div>
@@ -80,8 +88,8 @@
 
 @push('scripts')
 <script>
-    (function() {
-        const apiBaseUrl = '{{ secure_url('/api/v1') }}';
+    (function () {
+        const apiBaseUrl = '{{ secure_url(' / api / v1') }}';
         const slug = '{{ $slug ?? '' }}';
         let limit = 12;
         let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
@@ -166,7 +174,7 @@
                 }
 
                 html += `
-                    <a href="{{ secure_url('/read') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+                    <a href="{{ secure_url('/artikel') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
@@ -280,7 +288,7 @@
                 }
 
                 html += `
-                    <a href="{{ secure_url('/read') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
+                    <a href="{{ secure_url('/artikel') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
@@ -294,7 +302,7 @@
 
             container.innerHTML = html;
         }
-        
+
         async function loadPosts(page) {
             const container = document.getElementById('posts-container');
             container.innerHTML = '<div class="p-8 text-center"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-450"></div><p class="text-gray-500 mt-2">Memuat berita...</p></div>';
@@ -334,7 +342,7 @@
 
         // Image error handling
         const FALLBACK_IMG = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="100%" height="100%" fill="%23e5e7eb"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-family="sans-serif" font-size="24">Image unavailable</text></svg>';
-        document.addEventListener('error', function(e) {
+        document.addEventListener('error', function (e) {
             if (e.target.tagName.toLowerCase() === 'img') {
                 e.target.src = FALLBACK_IMG;
             }

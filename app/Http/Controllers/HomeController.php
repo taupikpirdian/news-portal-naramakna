@@ -224,8 +224,8 @@ class HomeController extends Controller
             'og_title' => $postTitle,
             'og_description' => $postExcerpt,
             'og_image' => $postImage,
-            'og_url' => url('/read/' . $slug),
-            'canonical' => url('/read/' . $slug),
+            'og_url' => url('/artikel/' . $slug),
+            'canonical' => url('/artikel/' . $slug),
             'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
             'article' => true,
             'article_published_time' => $post['published_at'] ?? now(),
@@ -344,7 +344,8 @@ class HomeController extends Controller
             if (!empty($matches[1])) {
                 foreach ($matches[1] as $index => $item) {
                     // Skip the first item as it's the title "Solusi komprehensif..."
-                    if ($index === 0) continue;
+                    if ($index === 0)
+                        continue;
 
                     // Extract title from <strong> tag
                     preg_match('/<strong[^>]*>(.*?)<\/strong>/is', $item, $titleMatch);

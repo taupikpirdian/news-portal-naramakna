@@ -13,12 +13,17 @@
                 @if($firstPost)
                 <a href="{{ route('detail', ['slug' => $firstPost['slug']]) }}" class="group block no-underline">
                     <div class="relative rounded-2xl overflow-hidden">
-                        <img src="{{ $firstPost['featured_image'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop' }}" alt="{{ $firstPost['title'] }}" class="w-full h-[320px] sm:h-[380px] object-cover">
+                        <img src="{{ $firstPost['featured_image'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop' }}"
+                            alt="{{ $firstPost['title'] }}" class="w-full h-[320px] sm:h-[380px] object-cover">
                         @if($category)
-                        <span class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">{{ $category['name'] ?? $slug }}</span>
+                        <span
+                            class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">{{
+                            $category['name'] ?? $slug }}</span>
                         @endif
                     </div>
-                    <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mt-4 leading-tight group-hover:text-yellow-450">{{ $firstPost['title'] }}</h3>
+                    <h3
+                        class="text-2xl sm:text-3xl font-bold text-gray-900 mt-4 leading-tight group-hover:text-yellow-450">
+                        {{ $firstPost['title'] }}</h3>
                     <div class="text-sm text-gray-600 line-clamp-2 mt-1">{{ $firstPost['excerpt'] }}</div>
                     <div class="flex gap-3 items-center text-gray-600 text-sm mt-2">
                         <span>{{ $firstPost['author_name'] }}</span>
@@ -75,9 +80,9 @@
 
 @push('scripts')
 <script>
-    (function() {
+    (function () {
         const slug = '{{ $slug }}';
-        const apiBaseUrl = '{{ secure_url('/api/v1') }}';
+        const apiBaseUrl = '{{ secure_url(' / api / v1') }}';
         let limit = 10;
         let totalPages = 1;
         let currentPage = new URLSearchParams(window.location.search).get('page') || 1;

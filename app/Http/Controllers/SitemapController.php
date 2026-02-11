@@ -93,10 +93,10 @@ class SitemapController extends Controller
             $postUrls = [];
             foreach ($posts as $post) {
                 $postUrls[] = [
-                    'url' => url('/read/' . ($post['slug'] ?? '')),
+                    'url' => url('/artikel/' . ($post['slug'] ?? '')),
                     'lastmod' => isset($post['modified_at'])
-                        ? Carbon::parse($post['modified_at'])->toAtomString()
-                        : (isset($post['created_at']) ? Carbon::parse($post['created_at'])->toAtomString() : Carbon::now()->toAtomString()),
+                    ?Carbon::parse($post['modified_at'])->toAtomString()
+                    : (isset($post['created_at']) ?Carbon::parse($post['created_at'])->toAtomString() : Carbon::now()->toAtomString()),
                     'changefreq' => 'weekly',
                     'priority' => '0.8',
                 ];
@@ -105,7 +105,8 @@ class SitemapController extends Controller
             return response()->view('sitemap.posts', [
                 'posts' => $postUrls,
             ])->header('Content-Type', 'text/xml');
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             // Return empty sitemap on error
             return response()->view('sitemap.posts', [
                 'posts' => [],
@@ -134,7 +135,8 @@ class SitemapController extends Controller
             return response()->view('sitemap.categories', [
                 'categories' => $categoryUrls,
             ])->header('Content-Type', 'text/xml');
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             // Return empty sitemap on error
             return response()->view('sitemap.categories', [
                 'categories' => [],
