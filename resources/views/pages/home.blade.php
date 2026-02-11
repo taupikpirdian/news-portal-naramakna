@@ -494,7 +494,7 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
-        const readUrl = '{{ secure_url(' / artikel') }}';
+        const readUrl = '{{ secure_url('/artikel') }}';
         const categoryUrl = '{{ secure_url(' / kategori') }}';
 
         let html = `
@@ -836,22 +836,21 @@
     const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
     const featuredLinkEl = document.getElementById('featuredLink');
-    const readUrl = '{{ secure_url(' / artikel') }}';
+    const readUrl = '{{ secure_url('/artikel') }}';
 
     // Store post data from server-side rendered slides
-    const featuredData = @if (isset($featuredPosts) && count($featuredPosts) > 0) {
-        !!json_encode(collect($featuredPosts) -> map(function ($post) {
+    const featuredData = @if (isset($featuredPosts) && count($featuredPosts) > 0)
+        {!! json_encode(collect($featuredPosts)->map(function ($post) {
             return [
                 'title' => $post['title'] ?? '',
                 'author' => $post['author']['display_name'] ?? 'Redaksi',
-                'date' => $post['date'] ?\Carbon\Carbon:: parse($post['date']) -> format('d/m, H.i') : '',
+                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '',
                 'channel' => $post['metadata']['_channel'] ?? 'Artikel',
                 'slug' => $post['slug'] ?? ''
             ];
-        }) -> values() -> toArray())!!
-    }
+        })->values()->toArray()) !!}
     @else
-    []
+        []
     @endif;
 
     const featuredTotal = featuredData.length;

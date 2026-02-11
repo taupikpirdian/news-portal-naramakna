@@ -212,8 +212,8 @@
 
 <script type="application/ld+json">
 {
-  "@@context": "https://schema.org",
-  "@@type": "Article",
+  "@context": "https://schema.org",
+  "@type": "Article",
   "headline": "{{ $post['title'] }}",
   "image": [
     "{{ $imageUrl }}"
@@ -221,7 +221,7 @@
   "datePublished": "{{ $date->toIso8601String() }}",
   "dateModified": "{{ $date->toIso8601String() }}",
   "author": [{
-      "@@type": "Person",
+      "@type": "Person",
       "name": "{{ $authorName }}"
     }]
 }
