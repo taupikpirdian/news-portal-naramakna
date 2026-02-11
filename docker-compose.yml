@@ -8,6 +8,7 @@ services:
     working_dir: /var/www
     volumes:
       - app_storage:/var/www/storage
+      - ./storage/logs:/var/www/storage/logs
       - app_bootstrap:/var/www/bootstrap/cache
       - app_build:/var/www/public/build
     ports:
