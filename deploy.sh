@@ -2,17 +2,14 @@
 
 echo "🚀 Starting deployment..."
 
-# Stop containers
-echo "⏹️  Stopping containers..."
-docker-compose down
+# Build image dulu (app masih jalan)
 
-# Rebuild image
 echo "🔨 Rebuilding Docker image..."
-docker-compose build --no-cache
+docker compose build
 
-# Start containers
-echo "▶️  Starting containers..."
-docker-compose up -d
+# Recreate container tanpa mematikan service lain
+
+echo "▶️  Restarting containers..."
+docker compose up -d --no-deps --build
 
 echo "✅ Deployment complete!"
-echo "🌐 App URL: http://localhost:8002"
