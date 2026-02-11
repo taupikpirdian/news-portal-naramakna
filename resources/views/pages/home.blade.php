@@ -491,13 +491,13 @@
 
         html += `
                     <div class="lg:col-span-7">
-                        <div class="grid grid-cols-2 gap-3">
         `;
+        let items = '';
 
         otherPosts.forEach(post => {
             const date = post.date ? new Date(post.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
 
-            html += `
+            items += `
                             <a href="${readUrl}/${post.slug}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                                 <img src="${post.featured_image?.url || 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=200&h=200&fit=crop'}"
                                      alt="${post.title}"
@@ -516,6 +516,11 @@
         });
 
         html += `
+                        <div class="sm:hidden space-y-2">
+                            ${items}
+                        </div>
+                        <div class="hidden sm:grid grid-cols-2 gap-3">
+                            ${items}
                         </div>
                     </div>
                 </div>
