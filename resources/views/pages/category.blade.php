@@ -82,7 +82,8 @@
 <script>
     (function () {
         const slug = '{{ $slug }}';
-        const apiBaseUrl = '{{ secure_url(' / api / v1') }}';
+        // Use relative path to avoid protocol mismatch issues
+        const apiBaseUrl = '/api/v1';
         let limit = 10;
         let totalPages = 1;
         let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
@@ -90,8 +91,12 @@
         // Function to fetch category posts
         async function fetchCategoryPosts(page = 1) {
             const offset = (page - 1) * limit;
+            const url = `${apiBaseUrl}/category/${slug}/posts?limit=${limit}&offset=${offset}`;
+            console.log('Fetching posts from:', url);
             try {
-                const response = await fetch(`${apiBaseUrl}/category/${slug}/posts?limit=${limit}&offset=${offset}`);
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers.get('content-type'));
                 const result = await response.json();
 
                 if (result.success && result.data) {
