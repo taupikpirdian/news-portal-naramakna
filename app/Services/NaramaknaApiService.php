@@ -100,17 +100,14 @@ class NaramaknaApiService
      */
     public function getPostBySlug(string $slug): ?array
     {
-        return Cache::remember("artikel.{$slug}", $this->cacheTtl, function () use ($slug) {
-            $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/posts/slug/{$slug}");
+        $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/posts/slug/{$slug}");
+        if ($response->successful()) {
+            $data = $response->json();
+            // The API response for single post might be direct object or wrapped in data
+            return $data['data'] ?? $data;
+        }
 
-            if ($response->successful()) {
-                $data = $response->json();
-                // The API response for single post might be direct object or wrapped in data
-                return $data['data'] ?? $data;
-            }
-
-            return null;
-        });
+        return null;
     }
 
     /**
