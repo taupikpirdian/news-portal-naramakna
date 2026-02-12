@@ -36,7 +36,7 @@
                         <span>{{ $firstPost['author']['display_name'] ?? $firstPost['author_name'] ?? 'Redaksi'
                             }}</span>
                         <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                        <span>{{ \Carbon\Carbon::parse($firstPost['date'])->format('d/m, H.i') }}</span>
+                        <span>{{ \Carbon\Carbon::parse($firstPost['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') }}</span>
                     </div>
                 </a>
                 @else
@@ -157,7 +157,7 @@
 
             let html = '';
             posts.forEach((post) => {
-                const date = new Date(post.date);
+                const date = new Date(post.date + '+07:00');
                 const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}, ${date.getHours().toString().padStart(2, '0')}.${date.getMinutes().toString().padStart(2, '0')}`;
 
                 // Get author name - handle both old and new API response formats
@@ -272,7 +272,7 @@
 
             let html = '';
             posts.slice(0, 3).forEach(post => {
-                const date = new Date(post.date);
+                const date = new Date(post.date + '+07:00');
                 const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}, ${date.getHours().toString().padStart(2, '0')}.${date.getMinutes().toString().padStart(2, '0')}`;
 
                 // Get author name - handle both old and new API response formats

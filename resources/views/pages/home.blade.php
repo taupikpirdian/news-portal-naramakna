@@ -79,7 +79,7 @@
                             <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
                                 <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
                                 <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : ''
+                                <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : ''
                                     }}</span>
                             </div>
                         </div>
@@ -516,7 +516,7 @@
             const excerpt = firstPost.excerpt ?
                 firstPost.excerpt.substring(0, 100) + '...' :
                 (firstPost.content ? firstPost.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : '');
-            const date = firstPost.date ? new Date(firstPost.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+            const date = firstPost.date ? new Date(firstPost.date + '+07:00').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }) : '';
 
             html += `
                     <a href="${readUrl}/${firstPost.slug}" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
@@ -544,7 +544,7 @@
         `;
 
         otherPosts.forEach(post => {
-            const date = post.date ? new Date(post.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+            const date = post.date ? new Date(post.date + '+07:00').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }) : '';
 
             html += `
                             <a href="${readUrl}/${post.slug}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
@@ -844,7 +844,7 @@
             return [
                 'title' => $post['title'] ?? '',
                 'author' => $post['author']['display_name'] ?? 'Redaksi',
-                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '',
+                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '',
                 'channel' => $post['metadata']['_channel'] ?? 'Artikel',
                 'slug' => $post['slug'] ?? ''
             ];

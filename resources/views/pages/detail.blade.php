@@ -11,7 +11,7 @@ $imageUrl = $post['featured_image'];
 }
 
 $authorName = $post['author']['display_name'] ?? 'Redaksi';
-$date = isset($post['date']) ? \Carbon\Carbon::parse($post['date']) : now();
+$date = isset($post['date']) ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta') : now()->setTimezone('Asia/Jakarta');
 $category = $post['categories'][0]['name'] ?? 'Artikel';
 $categorySlug = $post['categories'][0]['slug'] ?? 'artikel';
 $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? Str::limit(strip_tags($post['content']),
@@ -155,7 +155,7 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
                 $lImg = $lPost['featured_image'];
                 }
                 }
-                $lDate = isset($lPost['date']) ? \Carbon\Carbon::parse($lPost['date']) : now();
+                $lDate = isset($lPost['date']) ? \Carbon\Carbon::parse($lPost['date'])->setTimezone('Asia/Jakarta') : now()->setTimezone('Asia/Jakarta');
                 $lAuthor = $lPost['author']['display_name'] ?? 'Redaksi';
                 $lSlug = $lPost['slug'] ?? '#';
                 @endphp
@@ -194,7 +194,7 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
         $rImg = $rPost['featured_image'];
         }
         }
-        $rDate = isset($rPost['date']) ? \Carbon\Carbon::parse($rPost['date']) : now();
+        $rDate = isset($rPost['date']) ? \Carbon\Carbon::parse($rPost['date'])->setTimezone('Asia/Jakarta') : now()->setTimezone('Asia/Jakarta');
         $rAuthor = $rPost['author']['display_name'] ?? 'Redaksi';
         $rCategory = $rPost['categories'][0]['name'] ?? 'Artikel';
         $rSlug = $rPost['slug'] ?? '#';
