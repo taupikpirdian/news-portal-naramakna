@@ -75,7 +75,7 @@ class HomeController extends Controller
     public function getCategories(Request $request)
     {
         $limit = $request->query('limit', 50);
-        $mainCategoriesOnly = $request->query('mainCategoriesOnly', true);
+        $mainCategoriesOnly = true;
 
         $categories = $this->apiService->getCategories((int)$limit, filter_var($mainCategoriesOnly, FILTER_VALIDATE_BOOLEAN));
 

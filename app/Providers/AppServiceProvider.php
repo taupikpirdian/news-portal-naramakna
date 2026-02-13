@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('components.header', function ($view) {
             $apiService = app(NaramaknaApiService::class);
             $imageService = app(\App\Services\ImageBase64Service::class);
-            $categories = $apiService->getCategories(50, false);
+            $categories = $apiService->getCategories(50, true);
             
             // Filter unique categories by slug and prioritize nicely formatted names
             $uniqueCategories = collect($categories)
@@ -49,8 +49,8 @@ class AppServiceProvider extends ServiceProvider
                 ->values();
 
             // Split categories: first 9 for main nav, rest for sub nav (max 10)
-            $mainCategories = $uniqueCategories->take(9);
-            $subCategories = $uniqueCategories->slice(9)->take(9)->values();
+            $mainCategories = $uniqueCategories->take(7);
+            $subCategories = $uniqueCategories->slice(7)->take(6)->values();
 
             $view->with('headerCategories', $mainCategories);
             $view->with('subHeaderCategories', $subCategories);
@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('components.sidebar', function ($view) {
             $apiService = app(NaramaknaApiService::class);
-            $categories = $apiService->getCategories(50, false);
+            $categories = $apiService->getCategories(50, true);
             
             $uniqueCategories = collect($categories)
                 ->sortByDesc(function ($category) {

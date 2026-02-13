@@ -23,12 +23,12 @@ class NaramaknaApiService
      * @param bool $mainCategoriesOnly
      * @return array
      */
-    public function getCategories(int $limit = 50, bool $mainCategoriesOnly = true): array
+    public function getCategories(int $limit = 100, bool $mainCategoriesOnly = true): array
     {
         return Cache::remember("categories", $this->cacheTtl, function () use ($limit, $mainCategoriesOnly) {
-            $response = Http::timeout(10)->get("{$this->baseUrl}/api/content/categories", [
+            $response = Http::timeout(10)->get("{$this->baseUrl}/api/terms/categories", [
                 'limit' => $limit,
-                'mainCategoriesOnly' => $mainCategoriesOnly,
+                'page' => 1,
             ]);
 
             if ($response->successful()) {
