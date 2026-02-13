@@ -1,9 +1,11 @@
 <header class="bg-white border-b border-gray-200 sticky top-0 z-[1000]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 py-4 flex-wrap">
-            <a href="/" class="text-2xl font-bold no-underline">
-                <div><span class="text-gray-800">nara</span><span class="text-yellow-450">makna</span></div>
-                <div class="text-xs text-gray-500 tracking-wider">Cerdas Memaknai</div>
+            <a href="{{ url('/') }}" class="no-underline flex items-center">
+                <picture>
+                    <source media="(min-width: 768px)" srcset="{{ asset('assets/images/logo/web-naramakna-logo.png') }}">
+                    <img src="{{ asset('assets/images/logo/mobile-naramakna-logo.png') }}" alt="Naramakna" class="h-8 w-auto">
+                </picture>
             </a>
             <div class="flex items-center gap-3 flex-1 max-w-[600px] w-full order-3 lg:order-2">
                 <div class="relative flex-1">

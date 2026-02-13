@@ -88,6 +88,29 @@
         let totalPages = 1;
         let currentPage = new URLSearchParams(window.location.search).get('page') || 1;
 
+        function formatJakartaDateDisplay(input) {
+            if (!input) return '';
+            try {
+                let d;
+                if (typeof input === 'number') {
+                    d = new Date(input);
+                } else {
+                    let s = String(input).trim();
+                    if (/Z|[+-]\d{2}:\d{2}$/.test(s)) {
+                        d = new Date(s);
+                    } else {
+                        s = s.replace(' ', 'T');
+                        d = new Date(s + 'Z');
+                    }
+                }
+                const datePart = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Jakarta' }).format(d);
+                const timePart = new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jakarta' }).format(d).replace(':', '.');
+                return `${datePart}, ${timePart}`;
+            } catch (e) {
+                return '';
+            }
+        }
+
         // Function to fetch category posts
         async function fetchCategoryPosts(page = 1) {
             const offset = (page - 1) * limit;
@@ -147,8 +170,7 @@
 
             let html = '';
             posts.forEach((post) => {
-                const date = new Date(post.date + '+07:00');
-                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}, ${date.getHours().toString().padStart(2, '0')}.${date.getMinutes().toString().padStart(2, '0')}`;
+                const formattedDate = formatJakartaDateDisplay(post.date);
 
                 // Get author name - handle both old and new API response formats
                 const authorName = post.author?.display_name || post.author_name || 'Admin';
@@ -163,7 +185,7 @@
                 }
 
                 html += `
-                    <a href="{{ secure_url('/read') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
+                    <a href="{{ url('/artikel') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
@@ -236,7 +258,7 @@
 
             let html = '';
             categories.forEach(cat => {
-                html += `<a href="{{ secure_url('/kategori') }}/${cat.slug}" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline ${cat.slug === slug ? 'bg-yellow-450 text-white' : 'bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700'}">${cat.name}</a>`;
+                html += `<a href="{{ url('/kategori') }}/${cat.slug}" class="px-3 py-1.5 text-xs font-medium rounded-full no-underline ${cat.slug === slug ? 'bg-yellow-450 text-white' : 'bg-gray-100 text-gray-700 hover:bg-yellow-50 hover:text-yellow-700'}">${cat.name}</a>`;
             });
 
             container.innerHTML = html;
@@ -252,8 +274,7 @@
 
             let html = '';
             posts.slice(0, 2).forEach(post => {
-                const date = new Date(post.date + '+07:00');
-                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}, ${date.getHours().toString().padStart(2, '0')}.${date.getMinutes().toString().padStart(2, '0')}`;
+                const formattedDate = formatJakartaDateDisplay(post.date);
 
                 // Get author name - handle both old and new API response formats
                 const authorName = post.author?.display_name || post.author_name || 'Admin';
@@ -268,7 +289,7 @@
                 }
 
                 html += `
-                    <a href="{{ secure_url('/read') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
+                    <a href="{{ url('/artikel') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
                         <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>

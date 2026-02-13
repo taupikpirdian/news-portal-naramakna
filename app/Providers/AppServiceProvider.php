@@ -20,12 +20,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(NaramaknaApiService $apiService): void
+    public function boot(): void
     {
-        if (config('app.env') !== 'local') {
+        if (config('app.env') === 'local') {
+            URL::forceScheme('http');
+        } else {
             URL::forceScheme('https');
         }
-        View::composer('components.header', function ($view) use ($apiService) {
+        View::composer('components.header', function ($view) {
+            $apiService = app(NaramaknaApiService::class);
             $categories = $apiService->getCategories(50, false);
             
             // Filter unique categories by slug and prioritize nicely formatted names
@@ -52,7 +55,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('subHeaderCategories', $subCategories);
         });
 
-        View::composer('components.sidebar', function ($view) use ($apiService) {
+        View::composer('components.sidebar', function ($view) {
+            $apiService = app(NaramaknaApiService::class);
             $categories = $apiService->getCategories(50, false);
             
             $uniqueCategories = collect($categories)

@@ -17,7 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Trust proxies to detect HTTPS behind load balancer
-        $middleware->trustProxies(at: '*');
+        // Only trust HTTPS headers in production, not local
+        if (env('APP_ENV') !== 'local') {
+            $middleware->trustProxies(at: '*');
+        }
 
         // Register request logging middleware globally
         $middleware->append(\App\Http\Middleware\LogRequestMiddleware::class);

@@ -8,7 +8,7 @@
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
             <h2>Artikel Terbaru</h2>
         </div>
-        <a href="{{ url('/index') }}"
+        <a href="{{ route('index') }}"
             class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
             Lihat lainnya
             <span>›</span>
@@ -460,6 +460,27 @@
     let isLoading = false;
     const categoriesPerBatch = 2; // Load first 2 categories immediately
 
+    function formatJakartaDate(input) {
+        if (!input) return '';
+        try {
+            let d;
+            if (typeof input === 'number') {
+                d = new Date(input);
+            } else {
+                let s = String(input).trim();
+                if (/Z|[+-]\d{2}:\d{2}$/.test(s)) {
+                    d = new Date(s);
+                } else {
+                    s = s.replace(' ', 'T');
+                    d = new Date(s + 'Z');
+                }
+            }
+            return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }).format(d);
+        } catch (e) {
+            return '';
+        }
+    }
+
     // Function to fetch all categories
     async function fetchCategories() {
         try {
@@ -494,8 +515,8 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
-        const readUrl = '{{ secure_url('/artikel') }}';
-        const categoryUrl = '{{ secure_url(' / kategori') }}';
+        const readUrl = '{{ url('/artikel') }}';
+        const categoryUrl = '{{ url('/kategori') }}';
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -516,7 +537,7 @@
             const excerpt = firstPost.excerpt ?
                 firstPost.excerpt.substring(0, 100) + '...' :
                 (firstPost.content ? firstPost.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : '');
-            const date = firstPost.date ? new Date(firstPost.date + '+07:00').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }) : '';
+            const date = formatJakartaDate(firstPost.date);
 
             html += `
                     <a href="${readUrl}/${firstPost.slug}" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
@@ -544,7 +565,7 @@
         `;
 
         otherPosts.forEach(post => {
-            const date = post.date ? new Date(post.date + '+07:00').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }) : '';
+            const date = formatJakartaDate(post.date);
 
             html += `
                             <a href="${readUrl}/${post.slug}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
@@ -836,7 +857,7 @@
     const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
     const featuredLinkEl = document.getElementById('featuredLink');
-    const readUrl = '{{ secure_url('/artikel') }}';
+    const readUrl = '{{ url('/artikel') }}';
 
     // Store post data from server-side rendered slides
     const featuredData = @if (isset($featuredPosts) && count($featuredPosts) > 0)
