@@ -77,5 +77,10 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('sidebarCategories', $uniqueCategories);
         });
+
+        View::composer('components.footer', function ($view) {
+            $imageService = app(\App\Services\ImageBase64Service::class);
+            $view->with('footerLogoBase64', $imageService->encodeAsset('assets/images/logo/web-mobile-footer-naramakna-logo.png') ?? asset('assets/images/logo/web-mobile-footer-naramakna-logo.png'));
+        });
     }
 }
