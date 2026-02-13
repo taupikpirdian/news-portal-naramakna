@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         }
         View::composer('components.header', function ($view) {
             $apiService = app(NaramaknaApiService::class);
+            $imageService = app(\App\Services\ImageBase64Service::class);
             $categories = $apiService->getCategories(50, false);
             
             // Filter unique categories by slug and prioritize nicely formatted names
@@ -53,6 +54,8 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('headerCategories', $mainCategories);
             $view->with('subHeaderCategories', $subCategories);
+            $view->with('logoWebBase64', $imageService->encodeAsset('assets/images/logo/web-naramakna-logo.png') ?? asset('assets/images/logo/web-naramakna-logo.png'));
+            $view->with('logoMobileBase64', $imageService->encodeAsset('assets/images/logo/mobile-naramakna-logo.png') ?? asset('assets/images/logo/mobile-naramakna-logo.png'));
         });
 
         View::composer('components.sidebar', function ($view) {
