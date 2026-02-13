@@ -8,78 +8,87 @@
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
             <h2>Artikel Terbaru</h2>
         </div>
-        <a href="{{ url('/index') }}" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
+        <a href="{{ route('index') }}"
+            class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
             Lihat lainnya
             <span>›</span>
         </a>
     </div>
 
     @if(isset($latestPosts) && count($latestPosts) > 0)
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {{-- Featured Slider (left side - 2 columns) --}}
-            <div class="lg:col-span-2">
-                <div class="relative rounded-2xl overflow-hidden bg-white">
-                    <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease" id="featuredSliderContainer">
-                        @if(isset($featuredPosts) && count($featuredPosts) > 0)
-                            @foreach($featuredPosts as $index => $post)
-                                <div class="min-w-full h-full relative" data-index="{{ $index }}">
-                                    <a href="{{ url('/read') }}/{{ $post['slug'] }}" class="block h-full">
-                                        <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
-                                            alt="{{ $post['title'] }}"
-                                            class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
-                                    </a>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                    <span id="featuredChannel" class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
-                        {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
-                    </span>
-                    <button class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                        <span onclick="featuredPrev()">‹</span>
-                    </button>
-                    <button class="absolute top-1/2 -translate-y-1/2 right-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                        <span onclick="featuredNext()">›</span>
-                    </button>
-                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
-                    <div class="absolute left-4 right-4 bottom-16 text-white z-10">
-                        <a href="" id="featuredLink" class="no-underline">
-                            <h3 id="featuredTitle" class="text-xl sm:text-2xl font-bold hover:text-yellow-450 transition-colors"></h3>
-                            <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
-                                <span id="featuredAuthor"></span>
-                                <span class="w-2 h-2 bg-white/50 rounded-full"></span>
-                                <span id="featuredDate"></span>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {{-- Featured Slider (left side - 2 columns) --}}
+        <div class="lg:col-span-2">
+            <div class="relative rounded-2xl overflow-hidden bg-white">
+                <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease"
+                    id="featuredSliderContainer">
+                    @if(isset($featuredPosts) && count($featuredPosts) > 0)
+                    @foreach($featuredPosts as $index => $post)
+                    <div class="min-w-full h-full relative" data-index="{{ $index }}">
+                        <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="block h-full">
+                            <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
+                                alt="{{ $post['title'] }}" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none">
                             </div>
                         </a>
                     </div>
+                    @endforeach
+                    @endif
                 </div>
-            </div>
-
-            {{-- Latest Posts List (right side - 1 column) --}}
-            <div>
-                <div>
-                    <h4 class="text-base font-semibold text-gray-900 mb-4">Terbaru</h4>
-                    <div class="space-y-2">
-                        @foreach($latestPosts as $post)
-                            <a href="{{ url('/read') }}/{{ $post['slug'] }}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
-                                <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
-                                     alt="{{ $post['title'] }}"
-                                     class="w-20 h-20 object-cover rounded-lg">
-                                <div class="flex-1">
-                                    <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title'] }}</div>
-                                    <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                        <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
-                                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                        <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '' }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
+                <span id="featuredChannel"
+                    class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
+                    {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
+                </span>
+                <button
+                    class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
+                    <span onclick="featuredPrev()">‹</span>
+                </button>
+                <button
+                    class="absolute top-1/2 -translate-y-1/2 right-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
+                    <span onclick="featuredNext()">›</span>
+                </button>
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
+                <div class="absolute left-4 right-4 bottom-16 text-white z-10">
+                    <a href="" id="featuredLink" class="no-underline">
+                        <h3 id="featuredTitle"
+                            class="text-xl sm:text-2xl font-bold hover:text-yellow-450 transition-colors"></h3>
+                        <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
+                            <span id="featuredAuthor"></span>
+                            <span class="w-2 h-2 bg-white/50 rounded-full"></span>
+                            <span id="featuredDate"></span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
+
+        {{-- Latest Posts List (right side - 1 column) --}}
+        <div>
+            <div>
+                <h4 class="text-base font-semibold text-gray-900 mb-4">Terbaru</h4>
+                <div class="space-y-2">
+                    @foreach($latestPosts as $post)
+                    <a href="{{ url('/artikel') }}/{{ $post['slug'] }}"
+                        class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
+                        <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
+                            alt="{{ $post['title'] }}" class="w-20 h-20 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title']
+                                }}</div>
+                            <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                                <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
+                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : ''
+                                    }}</span>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
     @endif
 </section>
 
@@ -91,15 +100,18 @@
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
             <h2 class="flex items-center gap-2">
                 <svg class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    <path
+                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                 </svg>
                 Instagram Feed
             </h2>
         </div>
-        <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer" class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
+        <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer"
+            class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
             @naramakna_id
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
             </svg>
         </a>
     </div>
@@ -108,18 +120,23 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             <!-- Instagram Post 1 -->
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=400&fit=crop" alt="Instagram post 1" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=400&fit=crop"
+                    alt="Instagram post 1"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                             1.2k
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                                <path
+                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
                             </svg>
                             89
                         </span>
@@ -129,18 +146,23 @@
 
             <!-- Instagram Post 2 -->
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop" alt="Instagram post 2" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop"
+                    alt="Instagram post 2"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                             2.1k
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                                <path
+                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
                             </svg>
                             142
                         </span>
@@ -150,18 +172,23 @@
 
             <!-- Instagram Post 3 -->
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=400&h=400&fit=crop" alt="Instagram post 3" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=400&h=400&fit=crop"
+                    alt="Instagram post 3"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                             856
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                                <path
+                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
                             </svg>
                             67
                         </span>
@@ -171,18 +198,23 @@
 
             <!-- Instagram Post 4 -->
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop" alt="Instagram post 4" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop"
+                    alt="Instagram post 4"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                             1.5k
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                                <path
+                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
                             </svg>
                             98
                         </span>
@@ -192,18 +224,23 @@
 
             <!-- Instagram Post 5 -->
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1515847049296-a281d6401047?w=400&h=400&fit=crop" alt="Instagram post 5" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img src="https://images.unsplash.com/photo-1515847049296-a281d6401047?w=400&h=400&fit=crop"
+                    alt="Instagram post 5"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                             3.2k
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                                <path
+                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
                             </svg>
                             234
                         </span>
@@ -213,18 +250,23 @@
 
             <!-- Instagram Post 6 -->
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop" alt="Instagram post 6" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop"
+                    alt="Instagram post 6"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                             1.8k
                         </span>
                         <span class="flex items-center gap-1">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                                <path
+                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
                             </svg>
                             156
                         </span>
@@ -235,9 +277,12 @@
 
         <!-- Follow Button -->
         <div class="mt-6 text-center">
-            <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white font-semibold rounded-full no-underline transition-all hover:shadow-lg hover:scale-105">
+            <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white font-semibold rounded-full no-underline transition-all hover:shadow-lg hover:scale-105">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    <path
+                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                 </svg>
                 Ikuti Kami di Instagram
             </a>
@@ -282,17 +327,16 @@
             </div>
             <div class="lg:col-span-7">
                 <div class="grid grid-cols-2 gap-3">
-                    @for($i = 0; $i < 4; $i++)
-                        <div class="flex gap-3 rounded-xl px-2 pt-0.5 pb-1.5">
-                            <div class="w-20 h-20 bg-gray-200 rounded-lg shimmer"></div>
-                            <div class="flex-1 space-y-2">
-                                <div class="h-4 bg-gray-200 rounded shimmer"></div>
-                                <div class="h-3 bg-gray-200 rounded w-3/4 shimmer"></div>
-                            </div>
+                    @for($i = 0; $i < 4; $i++) <div class="flex gap-3 rounded-xl px-2 pt-0.5 pb-1.5">
+                        <div class="w-20 h-20 bg-gray-200 rounded-lg shimmer"></div>
+                        <div class="flex-1 space-y-2">
+                            <div class="h-4 bg-gray-200 rounded shimmer"></div>
+                            <div class="h-3 bg-gray-200 rounded w-3/4 shimmer"></div>
                         </div>
-                    @endfor
                 </div>
+                @endfor
             </div>
+        </div>
         </div>
         {{-- Loading Spinner --}}
         <div class="flex items-center justify-center py-6">
@@ -302,96 +346,101 @@
 </template>
 
 <style>
-/* Shimmer Loading Animation */
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
+    /* Shimmer Loading Animation */
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+
+        100% {
+            background-position: 1000px 0;
+        }
     }
-    100% {
-        background-position: 1000px 0;
+
+    .shimmer {
+        background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 20%, #f3f4f6 40%, #e5e7eb 60%, #f3f4f6 80%, #e5e7eb 100%);
+        background-size: 1000px 100%;
+        animation: shimmer 2s infinite linear;
     }
-}
 
-.shimmer {
-    background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 20%, #f3f4f6 40%, #e5e7eb 60%, #f3f4f6 80%, #e5e7eb 100%);
-    background-size: 1000px 100%;
-    animation: shimmer 2s infinite linear;
-}
+    /* Fade In Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-/* Fade In Animation */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    .fade-in-section {
+        animation: fadeInUp 0.5s ease-out forwards;
     }
-}
 
-.fade-in-section {
-    animation: fadeInUp 0.5s ease-out forwards;
-}
+    /* Loading Spinner */
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
 
-/* Loading Spinner */
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
+        100% {
+            transform: rotate(360deg);
+        }
     }
-    100% {
-        transform: rotate(360deg);
+
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #fbbf24;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
     }
-}
 
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f4f6;
-    border-top: 4px solid #fbbf24;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+    /* Smooth Loading Indicator */
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(0.8);
+            opacity: 0.5;
+        }
 
-/* Smooth Loading Indicator */
-@keyframes pulse-ring {
-    0% {
-        transform: scale(0.8);
-        opacity: 0.5;
+        50% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale(0.8);
+            opacity: 0.5;
+        }
     }
-    50% {
-        transform: scale(1);
-        opacity: 1;
+
+    .loading-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 20px;
     }
-    100% {
-        transform: scale(0.8);
-        opacity: 0.5;
+
+    .loading-indicator span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #fbbf24;
+        animation: pulse-ring 1.5s ease-in-out infinite;
     }
-}
 
-.loading-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 20px;
-}
+    .loading-indicator span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
 
-.loading-indicator span {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #fbbf24;
-    animation: pulse-ring 1.5s ease-in-out infinite;
-}
-
-.loading-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.loading-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
-}
+    .loading-indicator span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
 </style>
 @endsection
 
@@ -410,6 +459,27 @@
     let loadedCount = 0;
     let isLoading = false;
     const categoriesPerBatch = 2; // Load first 2 categories immediately
+
+    function formatJakartaDate(input) {
+        if (!input) return '';
+        try {
+            let d;
+            if (typeof input === 'number') {
+                d = new Date(input);
+            } else {
+                let s = String(input).trim();
+                if (/Z|[+-]\d{2}:\d{2}$/.test(s)) {
+                    d = new Date(s);
+                } else {
+                    s = s.replace(' ', 'T');
+                    d = new Date(s + 'Z');
+                }
+            }
+            return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }).format(d);
+        } catch (e) {
+            return '';
+        }
+    }
 
     // Function to fetch all categories
     async function fetchCategories() {
@@ -445,8 +515,8 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
-        const readUrl = '{{ secure_url('/read') }}';
-        const categoryUrl = '{{ secure_url('/kategori') }}';
+        const readUrl = '{{ url('/artikel') }}';
+        const categoryUrl = '{{ url('/kategori') }}';
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -467,7 +537,7 @@
             const excerpt = firstPost.excerpt ?
                 firstPost.excerpt.substring(0, 100) + '...' :
                 (firstPost.content ? firstPost.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : '');
-            const date = firstPost.date ? new Date(firstPost.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+            const date = formatJakartaDate(firstPost.date);
 
             html += `
                     <a href="${readUrl}/${firstPost.slug}" class="lg:col-span-5 rounded-2xl overflow-hidden no-underline block relative">
@@ -495,7 +565,7 @@
         let items = '';
 
         otherPosts.forEach(post => {
-            const date = post.date ? new Date(post.date).toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+            const date = formatJakartaDate(post.date);
 
             items += `
                             <a href="${readUrl}/${post.slug}" class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
@@ -528,9 +598,10 @@
         `;
 
         // Add AdSense after every 2 categories
-        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
-        if (adsEnabled && (index + 1) % 2 === 0) {
-            html += `
+        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false'
+    }};
+    if (adsEnabled && (index + 1) % 2 === 0) {
+        html += `
                 <div class="my-8">
                     <div class="google-ads-container google-ads-leaderboard" id="google-ad-${index}">
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-lg py-6 text-center">
@@ -553,9 +624,9 @@
                     </div>
                 </div>
             `;
-        }
+    }
 
-        return html;
+    return html;
     }
 
     // Function to create skeleton loader
@@ -791,15 +862,15 @@
     const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
     const featuredLinkEl = document.getElementById('featuredLink');
-    const readUrl = '{{ secure_url('/read') }}';
+    const readUrl = '{{ url('/artikel') }}';
 
     // Store post data from server-side rendered slides
-    const featuredData = @if(isset($featuredPosts) && count($featuredPosts) > 0)
-        {!! json_encode(collect($featuredPosts)->map(function($post) {
+    const featuredData = @if (isset($featuredPosts) && count($featuredPosts) > 0)
+        {!! json_encode(collect($featuredPosts)->map(function ($post) {
             return [
                 'title' => $post['title'] ?? '',
                 'author' => $post['author']['display_name'] ?? 'Redaksi',
-                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->format('d/m, H.i') : '',
+                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '',
                 'channel' => $post['metadata']['_channel'] ?? 'Artikel',
                 'slug' => $post['slug'] ?? ''
             ];

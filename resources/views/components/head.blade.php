@@ -63,11 +63,8 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
+function gtag(){dataLayer.push(arguments);} 
 gtag('js', new Date());
-const __gaId = '{{ $gaId }}';
-gtag('config', __gaId, { anonymize_ip: true });
-const __gaMasked = __gaId.replace(/.(?=.{4})/g, '*');
-console.log('Google Analytics initialized', __gaMasked);
+gtag('config', '{{ $gaId }}');
 </script>
 @endif

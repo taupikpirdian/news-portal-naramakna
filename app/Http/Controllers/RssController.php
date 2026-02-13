@@ -27,10 +27,10 @@ class RssController extends Controller
             $postUrls = [];
             foreach ($posts as $post) {
                 $postUrls[] = [
-                    'url' => url('/read/' . ($post['slug'] ?? '')),
+                    'url' => url('/artikel/' . ($post['slug'] ?? '')),
                     'lastmod' => isset($post['modified_at'])
-                        ? Carbon::parse($post['modified_at'])->toAtomString()
-                        : (isset($post['created_at']) ? Carbon::parse($post['created_at'])->toAtomString() : Carbon::now()->toAtomString()),
+                    ?Carbon::parse($post['modified_at'])->toAtomString()
+                    : (isset($post['created_at']) ?Carbon::parse($post['created_at'])->toAtomString() : Carbon::now()->toAtomString()),
                     'changefreq' => 'hourly',
                     'priority' => '0.9',
                 ];
@@ -39,7 +39,8 @@ class RssController extends Controller
             return response()->view('sitemap.posts', [
                 'posts' => $postUrls,
             ])->header('Content-Type', 'text/xml; charset=UTF-8');
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             return response()->view('sitemap.posts', [
                 'posts' => [],
             ])->header('Content-Type', 'text/xml; charset=UTF-8');

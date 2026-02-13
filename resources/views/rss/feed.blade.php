@@ -1,4 +1,5 @@
-@php echo '<?xml version="1.0" encoding="UTF-8"?>'; @endphp
+@php echo '
+<?xml version="1.0" encoding="UTF-8"?>'; @endphp
 <rss version="2.0"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -14,7 +15,7 @@
         @foreach($posts as $post)
         <item>
             <title>{{ htmlspecialchars($post['title'] ?? '') }}</title>
-            <link>{{ url('/read/' . ($post['slug'] ?? '')) }}</link>
+            <link>{{ url('/artikel/' . ($post['slug'] ?? '')) }}</link>
             <description>{{ htmlspecialchars(strip_tags($post['excerpt'] ?? $post['content'] ?? '')) }}</description>
             <content:encoded><![CDATA[{!! $post['content'] ?? '' !!}]]></content:encoded>
             <category>{{ $post['category']['name'] ?? 'Berita' }}</category>
