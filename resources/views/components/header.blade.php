@@ -4,7 +4,7 @@
             <a href="{{ url('/') }}" class="no-underline flex items-center">
                 <picture>
                     <source media="(min-width: 768px)" srcset="{{ $logoWebBase64 }}">
-                    <img src="{{ $logoMobileBase64 }}" alt="Naramakna" class="h-8 w-auto">
+                    <img src="{{ $logoWebBase64 }}" alt="Naramakna" class="h-8 w-auto">
                 </picture>
             </a>
             <div class="flex items-center gap-3 flex-1 max-w-[600px] w-full order-3 lg:order-2">
