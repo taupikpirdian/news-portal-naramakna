@@ -272,7 +272,7 @@
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
     <div class="flex items-center justify-between mb-6">
         <div>
             <div class="flex items-center gap-2">
@@ -297,7 +297,7 @@
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-14">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-14">
     <div class="flex items-center justify-between mb-6">
         <div>
             <div class="flex items-center gap-2">
@@ -322,7 +322,7 @@
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
     <div class="flex items-center justify-between mb-6">
         <div>
             <div class="flex items-center gap-2">
@@ -358,7 +358,7 @@
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-14">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-14">
     <div class="flex items-center justify-between mb-6">
         <div>
             <div class="flex items-center gap-2">
@@ -383,7 +383,7 @@
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
     <div class="flex items-center justify-between mb-6">
         <div>
             <div class="flex items-center gap-2">
@@ -408,7 +408,7 @@
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-14">
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 py-14">
     <div class="flex items-center justify-between mb-6">
         <div>
             <div class="flex items-center gap-2">
