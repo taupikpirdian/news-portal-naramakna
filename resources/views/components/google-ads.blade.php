@@ -66,7 +66,7 @@
                      data-ad-slot="{{ $adUnitConfig['slot'] ?? $testSlot }}"
                      data-ad-format="{{ $adUnitConfig['format'] ?? 'auto' }}"
                      @if($adUnitConfig['responsive'] ?? false) data-full-width-responsive="true" @endif
-                     data-ad-test="{{ $testMode ? 'on' : 'off' }}"></ins>
+                     @if(!$testMode) data-ad-test="off" @endif></ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
@@ -120,8 +120,8 @@
 @endif
 
 @push('scripts')
-    @if(!$testMode && $dataSource === 'static')
-        {{-- AdSense async script - only load once --}}
+    @if($shouldDisplay && !$testMode && $dataSource === 'static')
+        {{-- AdSense async script - only load once and only in production mode --}}
         @once
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config('ads.adsense_publisher_id') }}"
                     crossorigin="anonymous"></script>
