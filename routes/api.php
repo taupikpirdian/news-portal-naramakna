@@ -48,3 +48,7 @@ Route::prefix('google-ads')->name('api.google_ads.')->group(function () {
     // Sync with Naramakna API
     Route::post('/sync', [\App\Http\Controllers\GoogleAdsController::class, 'syncWithNaramakna'])->name('sync')->middleware('api.key');
 });
+
+// Ads Serving Routes
+// Public endpoint for serving ads
+Route::get('/ads/serve', [\App\Http\Controllers\AdsController::class, 'serve'])->name('api.ads.serve');
