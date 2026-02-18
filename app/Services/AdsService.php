@@ -39,7 +39,7 @@ class AdsService
             }
 
             // Build full endpoint URL
-            $endpoint = $apiUrl . '/ads/serve';
+            $endpoint = $apiUrl . '/api/ads/serve';
 
             // Make request to external API
             $response = Http::withHeaders([

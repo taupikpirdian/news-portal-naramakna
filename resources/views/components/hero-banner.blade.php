@@ -52,8 +52,8 @@
 
                 // Set ad data
                 adLink.href = ad.target_url;
-                adImage.src = ad.image_url;
-                // adImage.src = ad.media_url;
+                // adImage.src = ad.image_url;
+                adImage.src = ad.media_url;
                 adImage.alt = ad.campaign_name || 'Advertisement';
 
                 // Show ad
