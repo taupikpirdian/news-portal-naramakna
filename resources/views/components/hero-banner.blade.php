@@ -22,7 +22,7 @@
     </div>
 
     <!-- Fallback to Google Ads when no ad available -->
-    <div id="{{ $componentId }}-fallback" style="display: none;">
+    <div id="{{ $componentId }}-fallback" style="display: none;" class="google-ads-fallback-wrapper">
         @if(config('ads.enabled'))
             <x-google-ads type="leaderboard" />
         @endif
@@ -59,8 +59,19 @@
                 // Show ad
                 adContainer.style.display = 'block';
             } else {
-                // Show fallback
+                // Show fallback and initialize ads
                 fallback.style.display = 'block';
+
+                // Initialize Google Ads after showing the container
+                // This ensures the container has width before ads load
+                if (window.adsbygoogle && window.adsbygoogle.push) {
+                    try {
+                        // Push a new ad request
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    } catch (error) {
+                        console.error('Error initializing Google Ads:', error);
+                    }
+                }
             }
         } catch (error) {
             console.error('Error fetching hero banner ad:', error);
@@ -68,6 +79,15 @@
             // Hide loading and show fallback
             loadingState.style.display = 'none';
             fallback.style.display = 'block';
+
+            // Initialize Google Ads after showing the container
+            if (window.adsbygoogle && window.adsbygoogle.push) {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (error) {
+                    console.error('Error initializing Google Ads:', error);
+                }
+            }
         }
     }
 

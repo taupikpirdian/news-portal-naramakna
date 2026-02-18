@@ -17,7 +17,7 @@
 @endphp
 
 @if($shouldDisplay)
-    <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? '' }}">
+    <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? '' }}" style="min-width: 100%; width: 100%;">
         @if($dataSource === 'static')
             {{-- Static AdSense Ad Unit --}}
             @if($testMode)
@@ -61,7 +61,7 @@
             @else
                 {{-- Production AdSense Code --}}
                 <ins class="adsbygoogle"
-                     style="display:block"
+                     style="display:block; min-width: 100%; width: 100%;"
                      data-ad-client="{{ config('ads.adsense_publisher_id') }}"
                      data-ad-slot="{{ $adUnitConfig['slot'] ?? $testSlot }}"
                      data-ad-format="{{ $adUnitConfig['format'] ?? 'auto' }}"
