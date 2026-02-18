@@ -67,8 +67,70 @@
                      data-ad-format="{{ $adUnitConfig['format'] ?? 'auto' }}"
                      @if($adUnitConfig['responsive'] ?? false) data-full-width-responsive="true" @endif
                      @if(!$testMode) data-ad-test="off" @endif></ins>
+                @php
+                    // Only push ads if the container is visible
+                    // Check if this component is inside a hidden parent
+                    $isVisible = true;
+                @endphp
                 <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    (function() {
+                        const ins = document.currentScript.previousElementSibling;
+                        if (!ins) return;
+
+                        // Check if the element or any parent is hidden
+                        function isElementVisible(element) {
+                            if (!element) return false;
+
+                            const computedStyle = window.getComputedStyle(element);
+                            if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden') {
+                                return false;
+                            }
+
+                            // Check if element has dimensions
+                            const rect = element.getBoundingClientRect();
+                            if (rect.width === 0 || rect.height === 0) {
+                                return false;
+                            }
+
+                            // Check parent visibility
+                            return isElementVisible(element.parentElement);
+                        }
+
+                        // Wait a bit to ensure DOM is ready
+                        setTimeout(function() {
+                            if (isElementVisible(ins)) {
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            } else {
+                                // Store this element to be initialized later when parent becomes visible
+                                ins.setAttribute('data-ad-pending', 'true');
+
+                                // Observe for when parent becomes visible
+                                const observer = new MutationObserver(function(mutations) {
+                                    mutations.forEach(function(mutation) {
+                                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                                            if (isElementVisible(ins) && ins.getAttribute('data-ad-pending') === 'true') {
+                                                ins.removeAttribute('data-ad-pending');
+                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                                observer.disconnect();
+                                            }
+                                        }
+                                    });
+                                });
+
+                                // Start observing the parent
+                                let parent = ins.parentElement;
+                                while (parent && parent !== document.body) {
+                                    observer.observe(parent, { attributes: true, attributeFilter: ['style', 'class'] });
+                                    parent = parent.parentElement;
+                                }
+
+                                // Timeout after 5 seconds to avoid memory leaks
+                                setTimeout(function() {
+                                    observer.disconnect();
+                                }, 5000);
+                            }
+                        }, 100);
+                    })();
                 </script>
             @endif
         @else

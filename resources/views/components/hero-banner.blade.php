@@ -59,35 +59,15 @@
                 // Show ad
                 adContainer.style.display = 'block';
             } else {
-                // Show fallback and initialize ads
+                // Show fallback - Google Ads will auto-initialize when visible
                 fallback.style.display = 'block';
-
-                // Initialize Google Ads after showing the container
-                // This ensures the container has width before ads load
-                if (window.adsbygoogle && window.adsbygoogle.push) {
-                    try {
-                        // Push a new ad request
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    } catch (error) {
-                        console.error('Error initializing Google Ads:', error);
-                    }
-                }
             }
         } catch (error) {
             console.error('Error fetching hero banner ad:', error);
 
-            // Hide loading and show fallback
+            // Hide loading and show fallback - Google Ads will auto-initialize when visible
             loadingState.style.display = 'none';
             fallback.style.display = 'block';
-
-            // Initialize Google Ads after showing the container
-            if (window.adsbygoogle && window.adsbygoogle.push) {
-                try {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                } catch (error) {
-                    console.error('Error initializing Google Ads:', error);
-                }
-            }
         }
     }
 
