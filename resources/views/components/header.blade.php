@@ -4,7 +4,7 @@
             <a href="{{ url('/') }}" class="no-underline flex items-center">
                 <picture>
                     <source media="(min-width: 768px)" srcset="{{ $logoWebBase64 }}">
-                    <img src="{{ $logoMobileBase64 }}" alt="Naramakna" class="h-8 w-auto">
+                    <img src="{{ $logoWebBase64 }}" alt="Naramakna" class="h-8 w-auto">
                 </picture>
             </a>
             <div class="flex items-center gap-3 flex-1 max-w-[600px] w-full order-3 lg:order-2">
@@ -22,7 +22,6 @@
                     @foreach($headerCategories as $category)
                     <li class="shrink-0 snap-start"><a href="{{ route('category', ['slug' => $category['slug']]) }}" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors whitespace-nowrap">{{ $category['name'] }}</a></li>
                     @endforeach
-                    <li class="shrink-0 snap-start"><a href="{{ route('category', ['slug' => 'jagat-kita']) }}" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors whitespace-nowrap">Jagat Kita</a></li>
                 @else
                     {{-- Fallback if categories fail to load --}}
                     <li class="shrink-0 snap-start"><a href="#" class="text-gray-700 no-underline text-sm font-medium hover:text-yellow-450 transition-colors whitespace-nowrap">Narapandang</a></li>

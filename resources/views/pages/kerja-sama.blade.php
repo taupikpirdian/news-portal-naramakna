@@ -31,31 +31,29 @@
             </div>
             <div class="text-sm font-semibold">Instagram</div>
         </a>
-        <a href="https://www.facebook.com/naramakna.id/?_rdr" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-blue-500 to-indigo-600 shadow hover:opacity-95 transition">
+        <a href="https://www.tiktok.com/@naramakna.id" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-gray-800 to-gray-900 shadow hover:opacity-95 transition">
+            <div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M16.5 3c.4 2.2 2.1 3.9 4.3 4.3v3.1c-1.6 0-3.2-.5-4.6-1.5v5.3c0 3.8-3.1 6.8-6.8 6.8S2.6 18 2.6 14.2s3.1-6.8 6.8-6.8c.4 0 .8 0 1.2.1v3.5c-.4-.1-.8-.2-1.2-.2-1.9 0-3.4 1.5-3.4 3.4S7.5 18 9.4 18s3.4-1.5 3.4-3.4V3h3.7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="text-sm font-semibold">TikTok</div>
+        </a>
+        <a href="https://www.youtube.com/@cerdasmemaknai" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white shadow hover:opacity-95 transition" style="background: #ff0034;">
             <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/>
-                    <path d="M13 9h2V7h-2c-1.657 0-3 1.343-3 3v2H8v2h2v5h2v-5h2l1-2h-3V10c0-.552.448-1 1-1z" fill="white"/>
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="white"/>
+                </svg>
+            </div>
+            <div class="text-sm font-semibold">YouTube</div>
+        </a>
+        <a href="https://www.facebook.com/people/Naramaknaid/61582515249969" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-blue-500 to-indigo-600 shadow hover:opacity-95 transition">
+            <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/>
                 </svg>
             </div>
             <div class="text-sm font-semibold">Facebook</div>
-        </a>
-        <a href="https://x.com/apcomsolutions?s=21" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-gray-800 to-gray-900 shadow hover:opacity-95 transition">
-            <div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 4l7 7-7 9 9-7 7 7-7-9 7-7-9 7-7-7z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div class="text-sm font-semibold">X (Twitter)</div>
-        </a>
-        <a href="https://api.whatsapp.com/send/?phone=628979132802&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="rounded-2xl no-underline p-5 min-h-[120px] flex flex-col items-center justify-center text-white bg-gradient-to-br from-green-500 to-emerald-600 shadow hover:opacity-95 transition">
-            <div class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/>
-                    <path d="M16.5 14.5c-.5-.25-1.5-.75-1.75-.85-.25-.1-.4-.1-.55.1-.15.2-.6.7-.75.85-.15.15-.3.15-.5.05-.2-.1-.85-.3-1.6-.95-.6-.55-1.05-1.23-1.17-1.43-.12-.2-.01-.31.09-.41.1-.1.2-.24.3-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.37-.05-.11-.49-1.16-.67-1.59-.18-.41-.36-.36-.49-.37h-.42c-.15 0-.39.06-.59.26-.2.2-.78.74-.78 1.8 0 1.06.8 2.09.91 2.24.11.15 1.58 2.35 3.83 3.29.54.22.95.36 1.27.46.53.17 1.02.14 1.4.09.43-.06 1.31-.53 1.5-1.04.19-.51.19-.95.13-1.04-.06-.09-.2-.15-.45-.27z" fill="white"/>
-                </svg>
-            </div>
-            <div class="text-sm font-semibold">WhatsApp</div>
         </a>
     </div>
 </section>
@@ -206,7 +204,7 @@
                     </svg>
                     <span class="text-sm font-medium">Hubungi via WhatsApp</span>
                 </a>
-                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/80 text-white no-underline hover:bg-white/10">
+                <a href="mailto:naramaknaskt@gmail.com" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/80 text-white no-underline hover:bg-white/10">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M3 5h18v14H3V5zm9 6L3 5h18l-9 6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                     </svg>

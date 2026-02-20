@@ -108,4 +108,15 @@ return [
     */
 
     'instagram_feed_enabled' => env('INSTAGRAM_FEED_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | External Ads API Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk mengambil data iklan dari external API
+    |
+    */
+
+    'external_api_url' => env('NARAMAKNA_API_BASE_URL', 'https://api.naramakna.id'),
 ];
