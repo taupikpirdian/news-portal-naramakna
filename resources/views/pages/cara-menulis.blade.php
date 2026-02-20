@@ -47,24 +47,6 @@
         scroll-behavior: smooth;
     }
 
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #f97316;
-        border-radius: 5px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #ea580c;
-    }
-
     /* Tab content transition */
     .tab-content {
         opacity: 0;
