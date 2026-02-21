@@ -71,7 +71,7 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
         </figure>
 
         <section itemprop="articleBody"
-            class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-loose prose-p:text-justify prose-p:mb-8 prose-a:text-yellow-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-md prose-img:w-full prose-blockquote:border-l-4 prose-blockquote:border-yellow-450 prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:italic prose-blockquote:text-gray-700">
+            class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-loose prose-p:text-left prose-p:mb-8 prose-a:text-yellow-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-md prose-img:w-full prose-blockquote:border-l-4 prose-blockquote:border-yellow-450 prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:italic prose-blockquote:text-gray-700">
             {!! $post['content'] !!}
         </section>
 
