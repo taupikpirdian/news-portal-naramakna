@@ -49,8 +49,8 @@ class AppServiceProvider extends ServiceProvider
                 ->values();
 
             // Split categories: first 9 for main nav, rest for sub nav (max 10)
-            $mainCategories = $uniqueCategories->take(7);
-            $subCategories = $uniqueCategories->slice(7)->take(6)->values();
+            $mainCategories = $uniqueCategories->take(8);
+            $subCategories = $uniqueCategories->slice(8)->take(10)->values();
 
             $view->with('headerCategories', $mainCategories);
             $view->with('subHeaderCategories', $subCategories);
