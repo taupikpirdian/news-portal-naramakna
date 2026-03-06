@@ -517,6 +517,9 @@
         const otherPosts = posts.slice(1, 5);
         const readUrl = '{{ url('/artikel') }}';
         const categoryUrl = '{{ url('/kategori') }}';
+        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
+        const adsensePublisherId = '{{ config('ads.adsense_publisher_id') }}';
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -595,33 +598,138 @@
         `;
 
         // Add AdSense after every 2 categories
-        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false'
-    }};
-    if (adsEnabled && (index + 1) % 2 === 0) {
-        html += `
-                <div class="my-8">
-                    <div class="google-ads-container google-ads-leaderboard" id="google-ad-${index}">
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-lg py-6 text-center">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-center space-x-2">
-                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                    </svg>
-                                    <span class="text-sm font-semibold text-blue-800">Advertisement</span>
-                                </div>
-                                <div class="mt-3 flex justify-center">
-                                    <div class="bg-white rounded shadow-sm border border-gray-200 px-8 py-3">
-                                        <p class="text-xs text-gray-500 mb-1">Sponsored Content</p>
-                                        <p class="text-sm font-medium text-gray-800">In-Article Ad</p>
-                                        <p class="text-xs text-gray-600 mt-1">Your ad could be here</p>
-                                    </div>
-                                </div>
+        if (adsEnabled && (index + 1) % 2 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
+            const adUniqueId = `adsense-category-${index}-${Date.now()}`;
+
+            // Console log ONLY for development/localhost
+            if (isLocalhost && typeof console !== 'undefined') {
+                console.log('%c[AdSense Category Ad]', 'background: #4285f4; color: white; padding: 4px 8px; border-radius: 4px;', {
+                    categoryIndex: index,
+                    categoryName: category.name,
+                    uniqueId: adUniqueId,
+                    publisherId: adsensePublisherId,
+                    isLocalhost: isLocalhost
+                });
+            }
+
+            if (isLocalhost) {
+                // Development Mode: Show placeholder UI
+                html += `
+                    <div class="my-8" style="width: 100%; max-width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 8px; padding: 1.5rem; text-align: center; position: relative; overflow: hidden;">
+                        <div style="position: relative; z-index: 1; color: white;">
+                            <div style="margin-bottom: 0.75rem;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.125rem; font-weight: 700; margin: 0 0 0.5rem 0; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                📢 Advertisement Space
+                            </h3>
+                            <p style="font-size: 0.875rem; margin: 0 0 1rem 0; opacity: 0.95;">
+                                <span style="font-weight: 600;">Category Ad</span> - After ${category.name}
+                            </p>
+                            <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 0 auto; max-width: 400px; border: 1px solid rgba(255,255,255,0.3);">
+                                <p style="font-size: 0.75rem; margin: 0; line-height: 1.5; opacity: 0.95;">
+                                    ⚠️ <strong>Development Mode:</strong> Google AdSense does not work on localhost.
+                                </p>
+                                <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; line-height: 1.5; opacity: 0.95;">
+                                    ✅ Ads will appear on <strong>production domain</strong>
+                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
-            `;
-    }
+                `;
+            } else {
+                // Production Mode: Real AdSense
+                html += `
+                    <div class="my-8" style="width: 100%; max-width: 100%; overflow: hidden;">
+                        <ins id="${adUniqueId}"
+                             class="adsbygoogle"
+                             style="display:block; min-width:250px; min-height:90px;"
+                             data-ad-client="${adsensePublisherId}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                `;
+
+                // Initialize AdSense ad after DOM is ready and element has width
+                setTimeout(() => {
+                    if (window.adsbygoogle) {
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            console.log('%c✓ AdSense script loaded for category:', 'color: #34a853;', category.name);
+                        }
+
+                        const adElement = document.getElementById(adUniqueId);
+                        if (!adElement) {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.warn('%c✗ Ad element not found:', 'color: #ea4335;', adUniqueId);
+                            }
+                            return;
+                        }
+
+                        // Check if already initialized
+                        if (adElement.getAttribute('data-adsbygoogle-status')) {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.log('%c○ Ad already initialized:', 'color: #fbbc04;', adUniqueId);
+                            }
+                            return;
+                        }
+
+                        // Check if element has width
+                        const rect = adElement.getBoundingClientRect();
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            console.log('%c[AdSense Category Dimensions]', 'color: #4285f4;', {
+                                category: category.name,
+                                width: rect.width,
+                                height: rect.height
+                            });
+                        }
+
+                        if (rect.width === 0) {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.warn('%c⚠ Element has no width, retrying...', 'color: #fbbc04;');
+                            }
+                            // Retry if no width yet
+                            setTimeout(() => {
+                                if (window.adsbygoogle && !adElement.getAttribute('data-adsbygoogle-status')) {
+                                    try {
+                                        (window.adsbygoogle = window.adsbygoogle || []).push({});
+                                        if (isLocalhost && typeof console !== 'undefined') {
+                                            console.log('%c✓ Ad pushed after retry:', 'color: #34a853;', category.name);
+                                        }
+                                    } catch (e) {
+                                        if (isLocalhost && typeof console !== 'undefined') {
+                                            console.warn('AdSense push error:', e.message);
+                                        }
+                                    }
+                                }
+                            }, 500);
+                            return;
+                        }
+
+                        // Push ad
+                        try {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.log('%c⟳ Pushing ad for category:', 'color: #4285f4;', category.name);
+                            }
+                            (window.adsbygoogle = window.adsbygoogle || []).push({});
+
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.warn('%c⚠ Running on localhost - Category ads may not appear (403 error is normal)', 'color: #fbbc04; font-size: 12px;');
+                            }
+                        } catch (e) {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.warn('AdSense push error:', e.message);
+                            }
+                        }
+                    } else {
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            console.warn('%c✗ AdSense script not loaded for category:', 'color: #ea4335;', category.name);
+                        }
+                    }
+                }, 300);
+            }
+        }
 
     return html;
     }
@@ -947,5 +1055,65 @@
             img.src = FALLBACK_IMG;
         }, { once: true });
     });
+
+    // ============================================================
+    // ADSENSE DEBUG CONSOLE - Development Mode ONLY
+    // ============================================================
+    (function() {
+        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
+        const adsensePublisherId = '{{ config('ads.adsense_publisher_id') }}';
+        const currentHost = window.location.hostname;
+        const isLocalhost = currentHost === 'localhost' || currentHost === '127.0.0.1';
+
+        // ONLY show debug console in localhost/development
+        if (!isLocalhost) return; // ← Exit silently if production
+
+        if (typeof console === 'undefined') return;
+
+        console.group('%c🎯 Google AdSense Debug Info', 'background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04, #ea4335); color: white; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;');
+        console.log('%cEnvironment:', 'color: #4285f4; font-weight: bold;', {
+            currentHost: currentHost,
+            isLocalhost: isLocalhost,
+            environment: isLocalhost ? 'Development (Localhost)' : 'Production'
+        });
+        console.log('%cConfiguration:', 'color: #34a853; font-weight: bold;', {
+            adsEnabled: adsEnabled,
+            publisherId: adsensePublisherId,
+            publisherIdValid: adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')
+        });
+        console.log('%cAd Elements Found:', 'color: #fbbc04; font-weight: bold;', document.querySelectorAll('.adsbygoogle').length);
+        console.log('%cAdSense Script:', 'color: #ea4335; font-weight: bold;', window.adsbygoogle ? '✓ Loaded' : '✗ Not loaded');
+
+        console.group('%c⚠️ Localhost Warning', 'color: #fbbc04; font-weight: bold;');
+        console.log('%cGoogle AdSense does NOT work on localhost!', 'color: #ea4335; font-size: 12px; font-weight: bold;');
+        console.log('403 errors are NORMAL when testing on localhost.');
+        console.log('Ads will only appear on production domains that are:');
+        console.log('  1. Added to your AdSense account');
+        console.log('  2. Verified by Google');
+        console.log('  3. Using HTTPS');
+        console.groupEnd();
+
+        console.group('%c📋 What to Expect:', 'color: #4285f4; font-weight: bold;');
+        console.log('❌ Blank/Empty ad spaces');
+        console.log('❌ 403 Forbidden errors in network tab');
+        console.log('✅ AdSense script loaded');
+        console.log('✅ Ad elements created with correct attributes');
+        console.log('✅ Console logs showing initialization steps');
+        console.log('\n%c→ All of the above are NORMAL for localhost!', 'color: #34a853; font-weight: bold;');
+        console.groupEnd();
+
+        console.groupEnd();
+
+        // Summary log
+        setTimeout(() => {
+            const adElements = document.querySelectorAll('.adsbygoogle');
+            console.log('%c📊 Final Summary:', 'background: #4285f4; color: white; padding: 4px 8px; border-radius: 4px;', {
+                totalAdElements: adElements.length,
+                adsInitialized: Array.from(adElements).filter(el => el.getAttribute('data-adsbygoogle-status')).length,
+                readyForProduction: !isLocalhost && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')
+            });
+        }, 2000);
+    })();
+    // ============================================================
 </script>
 @endpush
