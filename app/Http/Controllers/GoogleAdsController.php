@@ -450,8 +450,8 @@ class GoogleAdsController extends Controller
                 ], 404);
             }
 
-            // In test mode or static source, return mock ad data
-            if (config('ads.test_mode') || config('ads.data_source') === 'static') {
+            // For static source, return mock ad data
+            if (config('ads.data_source') === 'static') {
                 $mockAdData = [
                     'headline' => 'Special Offer - ' . str_replace('_', ' ', ucfirst($type)),
                     'description' => 'Get the best deals on our products. Limited time offer!',
