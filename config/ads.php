@@ -51,13 +51,13 @@ return [
             'responsive' => true,
         ],
         'sidebar_left' => [
-            'enabled' => env('ADS_SIDEBAR_LEFT_ENABLED', false),
+            'enabled' => env('ADS_SIDEBAR_LEFT_ENABLED', true),
             'slot' => env('ADS_SIDEBAR_LEFT_SLOT', ''), // Ganti dengan slot ID yang valid
             'format' => 'vertical',
             'responsive' => false,
         ],
         'sidebar_right' => [
-            'enabled' => env('ADS_SIDEBAR_RIGHT_ENABLED', false),
+            'enabled' => env('ADS_SIDEBAR_RIGHT_ENABLED', true),
             'slot' => env('ADS_SIDEBAR_RIGHT_SLOT', ''), // Ganti dengan slot ID yang valid
             'format' => 'vertical',
             'responsive' => false,

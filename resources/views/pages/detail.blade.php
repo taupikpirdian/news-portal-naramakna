@@ -70,20 +70,10 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
             @endif
         </figure>
 
-        {{-- Leaderboard Ad - After Featured Image --}}
-        <div class="my-8">
-            <x-google-ads type="leaderboard" />
-        </div>
-
         <section itemprop="articleBody"
             class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-loose prose-p:text-left prose-p:mb-8 prose-a:text-yellow-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-md prose-img:w-full prose-blockquote:border-l-4 prose-blockquote:border-yellow-450 prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:italic prose-blockquote:text-gray-700">
             {!! $post['content'] !!}
         </section>
-
-        {{-- In-Article Ad - After Content --}}
-        <div class="my-8">
-            <x-google-ads type="in_article" />
-        </div>
 
         @if(isset($post['tags']) && is_array($post['tags']) && count($post['tags']) > 0)
         <div class="flex flex-wrap items-center gap-2 mt-8">
@@ -117,14 +107,14 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
                 </a>
             </div>
         </div>
+
+        {{-- Bottom Article Ad - After Social Media Follow --}}
+        <div class="mt-8">
+            <x-google-ads type="leaderboard" />
+        </div>
     </article>
 
     <aside class="col-span-12 lg:col-span-3">
-        {{-- Sidebar Ad - Top --}}
-        <div class="mb-6">
-            <x-google-ads type="sidebar_right" />
-        </div>
-
         @if(isset($latestPosts) && count($latestPosts) > 0)
         <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
             <h3 class="text-base font-semibold text-gray-900 mb-3">Artikel Terbaru</h3>
@@ -162,11 +152,6 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
         </div>
         @endif
     </aside>
-</div>
-
-{{-- Leaderboard Ad - Before Related Posts --}}
-<div class="my-8">
-    <x-google-ads type="leaderboard" />
 </div>
 
 @if(isset($relatedPosts) && count($relatedPosts) > 0)
@@ -212,6 +197,11 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
     </div>
 </section>
 @endif
+
+{{-- Final Article Ad - After Related Posts --}}
+<div class="my-8">
+    <x-google-ads type="leaderboard" />
+</div>
 
 @endsection
 
