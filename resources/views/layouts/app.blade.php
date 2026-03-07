@@ -54,34 +54,32 @@
     @if($isLocalhost)
         {{-- Development Mode - Localhost Placeholder --}}
         <div class="ad-sidebar-left">
-            <div class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
-                <svg class="w-12 h-12 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+            <div class="w-20 h-auto max-h-[80vh] rounded-xl shadow-2xl p-2 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                <svg class="w-8 h-8 mx-auto mb-1 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                 </svg>
-                <p class="text-sm font-bold">📢 Ad Space</p>
-                <p class="text-xs mt-1 opacity-90">Left Sidebar</p>
-                <p class="text-xs mt-2 bg-white/20 rounded-lg px-2 py-1 font-semibold">160 × 600</p>
-                <p class="text-xs mt-1 opacity-75">Skyscraper</p>
+                <p class="text-[10px] font-bold">📢 Ad</p>
+                <p class="text-[9px] mt-1 opacity-90">Left</p>
+                <p class="text-[9px] bg-white/20 rounded px-1 py-0.5 font-semibold mt-1">160×600</p>
             </div>
         </div>
         <div class="ad-sidebar-right">
-            <div class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
-                <svg class="w-12 h-12 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+            <div class="w-20 h-auto max-h-[80vh] rounded-xl shadow-2xl p-2 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                <svg class="w-8 h-8 mx-auto mb-1 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                 </svg>
-                <p class="text-sm font-bold">📢 Ad Space</p>
-                <p class="text-xs mt-1 opacity-90">Right Sidebar</p>
-                <p class="text-xs mt-2 bg-white/20 rounded-lg px-2 py-1 font-semibold">160 × 600</p>
-                <p class="text-xs mt-1 opacity-75">Skyscraper</p>
+                <p class="text-[10px] font-bold">📢 Ad</p>
+                <p class="text-[9px] mt-1 opacity-90">Right</p>
+                <p class="text-[9px] bg-white/20 rounded px-1 py-0.5 font-semibold mt-1">160×600</p>
             </div>
         </div>
     @else
         {{-- Production Mode - Google AdSense --}}
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl" />
+            <x-google-ads type="sidebar_left" class="w-20 h-auto max-h-[80vh] rounded-xl shadow-2xl" style="width: 80px;" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl" />
+            <x-google-ads type="sidebar_right" class="w-20 h-auto max-h-[80vh] rounded-xl shadow-2xl" style="width: 80px;" />
         </div>
     @endif
 

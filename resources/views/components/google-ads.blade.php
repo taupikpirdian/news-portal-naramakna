@@ -90,7 +90,7 @@
 
     @elseif($dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Production Mode: Real AdSense --}}
-        <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? 'my-4' }}" style="width: 100%; max-width: 100%; overflow: hidden; padding: 1rem 0; background-color: #f9fafb; border-radius: 8px;">
+        <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? 'my-4' }}" style="width: 100%; overflow: hidden; padding: 1rem 0; background-color: #f9fafb; border-radius: 8px; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 80px;' : 'max-width: 100%;' }}">
             <ins id="{{ $uniqueId }}"
                  class="adsbygoogle"
                  style="display:block; min-width:250px; min-height:90px;"
