@@ -64,7 +64,7 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
 
         <figure class="mb-6">
             <img src="{{ $imageUrl }}" alt="{{ $post['title'] }}" class="w-full rounded-xl object-cover max-h-[520px]"
-                onerror="this.onerror=null;this.src='{{ $imageUrl }}';">
+                onerror="this.onerror=null;this.src='{{ $imageUrl }}';" loading="lazy">
             @if(isset($post['featured_image']['caption']))
             <figcaption class="text-xs text-gray-500 mt-2">{{ $post['featured_image']['caption'] }}</figcaption>
             @endif
@@ -146,7 +146,7 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
                 <a href="{{ route('detail', ['slug' => $lSlug]) }}"
                     class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
                     <img src="{{ $lImg }}" alt="{{ $lPost['title'] }}" class="w-16 h-16 object-cover rounded-lg"
-                        onerror="this.onerror=null;this.src='{{ $lImg }}';">
+                        onerror="this.onerror=null;this.src='{{ $lImg }}';" loading="lazy">
                     <div class="flex-1">
                         <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $lPost['title'] }}
                         </div>
@@ -192,7 +192,7 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
             class="bg-white rounded-xl overflow-hidden no-underline transition-all shadow-sm hover:shadow-xl hover:-translate-y-1 group">
             <div class="relative">
                 <img src="{{ $rImg }}" alt="{{ $rPost['title'] }}" class="w-full h-[200px] object-cover"
-                    onerror="this.onerror=null;this.src='{{ $rImg }}';">
+                    onerror="this.onerror=null;this.src='{{ $rImg }}';" loading="lazy">
                 <span
                     class="absolute top-3 left-3 px-2.5 py-1 bg-yellow-450 text-white text-xs font-semibold rounded-full">{{
                     $rCategory }}</span>

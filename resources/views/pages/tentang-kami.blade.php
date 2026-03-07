@@ -61,7 +61,7 @@
         </div>
         <div class="lg:col-span-5">
             <div class="relative rounded-2xl overflow-hidden">
-                <img src="{{ asset('assets/images/istockphoto-1492377092-612x612.jpg') }}" alt="Siapa Kami" class="w-full h-[240px] sm:h-[320px] object-cover rounded-2xl">
+                <img src="{{ asset('assets/images/istockphoto-1492377092-612x612.jpg') }}" alt="Siapa Kami" class="w-full h-[240px] sm:h-[320px] object-cover rounded-2xl" loading="lazy">
                 <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
                 <div class="absolute bottom-3 left-3 right-3 text-white">
                     <div class="text-sm font-semibold">Cerdas Memaknai</div>
@@ -117,7 +117,7 @@
         </div>
         <div class="lg:col-span-6">
             <div class="relative rounded-2xl overflow-hidden">
-                <img src="{{ asset('assets/images/c5b37387-5d3f-4cfc-ad0f-92656880d1e0_169.jpeg') }}" alt="Misi Naramakna" class="w-full h-[280px] sm:h-[360px] object-cover rounded-2xl">
+                <img src="{{ asset('assets/images/c5b37387-5d3f-4cfc-ad0f-92656880d1e0_169.jpeg') }}" alt="Misi Naramakna" class="w-full h-[280px] sm:h-[360px] object-cover rounded-2xl" loading="lazy">
                 <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
                 <div class="absolute bottom-3 left-3 right-3 text-white">
                     <div class="text-sm font-semibold">“Media bukan sekadar jendela informasi, tetapi cermin pemahaman.”</div>

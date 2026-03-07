@@ -27,7 +27,7 @@
                     <div class="min-w-full h-full relative" data-index="{{ $index }}">
                         <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="block h-full">
                             <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
-                                alt="{{ $post['title'] }}" class="w-full h-full object-cover">
+                                alt="{{ $post['title'] }}" class="w-full h-full object-cover" loading="lazy">
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none">
                             </div>
@@ -72,7 +72,7 @@
                     <a href="{{ url('/artikel') }}/{{ $post['slug'] }}"
                         class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                         <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
-                            alt="{{ $post['title'] }}" class="w-20 h-20 object-cover rounded-lg">
+                            alt="{{ $post['title'] }}" class="w-20 h-20 object-cover rounded-lg" loading="lazy">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title']
                                 }}</div>
@@ -122,7 +122,7 @@
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
                 <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=400&fit=crop"
                     alt="Instagram post 1"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
@@ -148,7 +148,7 @@
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
                 <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop"
                     alt="Instagram post 2"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
@@ -174,7 +174,7 @@
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
                 <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=400&h=400&fit=crop"
                     alt="Instagram post 3"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
@@ -200,7 +200,7 @@
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
                 <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop"
                     alt="Instagram post 4"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
@@ -226,7 +226,7 @@
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
                 <img src="https://images.unsplash.com/photo-1515847049296-a281d6401047?w=400&h=400&fit=crop"
                     alt="Instagram post 5"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
@@ -252,7 +252,7 @@
             <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
                 <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop"
                     alt="Instagram post 6"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="lazy">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">

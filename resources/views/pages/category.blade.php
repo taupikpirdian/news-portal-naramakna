@@ -14,7 +14,7 @@
                 <a href="{{ route('detail', ['slug' => $firstPost['slug']]) }}" class="group block no-underline">
                     <div class="relative rounded-2xl overflow-hidden">
                         <img src="{{ $firstPost['featured_image'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop' }}"
-                            alt="{{ $firstPost['title'] }}" class="w-full h-[320px] sm:h-[380px] object-cover">
+                            alt="{{ $firstPost['title'] }}" class="w-full h-[320px] sm:h-[380px] object-cover" loading="lazy">
                         @if($category)
                         <span
                             class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">{{
@@ -186,7 +186,7 @@
 
                 html += `
                     <a href="{{ url('/artikel') }}/${post.slug}" class="flex gap-4 p-4 no-underline hover:bg-gray-50">
-                        <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg">
+                        <img src="${featuredImage}" alt="${post.title}" class="w-24 h-24 object-cover rounded-lg" loading="lazy">
                         <div class="flex-1">
                             <div class="text-base font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
                             <div class="text-sm text-gray-600 line-clamp-2 mt-1">${post.excerpt || ''}</div>
@@ -290,7 +290,7 @@
 
                 html += `
                     <a href="{{ url('/artikel') }}/${post.slug}" class="flex gap-3 no-underline rounded-xl p-2 hover:bg-gray-50">
-                        <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg">
+                        <img src="${featuredImage}" alt="${post.title}" class="w-16 h-16 object-cover rounded-lg" loading="lazy">
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">${post.title}</div>
                             <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">

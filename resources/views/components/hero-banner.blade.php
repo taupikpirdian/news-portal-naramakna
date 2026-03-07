@@ -17,7 +17,7 @@
     <!-- Hero Banner Ad Container -->
     <div id="{{ $componentId }}-ad-container" style="display: none;" class="relative">
         <a id="{{ $componentId }}-ad-link" target="_blank" rel="noopener noreferrer" class="block">
-            <img id="{{ $componentId }}-ad-image" class="w-full h-auto rounded-lg shadow-lg" alt="">
+            <img id="{{ $componentId }}-ad-image" class="w-full h-auto rounded-lg shadow-lg" alt="" loading="lazy">
         </a>
     </div>
 
