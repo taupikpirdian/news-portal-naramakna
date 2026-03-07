@@ -11,10 +11,10 @@
     <style>
         .ad-sidebar-left {
             position: fixed;
-            left: calc(50% - theme(maxWidth.6xl) / 2 - 10rem);
+            left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 900;
+            z-index: 950;
         }
 
         .ad-sidebar-right {
@@ -22,10 +22,10 @@
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 900;
+            z-index: 950;
         }
 
-        @media (min-width: 1024px) {
+        @media (min-width: 1280px) {
             .ad-sidebar-left {
                 display: block;
             }
@@ -34,19 +34,7 @@
             }
         }
 
-        @media (min-width: 1280px) {
-            .ad-sidebar-left {
-                left: calc(50% - theme(maxWidth.6xl) / 2 - 12rem);
-            }
-        }
-
-        @media (min-width: 1536px) {
-            .ad-sidebar-left {
-                left: calc(50% - theme(maxWidth.6xl) / 2 - 14rem);
-            }
-        }
-
-        @media (max-width: 1023px) {
+        @media (max-width: 1279px) {
             .ad-sidebar-left,
             .ad-sidebar-right {
                 display: none;
@@ -66,32 +54,34 @@
     @if($isLocalhost)
         {{-- Development Mode - Localhost Placeholder --}}
         <div class="ad-sidebar-left">
-            <div class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
-                <svg class="w-10 h-10 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+            <div class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                <svg class="w-12 h-12 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                 </svg>
                 <p class="text-sm font-bold">📢 Ad Space</p>
                 <p class="text-xs mt-1 opacity-90">Left Sidebar</p>
-                <p class="text-xs mt-2 bg-white/20 rounded px-2 py-1">160 × 600</p>
+                <p class="text-xs mt-2 bg-white/20 rounded-lg px-2 py-1 font-semibold">160 × 600</p>
+                <p class="text-xs mt-1 opacity-75">Skyscraper</p>
             </div>
         </div>
         <div class="ad-sidebar-right">
-            <div class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
-                <svg class="w-10 h-10 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+            <div class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                <svg class="w-12 h-12 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                 </svg>
                 <p class="text-sm font-bold">📢 Ad Space</p>
                 <p class="text-xs mt-1 opacity-90">Right Sidebar</p>
-                <p class="text-xs mt-2 bg-white/20 rounded px-2 py-1">160 × 600</p>
+                <p class="text-xs mt-2 bg-white/20 rounded-lg px-2 py-1 font-semibold">160 × 600</p>
+                <p class="text-xs mt-1 opacity-75">Skyscraper</p>
             </div>
         </div>
     @else
         {{-- Production Mode - Google AdSense --}}
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg" />
+            <x-google-ads type="sidebar_left" class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg" />
+            <x-google-ads type="sidebar_right" class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl" />
         </div>
     @endif
 
