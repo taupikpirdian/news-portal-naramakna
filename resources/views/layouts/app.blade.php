@@ -58,12 +58,42 @@
     @include("components.header")
     @include('components.sidebar')
 
-    {{-- <div class="ad-sidebar-left">
-        <img src="https://placehold.co/160x600/e2e8f0/64748b?text=Advertisement" alt="Advertisement" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
-    </div>
-    <div class="ad-sidebar-right">
-        <img src="https://placehold.co/160x600/e2e8f0/64748b?text=Advertisement" alt="Advertisement" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg">
-    </div> --}}
+    {{-- Sidebar Ads - Left & Right --}}
+    @php
+        $isLocalhost = request()->getHost() === 'localhost' || request()->getHost() === '127.0.0.1' || app()->environment('local');
+    @endphp
+
+    @if($isLocalhost)
+        {{-- Development Mode - Localhost Placeholder --}}
+        <div class="ad-sidebar-left">
+            <div class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                <svg class="w-10 h-10 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <p class="text-sm font-bold">📢 Ad Space</p>
+                <p class="text-xs mt-1 opacity-90">Left Sidebar</p>
+                <p class="text-xs mt-2 bg-white/20 rounded px-2 py-1">160 × 600</p>
+            </div>
+        </div>
+        <div class="ad-sidebar-right">
+            <div class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                <svg class="w-10 h-10 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <p class="text-sm font-bold">📢 Ad Space</p>
+                <p class="text-xs mt-1 opacity-90">Right Sidebar</p>
+                <p class="text-xs mt-2 bg-white/20 rounded px-2 py-1">160 × 600</p>
+            </div>
+        </div>
+    @else
+        {{-- Production Mode - Google AdSense --}}
+        <div class="ad-sidebar-left">
+            <x-google-ads type="sidebar_left" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg" />
+        </div>
+        <div class="ad-sidebar-right">
+            <x-google-ads type="sidebar_right" class="w-[9.25rem] h-auto max-h-[80vh] rounded-lg shadow-lg" />
+        </div>
+    @endif
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Hero Banner Ads --}}
