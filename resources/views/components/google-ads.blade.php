@@ -21,7 +21,7 @@
     // Get dimensions based on type
     $dimensions = match($type) {
         'leaderboard' => ['width' => '100%', 'height' => '90px', 'minHeight' => '90px'],
-        'sidebar_left', 'sidebar_right' => ['width' => '300px', 'height' => '250px', 'minHeight' => '250px'],
+        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '600px', 'minHeight' => '250px'],
         'in_article' => ['width' => '100%', 'height' => '100px', 'minHeight' => '100px'],
         default => ['width' => '100%', 'height' => '90px', 'minHeight' => '90px']
     };
