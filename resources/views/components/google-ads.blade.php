@@ -90,10 +90,10 @@
 
     @elseif($dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Production Mode: Real AdSense --}}
-        <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? 'my-4' }}" style="width: 100%; overflow: hidden; padding: 1rem 0; background-color: #f9fafb; border-radius: 8px; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 160px;' : 'max-width: 100%;' }}">
+        <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? 'my-4' }}" style="width: 100%; overflow: hidden; padding: 1rem 0; background-color: #f9fafb; border-radius: 8px; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 300px;' : 'max-width: 100%;' }}">
             <ins id="{{ $uniqueId }}"
                  class="adsbygoogle"
-                 style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:120px;' : 'min-width:250px;' }} min-height:90px;"
+                 style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:300px; width:300px;' : 'min-width:250px;' }} {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-height:250px; height:250px;' : 'min-height:90px;' }}"
                  data-ad-client="{{ $publisherId }}"
                  data-ad-format="{{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'vertical' : 'auto' }}"
                  data-full-width-responsive="true"></ins>
