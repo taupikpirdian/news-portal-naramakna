@@ -9,28 +9,34 @@
     @include("components.head")
     @stack('styles')
     <style>
-        .ad-sidebar-left {
+        :root {
+            --header-height: 190px;
+        }
+
+        .ad-sidebar-left,
+        .ad-sidebar-right {
             position: fixed;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
+            top: var(--header-height);
+            bottom: 1rem;
             z-index: 950;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 0.5rem;
+        }
+
+        .ad-sidebar-left {
+            left: 1rem;
         }
 
         .ad-sidebar-right {
-            position: fixed;
             right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 950;
         }
 
         @media (min-width: 1280px) {
-            .ad-sidebar-left {
-                display: block;
-            }
+            .ad-sidebar-left,
             .ad-sidebar-right {
-                display: block;
+                display: flex;
             }
         }
 
@@ -54,34 +60,84 @@
     @if($isLocalhost)
         {{-- Development Mode - Localhost Placeholder --}}
         <div class="ad-sidebar-left">
-            <div class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
-                <svg class="w-12 h-12 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                </svg>
-                <p class="text-sm font-bold">📢 Ad Space</p>
-                <p class="text-xs mt-1 opacity-90">Left Sidebar</p>
-                <p class="text-xs mt-2 bg-white/20 rounded-lg px-2 py-1 font-semibold">160 × 600</p>
-                <p class="text-xs mt-1 opacity-75">Skyscraper</p>
+            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center justify-center" style="width: 160px; height: 100%;">
+                {{-- Icon --}}
+                <div style="margin-bottom: 0.5rem;">
+                    <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+
+                {{-- Main Text --}}
+                <h3 style="font-size: 0.875rem; font-weight: 700; margin: 0 0 0.25rem 0; line-height: 1.2;">
+                    📢 Advertisement Space
+                </h3>
+
+                {{-- Subtitle --}}
+                <p style="font-size: 0.75rem; margin: 0 0 0.75rem 0; opacity: 0.9;">
+                    <span style="font-weight: 600;">Sidebar Left</span>
+                </p>
+
+                {{-- Info Box --}}
+                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 10px; max-width: 100%; border: 1px solid rgba(255,255,255,0.5);">
+                    <p style="font-size: 0.65rem; margin: 0; line-height: 1.4;">
+                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode:</strong> No ads on localhost</span>
+                    </p>
+                    <p style="font-size: 0.65rem; margin: 0.35rem 0 0 0; line-height: 1.4; opacity: 0.95;">
+                        ✅ <strong>Production domain</strong> only
+                    </p>
+                </div>
+
+                {{-- Size Badge --}}
+                <div style="margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.5); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.65rem;">
+                    <span style="opacity: 0.95;">📏</span>
+                    <span style="opacity: 1;">160 × Dynamic</span>
+                </div>
             </div>
         </div>
         <div class="ad-sidebar-right">
-            <div class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl p-4 text-center bg-gradient-to-br from-amber-500 to-orange-600 text-white">
-                <svg class="w-12 h-12 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                </svg>
-                <p class="text-sm font-bold">📢 Ad Space</p>
-                <p class="text-xs mt-1 opacity-90">Right Sidebar</p>
-                <p class="text-xs mt-2 bg-white/20 rounded-lg px-2 py-1 font-semibold">160 × 600</p>
-                <p class="text-xs mt-1 opacity-75">Skyscraper</p>
+            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center justify-center" style="width: 160px; height: 100%;">
+                {{-- Icon --}}
+                <div style="margin-bottom: 0.5rem;">
+                    <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+
+                {{-- Main Text --}}
+                <h3 style="font-size: 0.875rem; font-weight: 700; margin: 0 0 0.25rem 0; line-height: 1.2;">
+                    📢 Advertisement Space
+                </h3>
+
+                {{-- Subtitle --}}
+                <p style="font-size: 0.75rem; margin: 0 0 0.75rem 0; opacity: 0.9;">
+                    <span style="font-weight: 600;">Sidebar Right</span>
+                </p>
+
+                {{-- Info Box --}}
+                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 10px; max-width: 100%; border: 1px solid rgba(255,255,255,0.5);">
+                    <p style="font-size: 0.65rem; margin: 0; line-height: 1.4;">
+                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode:</strong> No ads on localhost</span>
+                    </p>
+                    <p style="font-size: 0.65rem; margin: 0.35rem 0 0 0; line-height: 1.4; opacity: 0.95;">
+                        ✅ <strong>Production domain</strong> only
+                    </p>
+                </div>
+
+                {{-- Size Badge --}}
+                <div style="margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.5); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.65rem;">
+                    <span style="opacity: 0.95;">📏</span>
+                    <span style="opacity: 1;">160 × Dynamic</span>
+                </div>
             </div>
         </div>
     @else
         {{-- Production Mode - Google AdSense --}}
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl" />
+            <x-google-ads type="sidebar_left" class="rounded-xl shadow-2xl" style="width: 160px; height: 100%;" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" class="w-36 h-auto max-h-[80vh] rounded-xl shadow-2xl" />
+            <x-google-ads type="sidebar_right" class="rounded-xl shadow-2xl" style="width: 160px; height: 100%;" />
         </div>
     @endif
 
@@ -116,6 +172,27 @@
         panel.classList.add('translate-x-full');
         setTimeout(() => el.classList.add('hidden'), 300);
     }
+
+    // Dynamic header height for sidebar ads
+    let resizeTimer;
+    function updateHeaderHeight() {
+        const header = document.querySelector('header');
+        if (header) {
+            const headerHeight = header.offsetHeight;
+            document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+        }
+    }
+
+    // Update on load with a small delay to ensure everything is rendered
+    window.addEventListener('load', function() {
+        setTimeout(updateHeaderHeight, 100);
+    });
+
+    // Debounced resize handler
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateHeaderHeight, 100);
+    });
     </script>
 </body>
 </html>
