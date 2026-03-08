@@ -21,7 +21,7 @@
     // Get dimensions based on type
     $dimensions = match($type) {
         'leaderboard' => ['width' => '100%', 'height' => '90px', 'minHeight' => '90px'],
-        'sidebar_left', 'sidebar_right' => ['width' => '300px', 'height' => '250px', 'minHeight' => '250px'],
+        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '600px', 'minHeight' => '250px'],
         'in_article' => ['width' => '100%', 'height' => '100px', 'minHeight' => '100px'],
         default => ['width' => '100%', 'height' => '90px', 'minHeight' => '90px']
     };
@@ -90,13 +90,13 @@
 
     @elseif($dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Production Mode: Real AdSense --}}
-        <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? 'my-4' }}" style="width: 100%; overflow: hidden; padding: 1rem 0; background-color: #f9fafb; border-radius: 8px; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 300px;' : 'max-width: 100%;' }}">
+        <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? '' }}" style="width: 100%; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 160px;' : 'max-width: 100%;' }}">
             <ins id="{{ $uniqueId }}"
                  class="adsbygoogle"
-                 style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:300px; width:300px;' : 'min-width:250px;' }} {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-height:250px; height:250px;' : 'min-height:90px;' }}"
+                 style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:160px; width:160px;' : 'min-width:250px;' }} {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-height:250px; height:600px;' : 'min-height:90px;' }}"
                  data-ad-client="{{ $publisherId }}"
                  data-ad-format="{{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'vertical' : 'auto' }}"
-                 data-full-width-responsive="true"></ins>
+                 data-full-width-responsive="false"></ins>
             <script>
                 (function() {
                     const adUniqueId = '{{ $uniqueId }}';
