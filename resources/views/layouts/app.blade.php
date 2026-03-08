@@ -134,10 +134,10 @@
     @else
         {{-- Production Mode - Google AdSense --}}
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" class="rounded-xl shadow-2xl" style="width: 160px; height: 100%;" />
+            <x-google-ads type="sidebar_left" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" class="rounded-xl shadow-2xl" style="width: 160px; height: 100%;" />
+            <x-google-ads type="sidebar_right" />
         </div>
     @endif
 
