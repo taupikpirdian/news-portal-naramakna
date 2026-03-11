@@ -116,63 +116,109 @@
                         });
                     }
 
-                    // Wait for DOM to be ready and element to have width
+                    // Global ad registry for tracking
+                    if (!window.naramaknaAds) {
+                        window.naramaknaAds = {
+                            initialized: new Set(),
+                            observer: null,
+                            initAd: function(elementId) {
+                                // Skip if already initialized
+                                if (this.initialized.has(elementId)) {
+                                    return;
+                                }
+
+                                const ins = document.getElementById(elementId);
+                                if (!ins) {
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.warn('%c✗ Ad element not found:', 'color: #ea4335;', elementId);
+                                    }
+                                    return;
+                                }
+
+                                // Check if element already has ads
+                                if (ins.getAttribute('data-adsbygoogle-status')) {
+                                    this.initialized.add(elementId);
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.log('%c○ Ad already initialized:', 'color: #fbbc04;', elementId);
+                                    }
+                                    return;
+                                }
+
+                                // Check if element has visible width
+                                const rect = ins.getBoundingClientRect();
+                                if (isLocalhost && typeof console !== 'undefined') {
+                                    console.log('%c[AdSense Dimensions]', 'color: #4285f4;', {
+                                        width: rect.width,
+                                        height: rect.height,
+                                        element: elementId
+                                    });
+                                }
+
+                                if (rect.width === 0) {
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.warn('%c⚠ Element has no width', 'color: #fbbc04;');
+                                    }
+                                    return;
+                                }
+
+                                // Push ad
+                                try {
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.log('%c⟳ Pushing ad to AdSense...', 'color: #4285f4;');
+                                    }
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    this.initialized.add(elementId);
+
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.warn('%c⚠ Running on localhost - Ads may not appear (403 error is normal)', 'color: #fbbc04; font-size: 12px;');
+                                        console.log('%c→ Ads will appear on production domain', 'color: #34a853; font-size: 12px;');
+                                    }
+                                } catch (e) {
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.error('%c✗ AdSense push error:', 'color: #ea4335;', e.message);
+                                    }
+                                }
+                            }
+                        };
+                    }
+
+                    // Register this ad for lazy loading
                     function initAd() {
                         if (window.adsbygoogle) {
                             if (isLocalhost && typeof console !== 'undefined') {
                                 console.log('%c✓ AdSense script loaded', 'color: #34a853; font-weight: bold;');
                             }
 
-                            const ins = document.getElementById(adUniqueId);
-                            if (!ins) {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.warn('%c✗ Ad element not found:', 'color: #ea4335;', adUniqueId);
+                            // For sidebar ads, initialize immediately (always visible)
+                            if (adType === 'sidebar_left' || adType === 'sidebar_right') {
+                                window.naramaknaAds.initAd(adUniqueId);
+                            } else {
+                                // For other ads, use Intersection Observer for lazy loading
+                                const ins = document.getElementById(adUniqueId);
+                                if (!ins) {
+                                    if (isLocalhost && typeof console !== 'undefined') {
+                                        console.warn('%c✗ Ad element not found:', 'color: #ea4335;', adUniqueId);
+                                    }
+                                    return;
                                 }
-                                return;
-                            }
 
-                            // Check if element already has ads
-                            if (ins.getAttribute('data-adsbygoogle-status')) {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.log('%c○ Ad already initialized:', 'color: #fbbc04;', adUniqueId);
+                                // Create observer if not exists
+                                if (!window.naramaknaAds.observer) {
+                                    window.naramaknaAds.observer = new IntersectionObserver((entries) => {
+                                        entries.forEach(entry => {
+                                            if (entry.isIntersecting) {
+                                                const elementId = entry.target.id;
+                                                window.naramaknaAds.initAd(elementId);
+                                                window.naramaknaAds.observer.unobserve(entry.target);
+                                            }
+                                        });
+                                    }, {
+                                        rootMargin: '200px' // Start loading 200px before viewport
+                                    });
                                 }
-                                return;
-                            }
 
-                            // Check if element has visible width
-                            const rect = ins.getBoundingClientRect();
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.log('%c[AdSense Dimensions]', 'color: #4285f4;', {
-                                    width: rect.width,
-                                    height: rect.height,
-                                    element: adUniqueId
-                                });
-                            }
-
-                            if (rect.width === 0) {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.warn('%c⚠ Element has no width, retrying...', 'color: #fbbc04;');
-                                }
-                                // Retry after a delay if element has no width yet
-                                setTimeout(initAd, 500);
-                                return;
-                            }
-
-                            // Push ad
-                            try {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.log('%c⟳ Pushing ad to AdSense...', 'color: #4285f4;');
-                                }
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.warn('%c⚠ Running on localhost - Ads may not appear (403 error is normal)', 'color: #fbbc04; font-size: 12px;');
-                                    console.log('%c→ Ads will appear on production domain', 'color: #34a853; font-size: 12px;');
-                                }
-                            } catch (e) {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.error('%c✗ AdSense push error:', 'color: #ea4335;', e.message);
-                                }
+                                // Observe this ad element
+                                window.naramaknaAds.observer.observe(ins);
                             }
                         } else {
                             if (isLocalhost && typeof console !== 'undefined') {
@@ -181,11 +227,11 @@
                         }
                     }
 
-                    // Wait for DOM and AdSense script to load
+                    // Initialize immediately when DOM is ready (no delay)
                     if (document.readyState === 'loading') {
-                        document.addEventListener('DOMContentLoaded', () => setTimeout(initAd, 300));
+                        document.addEventListener('DOMContentLoaded', initAd);
                     } else {
-                        setTimeout(initAd, 300);
+                        initAd();
                     }
                 })();
             </script>
@@ -205,10 +251,10 @@
     @endif
 @endif
 
-@push('styles')
+@push('head-scripts')
     @once
         @if($shouldDisplay && $dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0 && !$isLocalhost)
-            {{-- AdSense async script - only load for production --}}
+            {{-- AdSense async script - only load for production - Load early for better performance --}}
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $publisherId }}"
                     crossorigin="anonymous"></script>
         @endif

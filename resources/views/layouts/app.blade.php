@@ -7,6 +7,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
     @include("components.head")
+    @stack('head-scripts')
     @stack('styles')
     <style>
         :root {
