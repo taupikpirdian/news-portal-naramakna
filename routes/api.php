@@ -52,3 +52,8 @@ Route::prefix('google-ads')->name('api.google_ads.')->group(function () {
 // Ads Serving Routes
 // Public endpoint for serving ads
 Route::get('/ads/serve', [\App\Http\Controllers\AdsController::class, 'serve'])->name('api.ads.serve');
+
+// Instagram Routes
+// Public endpoint for Instagram media
+Route::get('/instagram/media', [\App\Http\Controllers\InstagramController::class, 'getMedia'])->name('api.instagram.media');
+

@@ -55,7 +55,9 @@
 
     {{-- Sidebar Ads - Left & Right --}}
     @php
-        $isLocalhost = request()->getHost() === 'localhost' || request()->getHost() === '127.0.0.1' || app()->environment('local');
+        // Uncomment line below to use localhost placeholder
+        // $isLocalhost = request()->getHost() === 'localhost' || request()->getHost() === '127.0.0.1' || app()->environment('local');
+        $isLocalhost = false; // Always use production mode to test ads
     @endphp
 
     @if($isLocalhost)

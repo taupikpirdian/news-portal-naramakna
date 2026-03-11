@@ -53,4 +53,9 @@ return [
         'auto_sync' => env('GOOGLE_ADS_AUTO_SYNC', true),
     ],
 
+    'instagram' => [
+        'access_token' => env('INSTAGRAM_ACCESS_TOKEN'),
+        'user_id' => env('INSTAGRAM_USER_ID'),
+    ],
+
 ];
