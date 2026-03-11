@@ -61,6 +61,16 @@
 <!-- RSS Feed -->
 <link rel="alternate" type="application/rss+xml" title="Naramakna - RSS Feed" href="{{ url('/feed') }}">
 
+<!-- DNS Prefetch for Google AdSense - Improves ad loading performance -->
+@php($publisherId = config('ads.adsense_publisher_id'))
+@if($publisherId && strpos($publisherId, 'ca-pub-') === 0)
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//googleads.g.doubleclick.net">
+<link rel="dns-prefetch" href="//tpc.googlesyndication.com">
+<link rel="preconnect" href="//pagead2.googlesyndication.com" crossorigin>
+<link rel="preconnect" href="//googleads.g.doubleclick.net" crossorigin>
+@endif
+
 @php($gaId = config('analytics.measurement_id'))
 @if(!empty($gaId))
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
