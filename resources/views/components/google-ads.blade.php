@@ -137,23 +137,10 @@
                         currentHost: window.location.hostname
                     });
 
-                    // Show fallback when AdSense is blocked (only for non-sidebar ads)
+                    // Show fallback when AdSense is blocked (no-op for cleaner approach)
                     function showFallback() {
-                        // Don't show fallback for sidebar ads - just leave them empty
-                        if (adType === 'sidebar_left' || adType === 'sidebar_right') {
-                            logDebug('info', 'Sidebar ad not loaded, leaving space empty', { adType });
-                            return;
-                        }
-
-                        const fallback = document.getElementById(fallbackId);
-                        const ins = document.getElementById(adUniqueId);
-                        if (fallback) {
-                            fallback.style.display = 'block';
-                            if (ins) {
-                                ins.style.display = 'none';
-                            }
-                            logDebug('warning', 'Fallback shown (AdSense blocked or not loaded)', { adType });
-                        }
+                        // Let AdSense handle response naturally - no fallback interference
+                        logDebug('info', 'Ad loading naturally based on AdSense response', { adType });
                     }
 
                     // Global ad registry for tracking
@@ -161,8 +148,6 @@
                         window.naramaknaAds = {
                             initialized: new Set(),
                             observer: null,
-                            adSenseLoaded: false,
-                            fallbackTimeouts: new Map(),
                             initAd: function(elementId) {
                                 // Skip if already initialized
                                 if (this.initialized.has(elementId)) {
@@ -182,26 +167,7 @@
                                     return;
                                 }
 
-                                // Clear fallback timeout if ad is initializing
-                                if (this.fallbackTimeouts.has(elementId)) {
-                                    clearTimeout(this.fallbackTimeouts.get(elementId));
-                                    this.fallbackTimeouts.delete(elementId);
-                                }
-
-                                // Check if element has visible width
-                                const rect = ins.getBoundingClientRect();
-                                logDebug('info', 'Element dimensions', {
-                                    width: rect.width,
-                                    height: rect.height,
-                                    element: elementId
-                                });
-
-                                if (rect.width === 0) {
-                                    logDebug('warning', 'Element has no width', null);
-                                    return;
-                                }
-
-                                // Push ad
+                                // Push ad immediately - AdSense will handle the response
                                 try {
                                     logDebug('info', 'Pushing ad to AdSense...', null);
                                     (adsbygoogle = window.adsbygoogle || []).push({});
@@ -213,20 +179,7 @@
                                     }
                                 } catch (e) {
                                     logDebug('error', 'AdSense push error', e.message);
-                                    showFallback();
                                 }
-                            },
-                            waitForAdSense: function(elementId, timeout = 10000) {
-                                // Set timeout to show fallback if AdSense doesn't load (default 10 seconds)
-                                const timeoutId = setTimeout(() => {
-                                    const ins = document.getElementById(elementId);
-                                    // Only show fallback for non-sidebar ads if truly empty
-                                    if (ins && !ins.getAttribute('data-ad-status') && adType !== 'sidebar_left' && adType !== 'sidebar_right') {
-                                        logDebug('warning', 'AdSense not loaded after timeout, showing fallback', { elementId, timeout });
-                                        showFallback();
-                                    }
-                                }, timeout);
-                                this.fallbackTimeouts.set(elementId, timeoutId);
                             }
                         };
                     }
@@ -237,21 +190,16 @@
                         if (typeof window.loadAdSenseScript === 'function') {
                             window.loadAdSenseScript()
                                 .then(function() {
-                                    // Script loaded successfully
-                                    window.naramaknaAds.adSenseLoaded = true;
                                     logDebug('success', 'AdSense script loaded', null);
 
                                     // For sidebar ads, initialize immediately (always visible)
                                     if (adType === 'sidebar_left' || adType === 'sidebar_right') {
                                         window.naramaknaAds.initAd(adUniqueId);
-                                        // Set timeout to show fallback if ad doesn't render (10 seconds)
-                                        window.naramaknaAds.waitForAdSense(adUniqueId, 10000);
                                     } else {
                                         // For other ads, use Intersection Observer for lazy loading
                                         const ins = document.getElementById(adUniqueId);
                                         if (!ins) {
                                             logDebug('error', 'Ad element not found', adUniqueId);
-                                            showFallback();
                                             return;
                                         }
 
@@ -262,7 +210,6 @@
                                                     if (entry.isIntersecting) {
                                                         const elementId = entry.target.id;
                                                         window.naramaknaAds.initAd(elementId);
-                                                        window.naramaknaAds.waitForAdSense(elementId, 10000);
                                                         window.naramaknaAds.observer.unobserve(entry.target);
                                                     }
                                                 });
@@ -277,23 +224,18 @@
                                 })
                                 .catch(function(err) {
                                     logDebug('error', 'Failed to load AdSense script', err.message);
-                                    // Show fallback if script loading failed
-                                    showFallback();
                                 });
                         } else if (window.adsbygoogle) {
                             // Script already loaded, proceed with initialization
-                            window.naramaknaAds.adSenseLoaded = true;
                             logDebug('success', 'AdSense script already loaded', null);
 
                             // For sidebar ads, initialize immediately
                             if (adType === 'sidebar_left' || adType === 'sidebar_right') {
                                 window.naramaknaAds.initAd(adUniqueId);
-                                window.naramaknaAds.waitForAdSense(adUniqueId, 10000);
                             } else {
                                 const ins = document.getElementById(adUniqueId);
                                 if (!ins) {
                                     logDebug('error', 'Ad element not found', adUniqueId);
-                                    showFallback();
                                     return;
                                 }
 
@@ -303,7 +245,6 @@
                                             if (entry.isIntersecting) {
                                                 const elementId = entry.target.id;
                                                 window.naramaknaAds.initAd(elementId);
-                                                window.naramaknaAds.waitForAdSense(elementId, 10000);
                                                 window.naramaknaAds.observer.unobserve(entry.target);
                                             }
                                         });
@@ -316,8 +257,6 @@
                             }
                         } else {
                             logDebug('error', 'AdSense script loader not available (blocked?)', null);
-                            // Show fallback immediately if script loader is not available
-                            showFallback();
                         }
                     }
 
@@ -327,16 +266,6 @@
                     } else {
                         initAd();
                     }
-
-                    // Also check on window load to handle slow script loading
-                    window.addEventListener('load', function() {
-                        setTimeout(function() {
-                            if (!window.adsbygoogle) {
-                                logDebug('error', 'AdSense still not loaded after window.load', null);
-                                showFallback();
-                            }
-                        }, 1000);
-                    });
                 })();
             </script>
         </div>
@@ -408,13 +337,10 @@
                     // Store loader function globally
                     window.loadAdSenseScript = loadAdSenseScript;
 
-                    // Load script immediately for non-production
-                    // For production, let each ad component trigger loading when needed
-                    if (!isLocal) {
-                        loadAdSenseScript().catch(function(err) {
-                            console.error('[AdSense] Script loading failed:', err);
-                        });
-                    }
+                    // Load script immediately for ALL environments
+                    loadAdSenseScript().catch(function(err) {
+                        console.error('[AdSense] Script loading failed:', err);
+                    });
                 })();
             </script>
         @endif
