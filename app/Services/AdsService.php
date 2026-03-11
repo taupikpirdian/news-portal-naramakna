@@ -106,7 +106,7 @@ class AdsService
      */
     private function isValidPlacement(string $placement): bool
     {
-        $validPlacements = ['hero-banner', 'sidebar-left', 'sidebar-right', 'in-article'];
+        $validPlacements = ['hero-banner', 'sidebar', 'sidebar-left', 'sidebar-right', 'in-article'];
         return in_array($placement, $validPlacements);
     }
 

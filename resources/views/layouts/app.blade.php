@@ -133,12 +133,12 @@
             </div>
         </div>
     @else
-        {{-- Production Mode - Google AdSense --}}
+        {{-- Production Mode - Fetch from API first --}}
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" />
+            <x-sidebar-ads side="left" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" />
+            <x-sidebar-ads side="right" />
         </div>
     @endif
 
