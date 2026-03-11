@@ -39,10 +39,15 @@ class InstagramService
                 ];
             }
 
+            // Fetch MORE posts first, then filter to get desired number of feed posts
+            // Multiply by 3 to account for excluded reels
+            $fetchLimit = min($limit * 3, 50);
+
             // Fetch posts from Instagram Graph API
+            // Add more fields to get video thumbnails
             $response = Http::get("https://graph.instagram.com/{$userId}/media", [
-                'fields' => 'id,caption,media_type,media_url,permalink,thumbnail_url,like_count,comments_count,timestamp',
-                'limit' => $limit,
+                'fields' => 'id,caption,media_type,media_url,permalink,thumbnail_url,video_url,like_count,comments_count,timestamp',
+                'limit' => $fetchLimit,
                 'access_token' => $accessToken,
             ]);
 
@@ -68,22 +73,35 @@ class InstagramService
                 ];
             }
 
-            // Include all media types: IMAGE, VIDEO, CAROUSEL_ALBUM
-            // Use thumbnail_url for videos, media_url for images
+            // Include ALL media types: IMAGE, VIDEO, CAROUSEL_ALBUM
+            // For videos, use thumbnail_url as fallback
             $media = collect($data['data'])
                 ->take($limit)
                 ->map(function ($item) {
+                    $mediaType = $item['media_type'] ?? 'IMAGE';
+                    $imageUrl = $item['media_url'] ?? null;
+
+                    // For VIDEO/REELS, use thumbnail_url if available
+                    if ($mediaType === 'VIDEO' && isset($item['thumbnail_url'])) {
+                        $imageUrl = $item['thumbnail_url'];
+                    }
+
                     return [
                         'id' => $item['id'] ?? null,
                         'caption' => $item['caption'] ?? '',
-                        'media_type' => $item['media_type'] ?? 'IMAGE',
+                        'media_type' => $mediaType,
                         'media_url' => $item['media_url'] ?? null,
                         'thumbnail_url' => $item['thumbnail_url'] ?? null,
+                        'image_url' => $imageUrl,
                         'permalink' => $item['permalink'] ?? '#',
                         'like_count' => $item['like_count'] ?? 0,
                         'comments_count' => $item['comments_count'] ?? 0,
                         'timestamp' => $item['timestamp'] ?? null,
                     ];
+                })
+                ->filter(function ($item) {
+                    // Only include items that have an image URL
+                    return !is_null($item['image_url']);
                 })
                 ->values()
                 ->toArray();

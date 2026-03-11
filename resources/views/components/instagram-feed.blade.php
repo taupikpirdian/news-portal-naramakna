@@ -113,10 +113,27 @@
         a.className = 'group relative aspect-square rounded-xl overflow-hidden no-underline';
 
         const img = document.createElement('img');
-        img.src = post.media_url || post.thumbnail_url;
+        // Use image_url (computed by backend), fallback to media_url or thumbnail_url
+        img.src = post.image_url || post.media_url || post.thumbnail_url;
         img.alt = post.caption ? post.caption.substring(0, 50) + '...' : `Instagram post ${index + 1}`;
         img.className = 'w-full h-full object-cover transition-transform duration-300 group-hover:scale-110';
         img.loading = 'lazy';
+
+        // Add error handling for missing images
+        img.onerror = function() {
+            console.warn(`[Instagram Feed] Failed to load image for post ${index + 1}:`, post.id);
+            this.style.display = 'none';
+            const parent = this.parentElement;
+            if (parent) {
+                parent.innerHTML = `
+                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
+                        <svg class="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 3h13v2h-13v-2zM4 7h13v2h-13v-2zM4 11h13v2h-13v-2zM4 15h13v2h-13v-2zM4 19h13v2h-13v-2z"/>
+                        </svg>
+                    </div>
+                `;
+            }
+        };
 
         const overlay = document.createElement('div');
         overlay.className = 'absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300';
