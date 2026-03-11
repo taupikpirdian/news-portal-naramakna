@@ -91,6 +91,37 @@
     @elseif($dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Production Mode: Real AdSense --}}
         <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? '' }}" style="width: 100%; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 160px;' : 'max-width: 100%;' }}">
+            {{-- Fallback placeholder (shown when AdSense is blocked) --}}
+            <div id="{{ $uniqueId }}-fallback"
+                 class="google-ads-fallback"
+                 style="display: none; width: 100%; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 8px; padding: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.75rem' : '1.5rem' }}; text-align: center; position: relative; overflow: hidden; border: 1px solid #fbbf24;">
+                <div style="position: relative; z-index: 1; color: #1f2937;">
+                    {{-- Icon --}}
+                    <div style="margin-bottom: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.5rem' : '0.75rem' }};">
+                        <svg style="width: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '24px' : '32px' }}; height: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '24px' : '32px' }}; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                    </div>
+
+                    {{-- Main Text --}}
+                    <h3 style="font-size: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.75rem' : '1rem' }}; font-weight: 700; margin: 0 0 {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.25rem' : '0.5rem' }} 0; line-height: 1.2;">
+                        📢 Advertisement
+                    </h3>
+
+                    {{-- Info --}}
+                    <p style="font-size: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.65rem' : '0.75rem' }}; margin: 0; opacity: 0.9;">
+                        <span style="font-weight: 600;">{{ str_replace('_', ' ', ucfirst($type)) }}</span>
+                    </p>
+
+                    {{-- Warning Box --}}
+                    <div style="background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-radius: 6px; padding: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.5rem 0.6rem' : '0.6rem 0.8rem' }}; margin: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.5rem auto' : '0.75rem auto' }}; max-width: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '140px' : '350px' }}; border: 1px solid rgba(255,255,255,0.5);">
+                        <p style="font-size: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.6rem' : '0.7rem' }}; margin: 0; line-height: 1.4;">
+                            <span style="opacity: 0.95;">🛡️ <strong>Ad Blocked:</strong> Disable ad blocker or tracking protection</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <ins id="{{ $uniqueId }}"
                  class="adsbygoogle"
                  style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:160px; width:160px;' : 'min-width:250px;' }} {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-height:250px; height:600px;' : 'min-height:90px;' }}"
@@ -103,17 +134,40 @@
                     const adType = '{{ $type }}';
                     const publisherId = '{{ $publisherId }}';
                     const isLocalhost = {{ $isLocalhost ? 'true' : 'false' }};
+                    const fallbackId = adUniqueId + '-fallback';
 
-                    // Console logging ONLY for development/localhost
-                    if (isLocalhost && typeof console !== 'undefined') {
-                        console.log('%c[AdSense Debug]', 'background: #4285f4; color: white; padding: 4px 8px; border-radius: 4px;', {
-                            adType: adType,
-                            publisherId: publisherId,
-                            uniqueId: adUniqueId,
-                            isLocalhost: isLocalhost,
-                            currentHost: window.location.hostname,
-                            elementId: adUniqueId
-                        });
+                    // Console logging for development/localhost
+                    function logDebug(type, message, data) {
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            const styles = {
+                                info: 'background: #4285f4; color: white; padding: 4px 8px; border-radius: 4px;',
+                                success: 'background: #34a853; color: white; padding: 4px 8px; border-radius: 4px;',
+                                warning: 'background: #fbbc04; color: white; padding: 4px 8px; border-radius: 4px;',
+                                error: 'background: #ea4335; color: white; padding: 4px 8px; border-radius: 4px;'
+                            };
+                            console.log('%c[AdSense ' + type + ']', styles[type] || styles.info, message, data || '');
+                        }
+                    }
+
+                    logDebug('info', 'Initializing', {
+                        adType: adType,
+                        publisherId: publisherId,
+                        uniqueId: adUniqueId,
+                        isLocalhost: isLocalhost,
+                        currentHost: window.location.hostname
+                    });
+
+                    // Show fallback when AdSense is blocked
+                    function showFallback() {
+                        const fallback = document.getElementById(fallbackId);
+                        const ins = document.getElementById(adUniqueId);
+                        if (fallback) {
+                            fallback.style.display = 'block';
+                            if (ins) {
+                                ins.style.display = 'none';
+                            }
+                            logDebug('warning', 'Fallback shown (AdSense blocked or not loaded)', { adType });
+                        }
                     }
 
                     // Global ad registry for tracking
@@ -121,6 +175,8 @@
                         window.naramaknaAds = {
                             initialized: new Set(),
                             observer: null,
+                            adSenseLoaded: false,
+                            fallbackTimeouts: new Map(),
                             initAd: function(elementId) {
                                 // Skip if already initialized
                                 if (this.initialized.has(elementId)) {
@@ -129,110 +185,170 @@
 
                                 const ins = document.getElementById(elementId);
                                 if (!ins) {
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.warn('%c✗ Ad element not found:', 'color: #ea4335;', elementId);
-                                    }
+                                    logDebug('error', 'Ad element not found', elementId);
                                     return;
                                 }
 
                                 // Check if element already has ads
                                 if (ins.getAttribute('data-adsbygoogle-status')) {
                                     this.initialized.add(elementId);
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.log('%c○ Ad already initialized:', 'color: #fbbc04;', elementId);
-                                    }
+                                    logDebug('warning', 'Ad already initialized', elementId);
                                     return;
+                                }
+
+                                // Clear fallback timeout if ad is initializing
+                                if (this.fallbackTimeouts.has(elementId)) {
+                                    clearTimeout(this.fallbackTimeouts.get(elementId));
+                                    this.fallbackTimeouts.delete(elementId);
                                 }
 
                                 // Check if element has visible width
                                 const rect = ins.getBoundingClientRect();
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.log('%c[AdSense Dimensions]', 'color: #4285f4;', {
-                                        width: rect.width,
-                                        height: rect.height,
-                                        element: elementId
-                                    });
-                                }
+                                logDebug('info', 'Element dimensions', {
+                                    width: rect.width,
+                                    height: rect.height,
+                                    element: elementId
+                                });
 
                                 if (rect.width === 0) {
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.warn('%c⚠ Element has no width', 'color: #fbbc04;');
-                                    }
+                                    logDebug('warning', 'Element has no width', null);
                                     return;
                                 }
 
                                 // Push ad
                                 try {
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.log('%c⟳ Pushing ad to AdSense...', 'color: #4285f4;');
-                                    }
+                                    logDebug('info', 'Pushing ad to AdSense...', null);
                                     (adsbygoogle = window.adsbygoogle || []).push({});
                                     this.initialized.add(elementId);
 
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.warn('%c⚠ Running on localhost - Ads may not appear (403 error is normal)', 'color: #fbbc04; font-size: 12px;');
-                                        console.log('%c→ Ads will appear on production domain', 'color: #34a853; font-size: 12px;');
+                                    if (isLocalhost) {
+                                        logDebug('warning', 'Running on localhost - 403 error is normal', null);
+                                        logDebug('success', 'Ads will appear on production domain', null);
                                     }
                                 } catch (e) {
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.error('%c✗ AdSense push error:', 'color: #ea4335;', e.message);
-                                    }
+                                    logDebug('error', 'AdSense push error', e.message);
+                                    showFallback();
                                 }
+                            },
+                            waitForAdSense: function(elementId, timeout = 5000) {
+                                // Set timeout to show fallback if AdSense doesn't load
+                                const timeoutId = setTimeout(() => {
+                                    if (!this.adSenseLoaded || !this.initialized.has(elementId)) {
+                                        logDebug('warning', 'AdSense not loaded after timeout, showing fallback', { elementId, timeout });
+                                        showFallback();
+                                    }
+                                }, timeout);
+                                this.fallbackTimeouts.set(elementId, timeoutId);
                             }
                         };
                     }
 
                     // Register this ad for lazy loading
                     function initAd() {
-                        if (window.adsbygoogle) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.log('%c✓ AdSense script loaded', 'color: #34a853; font-weight: bold;');
-                            }
+                        // Wait for AdSense script to load first
+                        if (typeof window.loadAdSenseScript === 'function') {
+                            window.loadAdSenseScript()
+                                .then(function() {
+                                    // Script loaded successfully
+                                    window.naramaknaAds.adSenseLoaded = true;
+                                    logDebug('success', 'AdSense script loaded', null);
 
-                            // For sidebar ads, initialize immediately (always visible)
+                                    // For sidebar ads, initialize immediately (always visible)
+                                    if (adType === 'sidebar_left' || adType === 'sidebar_right') {
+                                        window.naramaknaAds.initAd(adUniqueId);
+                                        // Set timeout to show fallback if ad doesn't render
+                                        window.naramaknaAds.waitForAdSense(adUniqueId, 5000);
+                                    } else {
+                                        // For other ads, use Intersection Observer for lazy loading
+                                        const ins = document.getElementById(adUniqueId);
+                                        if (!ins) {
+                                            logDebug('error', 'Ad element not found', adUniqueId);
+                                            showFallback();
+                                            return;
+                                        }
+
+                                        // Create observer if not exists
+                                        if (!window.naramaknaAds.observer) {
+                                            window.naramaknaAds.observer = new IntersectionObserver((entries) => {
+                                                entries.forEach(entry => {
+                                                    if (entry.isIntersecting) {
+                                                        const elementId = entry.target.id;
+                                                        window.naramaknaAds.initAd(elementId);
+                                                        window.naramaknaAds.waitForAdSense(elementId, 5000);
+                                                        window.naramaknaAds.observer.unobserve(entry.target);
+                                                    }
+                                                });
+                                            }, {
+                                                rootMargin: '200px' // Start loading 200px before viewport
+                                            });
+                                        }
+
+                                        // Observe this ad element
+                                        window.naramaknaAds.observer.observe(ins);
+                                    }
+                                })
+                                .catch(function(err) {
+                                    logDebug('error', 'Failed to load AdSense script', err.message);
+                                    // Show fallback if script loading failed
+                                    showFallback();
+                                });
+                        } else if (window.adsbygoogle) {
+                            // Script already loaded, proceed with initialization
+                            window.naramaknaAds.adSenseLoaded = true;
+                            logDebug('success', 'AdSense script already loaded', null);
+
+                            // For sidebar ads, initialize immediately
                             if (adType === 'sidebar_left' || adType === 'sidebar_right') {
                                 window.naramaknaAds.initAd(adUniqueId);
+                                window.naramaknaAds.waitForAdSense(adUniqueId, 5000);
                             } else {
-                                // For other ads, use Intersection Observer for lazy loading
                                 const ins = document.getElementById(adUniqueId);
                                 if (!ins) {
-                                    if (isLocalhost && typeof console !== 'undefined') {
-                                        console.warn('%c✗ Ad element not found:', 'color: #ea4335;', adUniqueId);
-                                    }
+                                    logDebug('error', 'Ad element not found', adUniqueId);
+                                    showFallback();
                                     return;
                                 }
 
-                                // Create observer if not exists
                                 if (!window.naramaknaAds.observer) {
                                     window.naramaknaAds.observer = new IntersectionObserver((entries) => {
                                         entries.forEach(entry => {
                                             if (entry.isIntersecting) {
                                                 const elementId = entry.target.id;
                                                 window.naramaknaAds.initAd(elementId);
+                                                window.naramaknaAds.waitForAdSense(elementId, 5000);
                                                 window.naramaknaAds.observer.unobserve(entry.target);
                                             }
                                         });
                                     }, {
-                                        rootMargin: '200px' // Start loading 200px before viewport
+                                        rootMargin: '200px'
                                     });
                                 }
 
-                                // Observe this ad element
                                 window.naramaknaAds.observer.observe(ins);
                             }
                         } else {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.warn('%c✗ AdSense script not loaded', 'color: #ea4335;');
-                            }
+                            logDebug('error', 'AdSense script loader not available (blocked?)', null);
+                            // Show fallback immediately if script loader is not available
+                            showFallback();
                         }
                     }
 
-                    // Initialize immediately when DOM is ready (no delay)
+                    // Initialize immediately when DOM is ready
                     if (document.readyState === 'loading') {
                         document.addEventListener('DOMContentLoaded', initAd);
                     } else {
                         initAd();
                     }
+
+                    // Also check on window load to handle slow script loading
+                    window.addEventListener('load', function() {
+                        setTimeout(function() {
+                            if (!window.adsbygoogle) {
+                                logDebug('error', 'AdSense still not loaded after window.load', null);
+                                showFallback();
+                            }
+                        }, 1000);
+                    });
                 })();
             </script>
         </div>
@@ -253,10 +369,66 @@
 
 @push('head-scripts')
     @once
-        @if($shouldDisplay && $dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0 && !$isLocalhost)
-            {{-- AdSense async script - only load for production - Load early for better performance --}}
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $publisherId }}"
-                    crossorigin="anonymous"></script>
+        @if($shouldDisplay && $dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
+            {{-- AdSense Script Loader - Load manually like React does for better browser compatibility --}}
+            <script>
+                (function() {
+                    // Only load if not already loaded
+                    if (window.adsenseScriptLoaded) {
+                        return;
+                    }
+
+                    const publisherId = '{{ $publisherId }}';
+                    const isLocal = {{ $isLocalhost ? 'true' : 'false' }};
+
+                    // Function to load AdSense script manually
+                    function loadAdSenseScript() {
+                        return new Promise((resolve, reject) => {
+                            // Check if already loaded
+                            if (window.adsbygoogle) {
+                                resolve();
+                                return;
+                            }
+
+                            // Create script element manually (like React does)
+                            const script = document.createElement('script');
+                            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + publisherId;
+                            script.async = true;
+                            script.crossOrigin = 'anonymous';
+                            script.onerror = function() {
+                                console.error('[AdSense] Failed to load script');
+                                reject(new Error('Failed to load AdSense script'));
+                            };
+                            script.onload = function() {
+                                window.adsenseScriptLoaded = true;
+                                if (isLocal) {
+                                    console.log('%c[AdSense] Script loaded successfully', 'background: #34a853; color: white; padding: 4px 8px; border-radius: 4px;');
+                                }
+                                resolve();
+                            };
+
+                            // Insert script as early as possible
+                            const firstScript = document.getElementsByTagName('script')[0];
+                            if (firstScript && firstScript.parentNode) {
+                                firstScript.parentNode.insertBefore(script, firstScript);
+                            } else {
+                                document.head.appendChild(script);
+                            }
+                        });
+                    }
+
+                    // Store loader function globally
+                    window.loadAdSenseScript = loadAdSenseScript;
+
+                    // Load script immediately for non-production
+                    // For production, let each ad component trigger loading when needed
+                    if (!isLocal) {
+                        loadAdSenseScript().catch(function(err) {
+                            console.error('[AdSense] Script loading failed:', err);
+                        });
+                    }
+                })();
+            </script>
         @endif
     @endonce
 @endpush
