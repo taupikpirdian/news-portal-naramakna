@@ -91,36 +91,16 @@
     @elseif($dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Production Mode: Real AdSense --}}
         <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? '' }}" style="width: 100%; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 160px;' : 'max-width: 100%;' }}">
-            {{-- Fallback placeholder (shown when AdSense is blocked) --}}
-            <div id="{{ $uniqueId }}-fallback"
-                 class="google-ads-fallback"
-                 style="display: none; width: 100%; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 8px; padding: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.75rem' : '1.5rem' }}; text-align: center; position: relative; overflow: hidden; border: 1px solid #fbbf24;">
-                <div style="position: relative; z-index: 1; color: #1f2937;">
-                    {{-- Icon --}}
-                    <div style="margin-bottom: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.5rem' : '0.75rem' }};">
-                        <svg style="width: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '24px' : '32px' }}; height: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '24px' : '32px' }}; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                        </svg>
-                    </div>
-
-                    {{-- Main Text --}}
-                    <h3 style="font-size: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.75rem' : '1rem' }}; font-weight: 700; margin: 0 0 {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.25rem' : '0.5rem' }} 0; line-height: 1.2;">
-                        📢 Advertisement
-                    </h3>
-
-                    {{-- Info --}}
-                    <p style="font-size: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.65rem' : '0.75rem' }}; margin: 0; opacity: 0.9;">
-                        <span style="font-weight: 600;">{{ str_replace('_', ' ', ucfirst($type)) }}</span>
-                    </p>
-
-                    {{-- Warning Box --}}
-                    <div style="background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); border-radius: 6px; padding: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.5rem 0.6rem' : '0.6rem 0.8rem' }}; margin: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.5rem auto' : '0.75rem auto' }}; max-width: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '140px' : '350px' }}; border: 1px solid rgba(255,255,255,0.5);">
-                        <p style="font-size: {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? '0.6rem' : '0.7rem' }}; margin: 0; line-height: 1.4;">
-                            <span style="opacity: 0.95;">🛡️ <strong>Ad Blocked:</strong> Disable ad blocker or tracking protection</span>
-                        </p>
+            {{-- Fallback placeholder (only for non-sidebar ads) --}}
+            @if(!in_array($type, ['sidebar_left', 'sidebar_right']))
+                <div id="{{ $uniqueId }}-fallback"
+                     class="google-ads-fallback"
+                     style="display: none; width: 100%; background: transparent; padding: 1rem; text-align: center;">
+                    <div style="color: #9ca3af; font-size: 0.75rem; padding: 0.5rem;">
+                        <span style="opacity: 0.7;">Advertisement</span>
                     </div>
                 </div>
-            </div>
+            @endif
 
             <ins id="{{ $uniqueId }}"
                  class="adsbygoogle"
@@ -157,8 +137,14 @@
                         currentHost: window.location.hostname
                     });
 
-                    // Show fallback when AdSense is blocked
+                    // Show fallback when AdSense is blocked (only for non-sidebar ads)
                     function showFallback() {
+                        // Don't show fallback for sidebar ads - just leave them empty
+                        if (adType === 'sidebar_left' || adType === 'sidebar_right') {
+                            logDebug('info', 'Sidebar ad not loaded, leaving space empty', { adType });
+                            return;
+                        }
+
                         const fallback = document.getElementById(fallbackId);
                         const ins = document.getElementById(adUniqueId);
                         if (fallback) {
@@ -230,10 +216,12 @@
                                     showFallback();
                                 }
                             },
-                            waitForAdSense: function(elementId, timeout = 5000) {
-                                // Set timeout to show fallback if AdSense doesn't load
+                            waitForAdSense: function(elementId, timeout = 10000) {
+                                // Set timeout to show fallback if AdSense doesn't load (default 10 seconds)
                                 const timeoutId = setTimeout(() => {
-                                    if (!this.adSenseLoaded || !this.initialized.has(elementId)) {
+                                    const ins = document.getElementById(elementId);
+                                    // Only show fallback for non-sidebar ads if truly empty
+                                    if (ins && !ins.getAttribute('data-ad-status') && adType !== 'sidebar_left' && adType !== 'sidebar_right') {
                                         logDebug('warning', 'AdSense not loaded after timeout, showing fallback', { elementId, timeout });
                                         showFallback();
                                     }
@@ -256,8 +244,8 @@
                                     // For sidebar ads, initialize immediately (always visible)
                                     if (adType === 'sidebar_left' || adType === 'sidebar_right') {
                                         window.naramaknaAds.initAd(adUniqueId);
-                                        // Set timeout to show fallback if ad doesn't render
-                                        window.naramaknaAds.waitForAdSense(adUniqueId, 5000);
+                                        // Set timeout to show fallback if ad doesn't render (10 seconds)
+                                        window.naramaknaAds.waitForAdSense(adUniqueId, 10000);
                                     } else {
                                         // For other ads, use Intersection Observer for lazy loading
                                         const ins = document.getElementById(adUniqueId);
@@ -274,7 +262,7 @@
                                                     if (entry.isIntersecting) {
                                                         const elementId = entry.target.id;
                                                         window.naramaknaAds.initAd(elementId);
-                                                        window.naramaknaAds.waitForAdSense(elementId, 5000);
+                                                        window.naramaknaAds.waitForAdSense(elementId, 10000);
                                                         window.naramaknaAds.observer.unobserve(entry.target);
                                                     }
                                                 });
@@ -300,7 +288,7 @@
                             // For sidebar ads, initialize immediately
                             if (adType === 'sidebar_left' || adType === 'sidebar_right') {
                                 window.naramaknaAds.initAd(adUniqueId);
-                                window.naramaknaAds.waitForAdSense(adUniqueId, 5000);
+                                window.naramaknaAds.waitForAdSense(adUniqueId, 10000);
                             } else {
                                 const ins = document.getElementById(adUniqueId);
                                 if (!ins) {
@@ -315,7 +303,7 @@
                                             if (entry.isIntersecting) {
                                                 const elementId = entry.target.id;
                                                 window.naramaknaAds.initAd(elementId);
-                                                window.naramaknaAds.waitForAdSense(elementId, 5000);
+                                                window.naramaknaAds.waitForAdSense(elementId, 10000);
                                                 window.naramaknaAds.observer.unobserve(entry.target);
                                             }
                                         });
