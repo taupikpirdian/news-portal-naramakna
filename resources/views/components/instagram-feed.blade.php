@@ -3,7 +3,7 @@
 ])
 
 @php
-    $apiUrl = config('app.url') . '/api/instagram/media?limit=' . $limit;
+    $apiUrl = config('app.url') . '/api/v1/instagram/media?limit=' . $limit;
 @endphp
 
 @if(config('ads.instagram_feed_enabled'))
