@@ -1,10 +1,9 @@
 @props([
-    'placement' => 'sidebar',
     'side' => 'left', // left or right
 ])
 
 @php
-    // Use 'sidebar' for both sides - API will return available ads
+    // Use 'sidebar' (same as production frontend)
     $apiUrl = config('app.url') . '/api/ads/serve?placement=sidebar&limit=1';
     $componentId = 'sidebar-' . $side . '-' . uniqid();
 @endphp
