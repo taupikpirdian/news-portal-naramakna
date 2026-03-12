@@ -18,12 +18,13 @@
         .ad-sidebar-right {
             position: fixed;
             top: var(--header-height);
-            bottom: 1rem;
+            max-height: calc(100vh - var(--header-height) - 2rem);
             z-index: 950;
             display: flex;
             align-items: flex-start;
             justify-content: center;
             padding-top: 0.5rem;
+            overflow: hidden;
         }
 
         .ad-sidebar-left {
@@ -62,8 +63,8 @@
 
     @if($isLocalhost)
         {{-- Development Mode - Localhost Placeholder --}}
-        <div class="ad-sidebar-left">
-            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center justify-center" style="width: 160px; height: 100%;">
+        <div class="ad-sidebar-left" style="width: 160px;">
+            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center" style="width: 160px;">
                 {{-- Icon --}}
                 <div style="margin-bottom: 0.5rem;">
                     <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
@@ -73,33 +74,33 @@
 
                 {{-- Main Text --}}
                 <h3 style="font-size: 0.875rem; font-weight: 700; margin: 0 0 0.25rem 0; line-height: 1.2;">
-                    📢 Advertisement Space
+                    📢 Ads
                 </h3>
 
                 {{-- Subtitle --}}
-                <p style="font-size: 0.75rem; margin: 0 0 0.75rem 0; opacity: 0.9;">
+                <p style="font-size: 0.7rem; margin: 0 0 0.5rem 0; opacity: 0.9;">
                     <span style="font-weight: 600;">Sidebar Left</span>
                 </p>
 
                 {{-- Info Box --}}
-                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 10px; max-width: 100%; border: 1px solid rgba(255,255,255,0.5);">
-                    <p style="font-size: 0.65rem; margin: 0; line-height: 1.4;">
-                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode:</strong> No ads on localhost</span>
+                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.4rem 0.6rem; margin-bottom: 0.5rem; width: 100%; border: 1px solid rgba(255,255,255,0.5);">
+                    <p style="font-size: 0.6rem; margin: 0; line-height: 1.3;">
+                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode</strong></span>
                     </p>
-                    <p style="font-size: 0.65rem; margin: 0.35rem 0 0 0; line-height: 1.4; opacity: 0.95;">
-                        ✅ <strong>Production domain</strong> only
+                    <p style="font-size: 0.6rem; margin: 0.2rem 0 0 0; line-height: 1.3; opacity: 0.95;">
+                        ✅ Production only
                     </p>
                 </div>
 
                 {{-- Size Badge --}}
-                <div style="margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.5); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.65rem;">
+                <div style="display: inline-flex; align-items: center; gap: 0.25rem; background: rgba(255,255,255,0.5); padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.6rem;">
                     <span style="opacity: 0.95;">📏</span>
-                    <span style="opacity: 1;">160 × Dynamic</span>
+                    <span style="opacity: 1;">160px</span>
                 </div>
             </div>
         </div>
-        <div class="ad-sidebar-right">
-            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center justify-center" style="width: 160px; height: 100%;">
+        <div class="ad-sidebar-right" style="width: 160px;">
+            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center" style="width: 160px;">
                 {{-- Icon --}}
                 <div style="margin-bottom: 0.5rem;">
                     <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
@@ -109,38 +110,38 @@
 
                 {{-- Main Text --}}
                 <h3 style="font-size: 0.875rem; font-weight: 700; margin: 0 0 0.25rem 0; line-height: 1.2;">
-                    📢 Advertisement Space
+                    📢 Ads
                 </h3>
 
                 {{-- Subtitle --}}
-                <p style="font-size: 0.75rem; margin: 0 0 0.75rem 0; opacity: 0.9;">
+                <p style="font-size: 0.7rem; margin: 0 0 0.5rem 0; opacity: 0.9;">
                     <span style="font-weight: 600;">Sidebar Right</span>
                 </p>
 
                 {{-- Info Box --}}
-                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 10px; max-width: 100%; border: 1px solid rgba(255,255,255,0.5);">
-                    <p style="font-size: 0.65rem; margin: 0; line-height: 1.4;">
-                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode:</strong> No ads on localhost</span>
+                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.4rem 0.6rem; margin-bottom: 0.5rem; width: 100%; border: 1px solid rgba(255,255,255,0.5);">
+                    <p style="font-size: 0.6rem; margin: 0; line-height: 1.3;">
+                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode</strong></span>
                     </p>
-                    <p style="font-size: 0.65rem; margin: 0.35rem 0 0 0; line-height: 1.4; opacity: 0.95;">
-                        ✅ <strong>Production domain</strong> only
+                    <p style="font-size: 0.6rem; margin: 0.2rem 0 0 0; line-height: 1.3; opacity: 0.95;">
+                        ✅ Production only
                     </p>
                 </div>
 
                 {{-- Size Badge --}}
-                <div style="margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.5); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.65rem;">
+                <div style="display: inline-flex; align-items: center; gap: 0.25rem; background: rgba(255,255,255,0.5); padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.6rem;">
                     <span style="opacity: 0.95;">📏</span>
-                    <span style="opacity: 1;">160 × Dynamic</span>
+                    <span style="opacity: 1;">160px</span>
                 </div>
             </div>
         </div>
     @else
-        {{-- Production Mode - Fetch from API first --}}
-        <div class="ad-sidebar-left">
-            <x-sidebar-ads side="left" />
+        {{-- Production Mode - Use Google AdSense directly --}}
+        <div class="ad-sidebar-left" style="width: 160px;">
+            <x-google-ads type="sidebar_left" />
         </div>
-        <div class="ad-sidebar-right">
-            <x-sidebar-ads side="right" />
+        <div class="ad-sidebar-right" style="width: 160px;">
+            <x-google-ads type="sidebar_right" />
         </div>
     @endif
 

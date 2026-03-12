@@ -323,6 +323,7 @@
         const categoryUrl = '{{ url('/kategori') }}';
         const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
         const adsensePublisherId = '{{ config('ads.adsense_publisher_id') }}';
+        const leaderboardSlot = '{{ config('ads.ad_units.leaderboard.slot') }}';
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
         let html = `
@@ -412,7 +413,15 @@
                     categoryName: category.name,
                     uniqueId: adUniqueId,
                     publisherId: adsensePublisherId,
+                    adSlot: leaderboardSlot,
                     isLocalhost: isLocalhost
+                });
+            }
+
+            // Warn if slot is empty
+            if (!leaderboardSlot && isLocalhost && typeof console !== 'undefined') {
+                console.warn('%c[AdSense] Ad slot is empty for category ads!', 'color: #fbbc04;', {
+                    message: 'Please configure ADS_LEADERBOARD_SLOT in .env file'
                 });
             }
 
@@ -451,6 +460,7 @@
                              class="adsbygoogle"
                              style="display:block; min-width:250px; min-height:90px;"
                              data-ad-client="${adsensePublisherId}"
+                             data-ad-slot="${leaderboardSlot}"
                              data-ad-format="auto"
                              data-full-width-responsive="true"></ins>
                     </div>
