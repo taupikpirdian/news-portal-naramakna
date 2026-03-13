@@ -43,53 +43,51 @@
                  data-full-width-responsive="true"></ins>
         </div>
 
-        {{-- Delayed initialization - same approach as React frontend --}}
+        {{-- Delayed initialization - OPTIMIZED for faster loading --}}
         <script>
         (function() {
-            const adId = '{{ $adId }}';
-            let adElement = null;
-            let container = null;
+            const adId = {!! json_encode($adId) !!};
+            let retryCount = 0;
+            const maxRetries = 5;
 
-            // Wait for DOM to be fully rendered before pushing ad
             function initAd() {
-                // Get elements on each attempt (they might not exist yet)
-                adElement = document.getElementById(adId);
-                container = document.getElementById(adId + '-container');
+                const adElement = document.getElementById(adId);
+                const container = document.getElementById(adId + '-container');
 
                 if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
-                    return; // Already initialized or element doesn't exist
+                    return; // Already initialized or doesn't exist
                 }
 
-                // Get actual dimensions
+                // Simple dimension check
                 const rect = container ? container.getBoundingClientRect() : null;
-                const hasValidSize = rect && rect.width > 0 && rect.height > 0;
+                const offsetWidth = container ? container.offsetWidth : 0;
+                const hasValidSize = (rect && rect.width > 0) || (offsetWidth > 0);
 
-                if (hasValidSize) {
+                if (hasValidSize && typeof adsbygoogle !== 'undefined') {
                     try {
-                        if (typeof adsbygoogle !== 'undefined') {
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                            console.log('✅ AdSense initialized:', adId, 'Size:', rect.width + 'x' + rect.height);
-                        } else {
-                            console.warn('⚠️ AdSense not loaded yet for:', adId);
-                            setTimeout(initAd, 1000);
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        if (typeof console !== 'undefined') {
+                            console.log('✅ [Ads] Initialized:', adId, 'Size:', rect ? rect.width + 'x' + rect.height : 'N/A');
                         }
                     } catch (e) {
-                        console.error('❌ AdSense error for', adId, ':', e.message);
+                        if (typeof console !== 'undefined') {
+                            console.error('❌ [Ads] Error:', e.message);
+                        }
                     }
                 } else {
-                    console.warn('⚠️ Container not ready for', adId, '- Rect:', rect, ', retrying...');
-                    setTimeout(initAd, 500);
+                    retryCount++;
+                    if (retryCount < maxRetries) {
+                        const delay = 500 * retryCount;
+                        setTimeout(initAd, delay);
+                    }
                 }
             }
 
-            // Initialize after window is fully loaded (like React useEffect)
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() {
-                    setTimeout(initAd, 800);
-                });
-            } else {
-                setTimeout(initAd, 800);
-            }
+            // OPTIMIZED: Try immediately, then after short delays
+            initAd(); // Immediate
+            setTimeout(initAd, 200); // 200ms
+            setTimeout(initAd, 500); // 500ms
+            setTimeout(initAd, 1000); // 1s
         })();
         </script>
     @endif

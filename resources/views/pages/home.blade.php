@@ -97,8 +97,10 @@
 
 {{-- In-Article Ad between Instagram and Categories --}}
 @if(config('ads.enabled'))
-<div class="mb-12">
-    <x-google-ads type="article" />
+<div class="mb-12" style="width: 100%; max-width: 100%;">
+    <div style="width: 100%; min-width: 300px; max-width: 100%; overflow: hidden; position: relative;">
+        <x-google-ads type="leaderboard" />
+    </div>
 </div>
 @endif
 
@@ -405,9 +407,9 @@
         if (adsEnabled && (index + 1) % 2 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
             const adUniqueId = `adsense-category-${index}-${Date.now()}`;
 
-            // Console log ONLY for development/localhost
-            if (isLocalhost && typeof console !== 'undefined') {
-                console.log('%c[AdSense Category Ad]', 'background: #4285f4; color: white; padding: 4px 8px; border-radius: 4px;', {
+            // Console log for debugging (BOTH localhost AND production)
+            if (typeof console !== 'undefined') {
+                console.log('[Ads Category] Creating ad:', {
                     categoryIndex: index,
                     categoryName: category.name,
                     uniqueId: adUniqueId,
@@ -444,94 +446,72 @@
                     </div>
                 `;
             } else {
-                // Production Mode: Real AdSense
+                // Production Mode: Real AdSense with robust initialization
                 html += `
-                    <div class="my-8" style="width: 100%; max-width: 100%; overflow: hidden;">
+                    <div id="${adUniqueId}-container" class="my-8" style="width: 100%; max-width: 100%; overflow: hidden;">
                         <ins id="${adUniqueId}"
                              class="adsbygoogle"
-                             style="display:block; min-width:250px; min-height:90px;"
+                             style="display:block; width:100% !important; min-width:250px; min-height:90px;"
                              data-ad-client="${adsensePublisherId}"
                              data-ad-format="auto"
                              data-full-width-responsive="true"></ins>
                     </div>
                 `;
 
-                // Initialize AdSense ad after DOM is ready and element has width
-                setTimeout(() => {
-                    if (window.adsbygoogle) {
-                        if (isLocalhost && typeof console !== 'undefined') {
-                            console.log('%c✓ AdSense script loaded for category:', 'color: #34a853;', category.name);
-                        }
+                // Schedule multiple initialization attempts (OPTIMIZED for home page)
+                (function() {
+                    let retryCount = 0;
+                    const maxRetries = 5; // Reduced from 10 to 5
 
+                    function initCategoryAd() {
                         const adElement = document.getElementById(adUniqueId);
-                        if (!adElement) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.warn('%c✗ Ad element not found:', 'color: #ea4335;', adUniqueId);
-                            }
-                            return;
+                        const container = document.getElementById(adUniqueId + '-container');
+
+                        if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
+                            return; // Already initialized or doesn't exist
                         }
 
-                        // Check if already initialized
-                        if (adElement.getAttribute('data-adsbygoogle-status')) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.log('%c○ Ad already initialized:', 'color: #fbbc04;', adUniqueId);
-                            }
-                            return;
-                        }
+                        // Get actual dimensions
+                        const rect = container ? container.getBoundingClientRect() : null;
+                        const offsetWidth = container ? container.offsetWidth : 0;
+                        const hasValidSize = (rect && rect.width > 0) || (offsetWidth > 0);
 
-                        // Check if element has width
-                        const rect = adElement.getBoundingClientRect();
-                        if (isLocalhost && typeof console !== 'undefined') {
-                            console.log('%c[AdSense Category Dimensions]', 'color: #4285f4;', {
-                                category: category.name,
-                                width: rect.width,
-                                height: rect.height
-                            });
-                        }
-
-                        if (rect.width === 0) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.warn('%c⚠ Element has no width, retrying...', 'color: #fbbc04;');
-                            }
-                            // Retry if no width yet
-                            setTimeout(() => {
-                                if (window.adsbygoogle && !adElement.getAttribute('data-adsbygoogle-status')) {
-                                    try {
-                                        (window.adsbygoogle = window.adsbygoogle || []).push({});
-                                        if (isLocalhost && typeof console !== 'undefined') {
-                                            console.log('%c✓ Ad pushed after retry:', 'color: #34a853;', category.name);
-                                        }
-                                    } catch (e) {
-                                        if (isLocalhost && typeof console !== 'undefined') {
-                                            console.warn('AdSense push error:', e.message);
-                                        }
-                                    }
+                        if (hasValidSize && typeof window.adsbygoogle !== 'undefined') {
+                            try {
+                                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                                if (typeof console !== 'undefined') {
+                                    console.log('✅ [Ads Category] Initialized:', adUniqueId);
                                 }
-                            }, 500);
-                            return;
-                        }
-
-                        // Push ad
-                        try {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.log('%c⟳ Pushing ad for category:', 'color: #4285f4;', category.name);
+                            } catch (e) {
+                                if (typeof console !== 'undefined') {
+                                    console.error('❌ [Ads Category] Error:', e.message);
+                                }
                             }
-                            (window.adsbygoogle = window.adsbygoogle || []).push({});
-
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.warn('%c⚠ Running on localhost - Category ads may not appear (403 error is normal)', 'color: #fbbc04; font-size: 12px;');
+                        } else {
+                            retryCount++;
+                            if (retryCount < maxRetries) {
+                                const delay = 1000 * retryCount; // Simpler: 1s, 2s, 3s, 4s, 5s
+                                setTimeout(initCategoryAd, delay);
                             }
-                        } catch (e) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.warn('AdSense push error:', e.message);
-                            }
-                        }
-                    } else {
-                        if (isLocalhost && typeof console !== 'undefined') {
-                            console.warn('%c✗ AdSense script not loaded for category:', 'color: #ea4335;', category.name);
                         }
                     }
-                }, 300);
+
+                    // Simplified strategies - LESS AGGRESSIVE
+                    // Strategy 1: Try after categories are loaded (1s delay)
+                    setTimeout(initCategoryAd, 1000);
+
+                    // Strategy 2: Try after longer delay (2s)
+                    setTimeout(initCategoryAd, 2000);
+
+                    // Strategy 3: Try on scroll (once)
+                    let initialized = false;
+                    window.addEventListener('scroll', function() {
+                        if (!initialized) {
+                            initialized = true;
+                            setTimeout(initCategoryAd, 300);
+                        }
+                    }, { once: true });
+                })();
             }
         }
 
