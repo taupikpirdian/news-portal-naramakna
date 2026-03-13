@@ -47,14 +47,17 @@
         <script>
         (function() {
             const adId = '{{ $adId }}';
-            const expectedWidth = {{ $adDimensions['width'] === '100%' ? 'container.offsetWidth' : "'" . $adDimensions['width'] . "'"}};
-            const adElement = document.getElementById(adId);
-            const container = document.getElementById(adId + '-container');
+            let adElement = null;
+            let container = null;
 
             // Wait for DOM to be fully rendered before pushing ad
             function initAd() {
+                // Get elements on each attempt (they might not exist yet)
+                adElement = document.getElementById(adId);
+                container = document.getElementById(adId + '-container');
+
                 if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
-                    return; // Already initialized
+                    return; // Already initialized or element doesn't exist
                 }
 
                 // Get actual dimensions
