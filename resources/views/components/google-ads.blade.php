@@ -1,39 +1,39 @@
-{{-- Ultra-fast Google Ads Component - NO PHP LOGIC DELAY --}}
+{{-- Ultra-fast Google Ads Component - MATCH REACT FRONTEND APPROACH --}}
 @props([
-    'slot' => null, // Slot ID WAJIB untuk production
+    'type' => 'leaderboard', // leaderboard, sidebar, article, regular
 ])
 
 @php
     $publisherId = config('ads.adsense_publisher_id');
     $enabled = config('ads.enabled');
 
-    // Auto-detect type from slot or parameter
-    $type = $attributes['type'] ?? 'leaderboard';
-
-    // Simple dimensions
-    $dimensions = match($type) {
-        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '100%'],
-        default => ['width' => '100%', 'height' => '90px']
-    };
-
     // Localhost check - simple
     $isLocalhost = app()->environment('local');
+
+    // Style classes based on type - matching React frontend
+    $styleClasses = match($type) {
+        'sidebar_left', 'sidebar_right' => 'width: 160px; height: 100%; min-height: 600px;',
+        'header' => 'width: 100%; height: 250px; min-height: 90px;',
+        'article' => 'width: 100%; height: 180px; min-height: 90px;',
+        default => 'width: 100%; height: 120px; min-height: 90px;' // regular/leaderboard
+    };
 @endphp
 
-@if($enabled && $publisherId && $slot)
+@if($enabled && $publisherId)
     @if($isLocalhost)
         {{-- Development: Simple placeholder --}}
-        <div class="ad-{{ $type }}" style="width:{{ $dimensions['width'] }}; height:{{ $dimensions['height'] }}; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; min-height:90px;">
+        <div class="ad-{{ $type }}" style="{{$styleClasses}} background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center;">
             <div style="text-align:center; color:#1f2937; font-size:0.75rem; font-weight:600;">
-                {{ $type }}<br><small style="opacity:0.8">{{ $dimensions['width'] }} × {{ $dimensions['height'] }}</small>
+                {{ $type }}<br><small style="opacity:0.8">{{ $styleClasses }}</small>
             </div>
         </div>
     @else
-        {{-- Production: Pure HTML + Push (Google Best Practice) --}}
+        {{-- Production: Auto-format approach (SAME AS REACT FRONTEND) --}}
         <ins class="adsbygoogle"
+             style="display:block; {{$styleClasses}}"
              data-ad-client="{{ $publisherId }}"
-             data-ad-slot="{{ $slot }}"
-             style="display:inline-block; width:{{ $dimensions['width'] }}; height:{{ $dimensions['height'] }}; min-height:90px;"></ins>
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
 
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     @endif

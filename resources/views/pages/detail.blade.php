@@ -109,11 +109,8 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
         </div>
 
         {{-- Bottom Article Ad - After Social Media Follow --}}
-        @php
-            $leaderboardSlot = config('ads.ad_units.leaderboard.slot');
-        @endphp
         <div class="mt-8">
-            <x-google-ads type="leaderboard" :slot="$leaderboardSlot" />
+            <x-google-ads type="leaderboard" />
         </div>
     </article>
 
@@ -202,11 +199,8 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
 @endif
 
 {{-- Final Article Ad - After Related Posts --}}
-@php
-    $leaderboardSlot = config('ads.ad_units.leaderboard.slot');
-@endphp
 <div class="my-8">
-    <x-google-ads type="leaderboard" :slot="$leaderboardSlot" />
+    <x-google-ads type="leaderboard" />
 </div>
 
 @endsection

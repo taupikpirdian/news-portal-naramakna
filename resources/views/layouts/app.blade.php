@@ -136,15 +136,11 @@
         </div>
     @else
         {{-- Production Mode - Use Google AdSense - FASTEST --}}
-        @php
-        $sidebarLeftSlot = config('ads.ad_units.sidebar_left.slot');
-            $sidebarRightSlot = config('ads.ad_units.sidebar_right.slot');
-        @endphp
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" :slot="$sidebarLeftSlot" />
+            <x-google-ads type="sidebar_left" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" :slot="$sidebarRightSlot" />
+            <x-google-ads type="sidebar_right" />
         </div>
     @endif
 
