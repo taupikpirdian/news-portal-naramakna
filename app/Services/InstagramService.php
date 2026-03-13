@@ -76,7 +76,6 @@ class InstagramService
             // Include ALL media types: IMAGE, VIDEO, CAROUSEL_ALBUM
             // For videos, use thumbnail_url as fallback
             $media = collect($data['data'])
-                ->take($limit)
                 ->map(function ($item) {
                     $mediaType = $item['media_type'] ?? 'IMAGE';
                     $imageUrl = $item['media_url'] ?? null;
@@ -97,17 +96,20 @@ class InstagramService
                         'like_count' => $item['like_count'] ?? 0,
                         'comments_count' => $item['comments_count'] ?? 0,
                         'timestamp' => $item['timestamp'] ?? null,
+                        'timestamp_utc' => $item['timestamp'] ?? null, // Keep UTC for reference
                     ];
                 })
                 ->filter(function ($item) {
                     // Only include items that have an image URL
                     return !is_null($item['image_url']);
                 })
+                ->sortByDesc('timestamp') // Sort by timestamp descending (newest first)
+                ->take($limit) // Take AFTER filtering and sorting to ensure we get exactly $limit posts
                 ->values()
                 ->toArray();
 
-            // Cache for 1 hour
-            Cache::put($cacheKey, $media, 3600);
+            // Cache for 15 minutes (reduce from 1 hour to get fresher content)
+            Cache::put($cacheKey, $media, 900); // 15 minutes
 
             return [
                 'success' => true,
