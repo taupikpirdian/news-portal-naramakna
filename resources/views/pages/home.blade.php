@@ -407,14 +407,13 @@
         if (adsEnabled && (index + 1) % 2 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
             const adUniqueId = `adsense-category-${index}-${Date.now()}`;
 
-            // Console log for debugging (BOTH localhost AND production)
-            if (typeof console !== 'undefined') {
-                console.log('[Ads Category] Creating ad:', {
+            // Console log ONLY in development/localhost
+            if (isLocalhost && typeof console !== 'undefined') {
+                console.log('[Ads Category Dev] Creating ad:', {
                     categoryIndex: index,
                     categoryName: category.name,
                     uniqueId: adUniqueId,
-                    publisherId: adsensePublisherId,
-                    isLocalhost: isLocalhost
+                    publisherId: adsensePublisherId
                 });
             }
 
@@ -448,10 +447,10 @@
             } else {
                 // Production Mode: Real AdSense with robust initialization
                 html += `
-                    <div id="${adUniqueId}-container" class="my-8" style="width: 100%; max-width: 100%; overflow: hidden;">
+                    <div id="${adUniqueId}-container" class="my-8" style="width: 100%; min-width: 300px; max-width: 100%; position: relative;">
                         <ins id="${adUniqueId}"
                              class="adsbygoogle"
-                             style="display:block; width:100% !important; min-width:250px; min-height:90px;"
+                             style="display:block; width:100% !important; min-width:300px; min-height:90px;"
                              data-ad-client="${adsensePublisherId}"
                              data-ad-format="auto"
                              data-full-width-responsive="true"></ins>
@@ -461,37 +460,64 @@
                 // Schedule multiple initialization attempts (OPTIMIZED for home page)
                 (function() {
                     let retryCount = 0;
-                    const maxRetries = 5; // Reduced from 10 to 5
+                    const maxRetries = 5;
 
                     function initCategoryAd() {
                         const adElement = document.getElementById(adUniqueId);
                         const container = document.getElementById(adUniqueId + '-container');
 
-                        if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
-                            return; // Already initialized or doesn't exist
+                        if (!adElement) {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.warn('[Ads Category Dev] Element not found:', adUniqueId);
+                            }
+                            return;
+                        }
+
+                        if (adElement.getAttribute('data-adsbygoogle-status')) {
+                            if (isLocalhost && typeof console !== 'undefined') {
+                                console.log('[Ads Category Dev] Already initialized:', adUniqueId);
+                            }
+                            return; // Already initialized
                         }
 
                         // Get actual dimensions
                         const rect = container ? container.getBoundingClientRect() : null;
                         const offsetWidth = container ? container.offsetWidth : 0;
+
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            console.log('[Ads Category Dev] Attempting init:', {
+                                id: adUniqueId,
+                                rect: rect ? {width: rect.width, height: rect.height} : null,
+                                offsetWidth: offsetWidth,
+                                adsbygoogle: typeof window.adsbygoogle !== 'undefined'
+                            });
+                        }
+
                         const hasValidSize = (rect && rect.width > 0) || (offsetWidth > 0);
 
                         if (hasValidSize && typeof window.adsbygoogle !== 'undefined') {
                             try {
                                 (window.adsbygoogle = window.adsbygoogle || []).push({});
-                                if (typeof console !== 'undefined') {
-                                    console.log('✅ [Ads Category] Initialized:', adUniqueId);
+                                if (isLocalhost && typeof console !== 'undefined') {
+                                    console.log('✅ [Ads Category Dev] Initialized:', adUniqueId);
                                 }
                             } catch (e) {
-                                if (typeof console !== 'undefined') {
-                                    console.error('❌ [Ads Category] Error:', e.message);
+                                if (isLocalhost && typeof console !== 'undefined') {
+                                    console.error('[Ads Category Dev] Error:', e.message);
                                 }
                             }
                         } else {
                             retryCount++;
                             if (retryCount < maxRetries) {
-                                const delay = 1000 * retryCount; // Simpler: 1s, 2s, 3s, 4s, 5s
+                                const delay = 1000 * retryCount;
+                                if (isLocalhost && typeof console !== 'undefined') {
+                                    console.log('[Ads Category Dev] Retrying in', delay, 'ms...');
+                                }
                                 setTimeout(initCategoryAd, delay);
+                            } else {
+                                if (isLocalhost && typeof console !== 'undefined') {
+                                    console.error('[Ads Category Dev] Max retries reached for', adUniqueId);
+                                }
                             }
                         }
                     }

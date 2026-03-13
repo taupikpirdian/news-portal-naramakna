@@ -47,6 +47,7 @@
         <script>
         (function() {
             const adId = {!! json_encode($adId) !!};
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             let retryCount = 0;
             const maxRetries = 5;
 
@@ -66,13 +67,16 @@
                 if (hasValidSize && typeof adsbygoogle !== 'undefined') {
                     try {
                         (adsbygoogle = window.adsbygoogle || []).push({});
-                        if (typeof console !== 'undefined') {
-                            console.log('✅ [Ads] Initialized:', adId, 'Size:', rect ? rect.width + 'x' + rect.height : 'N/A');
+                        // Log ONLY in development/localhost
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            console.log('[Ads Dev] Initialized:', adId, 'Size:', rect ? rect.width + 'x' + rect.height : 'N/A');
                         }
                     } catch (e) {
-                        if (typeof console !== 'undefined') {
-                            console.error('❌ [Ads] Error:', e.message);
+                        // SILENT in production - log ONLY in development/localhost
+                        if (isLocalhost && typeof console !== 'undefined') {
+                            console.error('[Ads Dev] Error:', e.message);
                         }
+                        // Production: silently fail, user won't see any error
                     }
                 } else {
                     retryCount++;
