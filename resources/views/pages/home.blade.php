@@ -97,8 +97,11 @@
 
 {{-- In-Article Ad between Instagram and Categories --}}
 @if(config('ads.enabled'))
+@php
+$inArticleSlot = config('ads.ad_units.in_article.slot');
+@endphp
 <div class="mb-12">
-    <x-google-ads type="in_article" />
+    <x-google-ads type="in_article" :slot="$inArticleSlot" />
 </div>
 @endif
 

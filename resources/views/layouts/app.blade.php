@@ -202,18 +202,6 @@
     });
 
     // End of main scripts
-
-    {{-- AdSense Debugging - Check if script loaded --}}
-    @php
-    $publisherId = config('ads.adsense_publisher_id');
-    $isLocalhost = app()->environment('local');
-    @endphp
-    @if(!$isLocalhost && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
-    <script>
-    console.log('[AdSense] Publisher ID: {{ $publisherId }}');
-    console.log('[AdSense] Script loaded:', typeof window.adsbygoogle !== 'undefined');
-    console.log('[AdSense] Ads on page:', document.querySelectorAll('.adsbygoogle').length);
     </script>
-    @endif
 </body>
 </html>

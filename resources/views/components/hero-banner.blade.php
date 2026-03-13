@@ -21,10 +21,13 @@
         </a>
     </div>
 
-    <!-- Fallback to Google Ads when no ad available -->
+    {{-- Fallback to Google Ads when no ad available --}}
     <div id="{{ $componentId }}-fallback" style="display: none;" class="google-ads-fallback-wrapper">
         @if(config('ads.enabled'))
-            <x-google-ads type="leaderboard" />
+            @php
+                $leaderboardSlot = config('ads.ad_units.leaderboard.slot');
+            @endphp
+            <x-google-ads type="leaderboard" :slot="$leaderboardSlot" />
         @endif
     </div>
 </div>
