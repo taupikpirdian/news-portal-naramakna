@@ -12,10 +12,10 @@
 
     // Style classes based on type - matching React frontend
     $styleClasses = match($type) {
-        'sidebar_left', 'sidebar_right' => 'width: 160px; height: 100%; min-height: 600px;',
-        'header' => 'width: 100%; height: 250px; min-height: 90px;',
-        'article' => 'width: 100%; height: 180px; min-height: 90px;',
-        default => 'width: 100%; height: 120px; min-height: 90px;' // regular/leaderboard
+        'sidebar_left', 'sidebar_right' => 'width: 160px; min-width: 160px; height: 600px; min-height: 600px;',
+        'header' => 'width: 100%; min-width: 300px; height: 250px; min-height: 90px;',
+        'article' => 'width: 100%; min-width: 300px; height: 180px; min-height: 90px;',
+        default => 'width: 100%; min-width: 300px; height: 120px; min-height: 90px;' // regular/leaderboard
     };
 @endphp
 
@@ -29,11 +29,14 @@
         </div>
     @else
         {{-- Production: Auto-format approach (SAME AS REACT FRONTEND) --}}
-        <ins class="adsbygoogle"
-             style="display:block; {{$styleClasses}}"
-             data-ad-client="{{ $publisherId }}"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+        {{-- Container dengan dimensi jelas untuk AdSense --}}
+        <div style="display:inline-block; {{$styleClasses}}">
+            <ins class="adsbygoogle"
+                 style="display:block; width:100%; height:100%;"
+                 data-ad-client="{{ $publisherId }}"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+        </div>
 
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     @endif

@@ -24,6 +24,8 @@
             align-items: stretch;
             justify-content: center;
             padding-top: 0.5rem;
+            width: 160px;
+            min-width: 160px;
         }
 
         .ad-sidebar-left {
@@ -136,10 +138,10 @@
         </div>
     @else
         {{-- Production Mode - Use Google AdSense - FASTEST --}}
-        <div class="ad-sidebar-left">
+        <div class="ad-sidebar-left" style="width: 160px;">
             <x-google-ads type="sidebar_left" />
         </div>
-        <div class="ad-sidebar-right">
+        <div class="ad-sidebar-right" style="width: 160px;">
             <x-google-ads type="sidebar_right" />
         </div>
     @endif
