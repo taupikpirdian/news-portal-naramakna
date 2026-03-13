@@ -28,11 +28,12 @@ class InstagramService
                 ];
             }
 
-            // Check cache first
+            // Check cache first - reduced to 3 minutes for fresher data
             $cacheKey = "instagram_media_{$limit}";
             $cached = Cache::get($cacheKey);
 
             if ($cached) {
+                Log::info('Instagram: Returning cached data', ['key' => $cacheKey, 'posts_count' => count($cached)]);
                 return [
                     'success' => true,
                     'data' => $cached,
@@ -40,8 +41,8 @@ class InstagramService
             }
 
             // Fetch MORE posts first, then filter to get desired number of feed posts
-            // Multiply by 3 to account for excluded reels
-            $fetchLimit = min($limit * 3, 50);
+            // Multiply by 3 to account for excluded reels, but cap at 25 (Instagram API limit)
+            $fetchLimit = min($limit * 3, 25);
 
             // Fetch posts from Instagram Graph API
             // Add more fields to get video thumbnails
@@ -108,8 +109,9 @@ class InstagramService
                 ->values()
                 ->toArray();
 
-            // Cache for 15 minutes (reduce from 1 hour to get fresher content)
-            Cache::put($cacheKey, $media, 900); // 15 minutes
+            // Cache for 3 minutes to balance freshness and performance
+            // Instagram like_count & comments_count update frequently, so we need fresh data
+            Cache::put($cacheKey, $media, 180); // 3 minutes (was 900 = 15 minutes)
 
             return [
                 'success' => true,

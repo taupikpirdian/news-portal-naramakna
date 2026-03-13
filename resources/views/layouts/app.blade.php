@@ -145,9 +145,9 @@
     @endif
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Leaderboard Ad (Hero Banner) --}}
+        {{-- Hero Banner Ads --}}
         <div class="mt-6">
-            <x-google-ads type="leaderboard" />
+            <x-hero-banner placement="hero-banner" :limit="1" />
         </div>
         <br>
         @yield('content')
