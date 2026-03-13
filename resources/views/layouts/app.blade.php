@@ -21,7 +21,7 @@
             bottom: 1rem;
             z-index: 950;
             display: flex;
-            align-items: flex-start;
+            align-items: stretch;
             justify-content: center;
             padding-top: 0.5rem;
         }

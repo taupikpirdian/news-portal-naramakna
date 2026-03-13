@@ -61,7 +61,7 @@
 <!-- RSS Feed -->
 <link rel="alternate" type="application/rss+xml" title="Naramakna - RSS Feed" href="{{ url('/feed') }}">
 
-<!-- DNS Prefetch for Google AdSense - Improves ad loading performance -->
+<!-- DNS Prefetch & Preconnect for Google AdSense - FASTEST LOADING -->
 @php($publisherId = config('ads.adsense_publisher_id'))
 @if($publisherId && strpos($publisherId, 'ca-pub-') === 0)
 <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
@@ -69,6 +69,9 @@
 <link rel="dns-prefetch" href="//tpc.googlesyndication.com">
 <link rel="preconnect" href="//pagead2.googlesyndication.com" crossorigin>
 <link rel="preconnect" href="//googleads.g.doubleclick.net" crossorigin>
+
+{{-- AdSense Async Script - Load in HEAD for FASTEST performance --}}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $publisherId }}" crossorigin="anonymous"></script>
 @endif
 
 @php($gaId = config('analytics.measurement_id'))
