@@ -135,19 +135,19 @@
             </div>
         </div>
     @else
-        {{-- Production Mode - Fetch from API first --}}
+        {{-- Production Mode - Use Google AdSense --}}
         <div class="ad-sidebar-left">
-            <x-sidebar-ads side="left" />
+            <x-google-ads type="sidebar_left" />
         </div>
         <div class="ad-sidebar-right">
-            <x-sidebar-ads side="right" />
+            <x-google-ads type="sidebar_right" />
         </div>
     @endif
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Hero Banner Ads --}}
+        {{-- Leaderboard Ad (Hero Banner) --}}
         <div class="mt-6">
-            <x-hero-banner placement="hero-banner" :limit="1" />
+            <x-google-ads type="leaderboard" />
         </div>
         <br>
         @yield('content')
