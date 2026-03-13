@@ -10,6 +10,9 @@
     // Localhost check - simple
     $isLocalhost = app()->environment('local');
 
+    // Unique ID for each ad instance
+    $adId = 'adsense-' . $type . '-' . uniqid();
+
     // Style classes based on type - matching React frontend
     $styleClasses = match($type) {
         'sidebar_left', 'sidebar_right' => 'width: 160px; min-width: 160px; height: 600px; min-height: 600px;',
@@ -30,14 +33,58 @@
     @else
         {{-- Production: Auto-format approach (SAME AS REACT FRONTEND) --}}
         {{-- Container dengan dimensi jelas untuk AdSense --}}
-        <div style="display:inline-block; {{$styleClasses}}">
-            <ins class="adsbygoogle"
+        <div id="{{ $adId }}-container" style="display:inline-block; {{$styleClasses}}">
+            <ins id="{{ $adId }}"
+                 class="adsbygoogle"
                  style="display:block; width:100%; height:100%;"
                  data-ad-client="{{ $publisherId }}"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
         </div>
 
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        {{-- Delayed initialization - same approach as React frontend --}}
+        <script>
+        (function() {
+            const adId = '{{ $adId }}';
+            const adElement = document.getElementById(adId);
+            const container = document.getElementById(adId + '-container');
+
+            // Wait for DOM to be fully rendered before pushing ad
+            function initAd() {
+                if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
+                    return; // Already initialized
+                }
+
+                // Check if container has valid dimensions
+                if (container && container.offsetWidth > 0) {
+                    try {
+                        if (typeof adsbygoogle !== 'undefined') {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            console.log('✅ AdSense initialized:', adId, 'Width:', container.offsetWidth);
+                        } else {
+                            console.warn('⚠️ AdSense not loaded yet for:', adId);
+                            // Retry after 1 second
+                            setTimeout(initAd, 1000);
+                        }
+                    } catch (e) {
+                        console.error('❌ AdSense error for', adId, ':', e);
+                    }
+                } else {
+                    console.warn('⚠️ Container width is 0 for', adId, ', retrying...');
+                    // Retry if container doesn't have width yet
+                    setTimeout(initAd, 500);
+                }
+            }
+
+            // Initialize after window is fully loaded (like React useEffect)
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(initAd, 800); // 800ms delay like React
+                });
+            } else {
+                setTimeout(initAd, 800); // 800ms delay like React
+            }
+        })();
+        </script>
     @endif
 @endif
