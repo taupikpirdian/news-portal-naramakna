@@ -75,7 +75,9 @@
                  class="adsbygoogle"
                  style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:160px; width:160px;' : 'min-width:250px;' }} {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-height:250px; height:600px;' : 'min-height:90px;' }}"
                  data-ad-client="{{ $publisherId }}"
-                 data-ad-slot="{{ $adUnitConfig['slot'] ?? '' }}"
+                 @if(!empty($adUnitConfig['slot']) && $adUnitConfig['slot'] !== '' && $adUnitConfig['slot'] !== '1234567891' && $adUnitConfig['slot'] !== '2234567891')
+                 data-ad-slot="{{ $adUnitConfig['slot'] }}"
+                 @endif
                  data-ad-format="{{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'vertical' : 'auto' }}"
                  data-full-width-responsive="{{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'false' : 'true' }}"></ins>
         </div>
