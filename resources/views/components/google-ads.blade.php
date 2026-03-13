@@ -19,12 +19,15 @@
     $isLocalhost = request()->getHost() === 'localhost' || request()->getHost() === '127.0.0.1' || app()->environment('local');
 
     // Get dimensions based on type
-    $dimensions = match($type) {
-        'leaderboard' => ['width' => '100%', 'height' => '90px', 'minHeight' => '90px'],
-        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '600px', 'minHeight' => '250px'],
-        'in_article' => ['width' => '100%', 'height' => '100px', 'minHeight' => '100px'],
-        default => ['width' => '100%', 'height' => '90px', 'minHeight' => '90px'}
-    };
+    if ($type === 'leaderboard') {
+        $dimensions = ['width' => '100%', 'height' => '90px', 'minHeight' => '90px'];
+    } elseif ($type === 'sidebar_left' || $type === 'sidebar_right') {
+        $dimensions = ['width' => '160px', 'height' => '600px', 'minHeight' => '250px'];
+    } elseif ($type === 'in_article') {
+        $dimensions = ['width' => '100%', 'height' => '100px', 'minHeight' => '100px'];
+    } else {
+        $dimensions = ['width' => '100%', 'height' => '90px', 'minHeight' => '90px'];
+    }
 @endphp
 
 @if($shouldDisplay)
