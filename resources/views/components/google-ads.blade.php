@@ -34,47 +34,29 @@
     @if($isLocalhost && $dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Development Mode: Localhost Placeholder --}}
         <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? 'my-4' }}"
-             style="width: 100%; max-width: 100%; background: #facc15; border-radius: 8px; padding: 1.5rem; text-align: center; position: relative; overflow: hidden;">
+             style="@if(in_array($type, ['sidebar_left', 'sidebar_right'])) width: 160px; height: 100%; @else width: 100%; max-width: 100%; height: 90px; min-height: 90px; @endif background: #facc15; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden;">
 
-            <div style="position: relative; z-index: 1; color: #1f2937;">
-                <div style="margin-bottom: 0.75rem;">
-                    <svg style="width: 48px; height: 48px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                    </svg>
-                </div>
-
-                <h3 style="font-size: 1.125rem; font-weight: 700; margin: 0 0 0.5rem 0;">
-                    Advertisement Space
-                </h3>
-
-                <p style="font-size: 0.875rem; margin: 0 0 1rem 0; opacity: 0.9;">
-                    <span style="font-weight: 600;">{{ str_replace('_', ' ', ucfirst($type)) }}</span> Ad Unit
+            <div style="position: relative; z-index: 1; color: #1f2937; text-align: center; padding: 0.5rem;">
+                <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; font-weight: 600; opacity: 0.9;">
+                    {{ str_replace('_', ' ', ucfirst($type)) }}
                 </p>
-
-                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 0 auto; max-width: 400px; border: 1px solid rgba(255,255,255,0.5);">
-                    <p style="font-size: 0.75rem; margin: 0; line-height: 1.5;">
-                        <span style="opacity: 0.95;">Development Mode: Google AdSense does not work on localhost.</span>
-                    </p>
-                    <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; line-height: 1.5; opacity: 0.95;">
-                        Ads will appear on <strong>production domain</strong>
-                    </p>
-                </div>
-
-                <div style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.5); padding: 0.375rem 0.75rem; border-radius: 20px; font-size: 0.75rem;">
-                    <span style="opacity: 0.95;">Size:</span>
-                    <span style="opacity: 1;">{{ $dimensions['width'] }} × {{ $dimensions['height'] }}</span>
-                </div>
+                <p style="font-size: 0.65rem; margin: 0; opacity: 0.8;">
+                    @if(in_array($type, ['sidebar_left', 'sidebar_right'])) 160 × Dynamic @else 100% × 90 @endif
+                </p>
             </div>
         </div>
 
     @elseif($dataSource === 'static' && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
         {{-- Production Mode: Real AdSense --}}
         <div class="google-ads-container google-ads-{{ $type }} {{ $attributes->class ?? '' }}"
-             style="width: 100%; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'max-width: 160px;' : 'max-width: 100%;' }}">
+             style="@if(in_array($type, ['sidebar_left', 'sidebar_right'])) width: 160px; min-width: 160px; height: 100%; @else width: 100%; max-width: 100%; height: 90px; min-height: 90px; @endif">
 
             <ins id="{{ $uniqueId }}"
                  class="adsbygoogle"
-                 style="display:block; {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-width:160px; width:160px;' : 'min-width:250px;' }} {{ in_array($type, ['sidebar_left', 'sidebar_right']) ? 'min-height:250px; height:600px;' : 'min-height:90px;' }}"
+                 style="display:inline-block; @if(in_array($type, ['sidebar_left', 'sidebar_right'])) width:160px; min-width:160px; height:100%; @else width:100%; min-width:250px; height:90px; @endif"
                  data-ad-client="{{ $publisherId }}"
                  @if(!empty($adUnitConfig['slot']) && $adUnitConfig['slot'] !== '' && $adUnitConfig['slot'] !== '1234567891' && $adUnitConfig['slot'] !== '2234567891' && $adUnitConfig['slot'] !== '1122334455')
                  data-ad-slot="{{ $adUnitConfig['slot'] }}"
