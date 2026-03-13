@@ -55,5 +55,7 @@ Route::get('/ads/serve', [\App\Http\Controllers\AdsController::class, 'serve'])-
 
 // Instagram Routes
 // Public endpoint for Instagram media
-Route::get('/instagram/media', [\App\Http\Controllers\InstagramController::class, 'getMedia'])->name('api.instagram.media');
+Route::prefix('v1')->name('v1.')->group(function () {
+    Route::get('/instagram/media', [\App\Http\Controllers\InstagramController::class, 'getMedia'])->name('instagram.media');
+});
 
