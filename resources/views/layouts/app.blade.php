@@ -200,25 +200,19 @@
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(updateHeaderHeight, 100);
     });
-    </script>
 
-    {{-- Ultra-fast AdSense Loader - Push all ads instantly --}}
+    // End of main scripts
+
+    {{-- AdSense Debugging - Check if script loaded --}}
     @php
     $publisherId = config('ads.adsense_publisher_id');
     $isLocalhost = app()->environment('local');
     @endphp
     @if(!$isLocalhost && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
     <script>
-    (function() {
-        // Push all ads immediately after DOM ready
-        if (window.adsbygoogle) {
-            const ads = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
-            ads.forEach(function(ad) {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            });
-            console.log('[AdSense] Loaded ' + ads.length + ' ads');
-        }
-    })();
+    console.log('[AdSense] Publisher ID: {{ $publisherId }}');
+    console.log('[AdSense] Script loaded:', typeof window.adsbygoogle !== 'undefined');
+    console.log('[AdSense] Ads on page:', document.querySelectorAll('.adsbygoogle').length);
     </script>
     @endif
 </body>

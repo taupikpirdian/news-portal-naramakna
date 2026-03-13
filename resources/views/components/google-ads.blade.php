@@ -29,10 +29,12 @@
             </div>
         </div>
     @else
-        {{-- Production: Pure HTML - NO PHP DELAY --}}
+        {{-- Production: Pure HTML + Push (Google Best Practice) --}}
         <ins class="adsbygoogle"
              data-ad-client="{{ $publisherId }}"
              data-ad-slot="{{ $slot }}"
              style="display:inline-block; width:{{ $dimensions['width'] }}; height:{{ $dimensions['height'] }}; min-height:90px;"></ins>
+
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     @endif
 @endif
