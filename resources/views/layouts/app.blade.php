@@ -135,12 +135,16 @@
             </div>
         </div>
     @else
-        {{-- Production Mode - Use Google AdSense --}}
+        {{-- Production Mode - Use Google AdSense - FASTEST --}}
+        @php
+        $sidebarLeftSlot = config('ads.ad_units.sidebar_left.slot');
+            $sidebarRightSlot = config('ads.ad_units.sidebar_right.slot');
+        @endphp
         <div class="ad-sidebar-left">
-            <x-google-ads type="sidebar_left" />
+            <x-google-ads type="sidebar_left" :slot="$sidebarLeftSlot" />
         </div>
         <div class="ad-sidebar-right">
-            <x-google-ads type="sidebar_right" />
+            <x-google-ads type="sidebar_right" :slot="$sidebarRightSlot" />
         </div>
     @endif
 
@@ -197,5 +201,25 @@
         resizeTimer = setTimeout(updateHeaderHeight, 100);
     });
     </script>
+
+    {{-- Ultra-fast AdSense Loader - Push all ads instantly --}}
+    @php
+    $publisherId = config('ads.adsense_publisher_id');
+    $isLocalhost = app()->environment('local');
+    @endphp
+    @if(!$isLocalhost && $publisherId && strpos($publisherId, 'ca-pub-') === 0)
+    <script>
+    (function() {
+        // Push all ads immediately after DOM ready
+        if (window.adsbygoogle) {
+            const ads = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])');
+            ads.forEach(function(ad) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            });
+            console.log('[AdSense] Loaded ' + ads.length + ' ads');
+        }
+    })();
+    </script>
+    @endif
 </body>
 </html>
