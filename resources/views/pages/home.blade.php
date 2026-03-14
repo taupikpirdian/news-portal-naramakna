@@ -95,13 +95,9 @@
 {{-- Instagram Feed - Real Posts from API --}}
 <x-instagram-feed :limit="12" />
 
-{{-- In-Article Ad between Instagram and Categories --}}
-@if(config('ads.enabled'))
-<div class="mb-12" style="width: 100%; max-width: 100%;">
-    <div style="width: 100%; min-width: 300px; max-width: 100%; overflow: hidden; position: relative;">
-        <x-google-ads type="leaderboard" />
-    </div>
-</div>
+{{-- In-Article Ad between Instagram and Categories - PRIORITY LOADING --}}
+@if(config('ads.enabled') && config('ads.adsense_publisher_id'))
+    <x-google-ads type="article" :priority="true" />
 @endif
 
 {{-- List Berita Berdasarkan Kategori --}}
@@ -403,141 +399,27 @@
             </section>
         `;
 
-        // Add AdSense after every 2 categories
+        // Add AdSense after every 2 categories - LAZY LOADING FOR PERFORMANCE
         if (adsEnabled && (index + 1) % 2 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
-            const adUniqueId = `adsense-category-${index}-${Date.now()}`;
-
-            // Console log ONLY in development/localhost
-            if (isLocalhost && typeof console !== 'undefined') {
-                console.log('[Ads Category Dev] Creating ad:', {
-                    categoryIndex: index,
-                    categoryName: category.name,
-                    uniqueId: adUniqueId,
-                    publisherId: adsensePublisherId
-                });
-            }
-
             if (isLocalhost) {
-                // Development Mode: Show placeholder UI
+                // Development Mode: Simple placeholder
                 html += `
-                    <div class="my-8" style="width: 100%; max-width: 100%; background: #facc15; border-radius: 8px; padding: 1.5rem; text-align: center; position: relative; overflow: hidden;">
-                        <div style="position: relative; z-index: 1; color: #1f2937;">
-                            <div style="margin-bottom: 0.75rem;">
-                                <svg style="width: 48px; height: 48px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                                </svg>
-                            </div>
-                            <h3 style="font-size: 1.125rem; font-weight: 700; margin: 0 0 0.5rem 0;">
-                                📢 Advertisement Space
-                            </h3>
-                            <p style="font-size: 0.875rem; margin: 0 0 1rem 0; opacity: 0.9;">
-                                <span style="font-weight: 600;">Category Ad</span> - After ${category.name}
-                            </p>
-                            <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 0 auto; max-width: 400px; border: 1px solid rgba(255,255,255,0.5);">
-                                <p style="font-size: 0.75rem; margin: 0; line-height: 1.5; opacity: 0.95;">
-                                    ⚠️ <strong>Development Mode:</strong> Google AdSense does not work on localhost.
-                                </p>
-                                <p style="font-size: 0.75rem; margin: 0.5rem 0 0 0; line-height: 1.5; opacity: 0.95;">
-                                    ✅ Ads will appear on <strong>production domain</strong>
-                                </p>
-                            </div>
-                        </div>
+                    <div class="my-8" style="width: 100%; background: #facc15; border-radius: 8px; padding: 1.5rem; text-align: center;">
+                        <h3 style="font-size: 1.125rem; font-weight: 700;">📢 Advertisement Space</h3>
+                        <p style="font-size: 0.875rem;">Category Ad - After ${category.name}</p>
                     </div>
                 `;
             } else {
-                // Production Mode: Real AdSense with robust initialization
+                // Production: Lazy loading with batch processing
                 html += `
-                    <div id="${adUniqueId}-container" class="my-8" style="width: 100%; min-width: 300px; max-width: 100%; position: relative;">
-                        <ins id="${adUniqueId}"
-                             class="adsbygoogle"
-                             style="display:block; width:100% !important; min-width:300px; min-height:90px;"
+                    <div class="my-8 category-ad-container" style="width: 100%; min-width: 300px;">
+                        <ins class="adsbygoogle lazy-category-ad"
+                             style="display:block; width:100%; min-height:90px;"
                              data-ad-client="${adsensePublisherId}"
                              data-ad-format="auto"
                              data-full-width-responsive="true"></ins>
                     </div>
                 `;
-
-                // Schedule multiple initialization attempts (OPTIMIZED for home page)
-                (function() {
-                    let retryCount = 0;
-                    const maxRetries = 5;
-
-                    function initCategoryAd() {
-                        const adElement = document.getElementById(adUniqueId);
-                        const container = document.getElementById(adUniqueId + '-container');
-
-                        if (!adElement) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.warn('[Ads Category Dev] Element not found:', adUniqueId);
-                            }
-                            return;
-                        }
-
-                        if (adElement.getAttribute('data-adsbygoogle-status')) {
-                            if (isLocalhost && typeof console !== 'undefined') {
-                                console.log('[Ads Category Dev] Already initialized:', adUniqueId);
-                            }
-                            return; // Already initialized
-                        }
-
-                        // Get actual dimensions
-                        const rect = container ? container.getBoundingClientRect() : null;
-                        const offsetWidth = container ? container.offsetWidth : 0;
-
-                        if (isLocalhost && typeof console !== 'undefined') {
-                            console.log('[Ads Category Dev] Attempting init:', {
-                                id: adUniqueId,
-                                rect: rect ? {width: rect.width, height: rect.height} : null,
-                                offsetWidth: offsetWidth,
-                                adsbygoogle: typeof window.adsbygoogle !== 'undefined'
-                            });
-                        }
-
-                        const hasValidSize = (rect && rect.width > 0) || (offsetWidth > 0);
-
-                        if (hasValidSize && typeof window.adsbygoogle !== 'undefined') {
-                            try {
-                                (window.adsbygoogle = window.adsbygoogle || []).push({});
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.log('✅ [Ads Category Dev] Initialized:', adUniqueId);
-                                }
-                            } catch (e) {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.error('[Ads Category Dev] Error:', e.message);
-                                }
-                            }
-                        } else {
-                            retryCount++;
-                            if (retryCount < maxRetries) {
-                                const delay = 1000 * retryCount;
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.log('[Ads Category Dev] Retrying in', delay, 'ms...');
-                                }
-                                setTimeout(initCategoryAd, delay);
-                            } else {
-                                if (isLocalhost && typeof console !== 'undefined') {
-                                    console.error('[Ads Category Dev] Max retries reached for', adUniqueId);
-                                }
-                            }
-                        }
-                    }
-
-                    // Simplified strategies - LESS AGGRESSIVE
-                    // Strategy 1: Try after categories are loaded (1s delay)
-                    setTimeout(initCategoryAd, 1000);
-
-                    // Strategy 2: Try after longer delay (2s)
-                    setTimeout(initCategoryAd, 2000);
-
-                    // Strategy 3: Try on scroll (once)
-                    let initialized = false;
-                    window.addEventListener('scroll', function() {
-                        if (!initialized) {
-                            initialized = true;
-                            setTimeout(initCategoryAd, 300);
-                        }
-                    }, { once: true });
-                })();
             }
         }
 

@@ -137,12 +137,12 @@
             </div>
         </div>
     @else
-        {{-- Production Mode - Use Google AdSense - FASTEST --}}
+        {{-- Production Mode - Use Google AdSense - OPTIMIZED --}}
         <div class="ad-sidebar-left" style="width: 160px;">
-            <x-google-ads type="sidebar_left" />
+            <x-google-ads type="sidebar_left" :lazy="true" />
         </div>
         <div class="ad-sidebar-right" style="width: 160px;">
-            <x-google-ads type="sidebar_right" />
+            <x-google-ads type="sidebar_right" :lazy="true" />
         </div>
     @endif
 
@@ -156,6 +156,57 @@
     </main>
     @include("components.footer")
     @stack('scripts')
+
+    {{-- UNIFIED LAZY AD LOADING - Single Observer for All Lazy Ads --}}
+    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && !app()->environment('local'))
+    <script>
+        (function() {
+            // Initialize once per page
+            if (window.unifiedAdLoaderInitialized) return;
+            window.unifiedAdLoaderInitialized = true;
+
+            // Use IntersectionObserver for maximum performance
+            if ('IntersectionObserver' in window) {
+                const adObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            const ad = entry.target;
+                            adObserver.unobserve(ad);
+
+                            // Load ad when visible
+                            if (typeof adsbygoogle !== 'undefined') {
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            }
+                        }
+                    });
+                }, {
+                    rootMargin: '200px' // Load 200px before entering viewport
+                });
+
+                // Observe all lazy ads (sidebar, category, etc)
+                function observeLazyAds() {
+                    document.querySelectorAll('.lazy-ad, .lazy-category-ad').forEach(function(ad) {
+                        if (!ad.hasAttribute('data-ad-loaded')) {
+                            adObserver.observe(ad);
+                            ad.setAttribute('data-ad-loaded', 'true');
+                        }
+                    });
+                }
+
+                // Start observing
+                observeLazyAds();
+
+                // Auto-observe new dynamically added ads
+                if ('MutationObserver' in window) {
+                    new MutationObserver(observeLazyAds).observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                }
+            }
+        })();
+    </script>
+    @endif
 
     <script>
     function openMoreSidebar() {
