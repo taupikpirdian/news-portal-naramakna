@@ -173,10 +173,22 @@
                             const ad = entry.target;
                             adObserver.unobserve(ad);
 
-                            // Load ad when visible
-                            if (typeof adsbygoogle !== 'undefined') {
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            }
+                            // Wait for element to have valid dimensions before loading
+                            requestAnimationFrame(function() {
+                                setTimeout(function() {
+                                    // Check if element has valid width
+                                    const rect = ad.getBoundingClientRect();
+                                    const hasValidWidth = rect && rect.width > 0;
+
+                                    if (hasValidWidth && typeof adsbygoogle !== 'undefined') {
+                                        try {
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                        } catch(e) {
+                                            // Silently fail
+                                        }
+                                    }
+                                }, 100); // Small delay to ensure rendering is complete
+                            });
                         }
                     });
                 }, {
@@ -193,12 +205,27 @@
                     });
                 }
 
-                // Start observing
-                observeLazyAds();
+                // Start observing after DOM is ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', observeLazyAds);
+                } else {
+                    observeLazyAds();
+                }
 
                 // Auto-observe new dynamically added ads
                 if ('MutationObserver' in window) {
-                    new MutationObserver(observeLazyAds).observe(document.body, {
+                    new MutationObserver(function(mutations) {
+                        // Only observe if there are actual additions
+                        let hasNewAds = false;
+                        mutations.forEach(function(mutation) {
+                            if (mutation.addedNodes.length > 0) {
+                                hasNewAds = true;
+                            }
+                        });
+                        if (hasNewAds) {
+                            observeLazyAds();
+                        }
+                    }).observe(document.body, {
                         childList: true,
                         subtree: true
                     });
