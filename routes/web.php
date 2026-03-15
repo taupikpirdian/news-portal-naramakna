@@ -31,7 +31,7 @@ Route::get('/health', function () {
 // Sitemap Routes
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class , 'index'])->name('sitemap.index');
 Route::get('/sitemap-pages.xml', [\App\Http\Controllers\SitemapController::class , 'pages'])->name('sitemap.pages');
-Route::get('/sitemap-posts.xml', [\App\Http\Controllers\SitemapController::class , 'posts'])->name('sitemap.posts');
+Route::get('/sitemap-posts-{page}.xml', [\App\Http\Controllers\SitemapController::class , 'posts'])->name('sitemap.posts.page');
 Route::get('/sitemap-categories.xml', [\App\Http\Controllers\SitemapController::class , 'categories'])->name('sitemap.categories');
 Route::get('/sitemap.rss', [\App\Http\Controllers\RssController::class , 'index'])->name('sitemap.rss');
 

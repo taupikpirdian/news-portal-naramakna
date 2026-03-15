@@ -287,7 +287,6 @@
     async function fetchCategories() {
         try {
             const url = `${categoriesApiEndpoint}?limit=50&mainCategoriesOnly=true`;
-            console.log('Fetching categories from:', url);
 
             const response = await fetch(url);
 
@@ -296,15 +295,12 @@
             }
 
             const data = await response.json();
-            console.log('Categories API Response:', data);
 
             if (!data.success) {
-                console.warn('API returned unsuccessful response');
                 return [];
             }
 
             allCategories = data.data.categories || [];
-            console.log('Categories fetched successfully:', allCategories.length);
             return allCategories;
 
         } catch (error) {
@@ -399,8 +395,8 @@
             </section>
         `;
 
-        // Add AdSense after every 2 categories - LAZY LOADING FOR PERFORMANCE
-        if (adsEnabled && (index + 1) % 2 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
+        // Add AdSense after every 5 categories - LAZY LOADING FOR PERFORMANCE
+        if (adsEnabled && (index + 1) % 5 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
             if (isLocalhost) {
                 // Development Mode: Simple placeholder
                 html += `
@@ -436,7 +432,6 @@
     async function loadCategoryPosts(categorySlug) {
         try {
             const url = `${postsApiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=5`;
-            console.log('Fetching posts from:', url);
 
             const response = await fetch(url);
 
@@ -445,15 +440,12 @@
             }
 
             const data = await response.json();
-            console.log('Posts API Response for', categorySlug, ':', data);
 
             if (!data.success) {
-                console.warn('API returned unsuccessful response');
                 return [];
             }
 
             const posts = data.data.posts || [];
-            console.log('Posts fetched successfully:', posts.length);
             return posts;
 
         } catch (error) {
@@ -462,23 +454,15 @@
         }
     }
 
-    // Function to load next batch of categories
+    // Function to load next batch of categories - IMPROVED VERSION
     async function loadNextBatch() {
         if (loadedCount >= allCategories.length || isLoading) {
-            console.log('Load skipped:', {
-                loadedCount,
-                total: allCategories.length,
-                isLoading
-            });
             return;
         }
 
         isLoading = true;
-        console.log('Starting load for categories:', loadedCount, 'to', Math.min(loadedCount + categoriesPerBatch, allCategories.length) - 1);
-
         const container = document.getElementById('categories-container');
         if (!container) {
-            console.error('Container not found');
             isLoading = false;
             return;
         }
@@ -489,59 +473,60 @@
             for (let i = 0; i < categoriesToLoad; i++) {
                 const currentIndex = loadedCount + i;
                 const category = allCategories[currentIndex];
-
-                console.log(`Loading category ${i + 1}/${categoriesToLoad}:`, category.slug);
-
                 // Show skeleton
                 const skeleton = createSkeleton();
                 container.appendChild(skeleton);
 
-                // Load posts via AJAX
-                const posts = await loadCategoryPosts(category.slug);
-                console.log(`Posts loaded for ${category.slug}:`, posts.length);
+                try {
+                    // Load posts via AJAX
+                    const posts = await loadCategoryPosts(category.slug);
 
-                // Remove skeleton with animation
-                skeletonSection = container.querySelector('.skeleton-section');
-                if (skeletonSection) {
-                    skeletonSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    skeletonSection.style.opacity = '0';
-                    skeletonSection.style.transform = 'translateY(-10px)';
+                    // Remove skeleton with animation
+                    let skeletonSection = container.querySelector('.skeleton-section');
+                    if (skeletonSection) {
+                        skeletonSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        skeletonSection.style.opacity = '0';
+                        skeletonSection.style.transform = 'translateY(-10px)';
 
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    skeletonSection.remove();
-                    console.log(`Skeleton removed for ${category.slug}`);
-                }
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                        skeletonSection.remove();
+                    }
 
-                // Check if we have posts
-                if (!posts || posts.length === 0) {
-                    console.warn('No posts found for category:', category.slug);
-                    continue;
-                }
+                    // Check if we have posts
+                    if (!posts || posts.length === 0) {
+                        continue;
+                    }
 
-                // Create and append category section
-                const categoryHTML = createCategoryHTML(category, posts, currentIndex);
-                container.insertAdjacentHTML('beforeend', categoryHTML);
-                console.log(`Category HTML added for ${category.slug}`);
+                    // Create and append category section
+                    const categoryHTML = createCategoryHTML(category, posts, currentIndex);
+                    container.insertAdjacentHTML('beforeend', categoryHTML);
 
-                // Add fade-in animation
-                const newSection = container.lastElementChild;
-                if (newSection && newSection.classList.contains('category-section')) {
-                    newSection.style.opacity = '0';
-                    newSection.style.transform = 'translateY(30px) scale(0.98)';
+                    // Add fade-in animation
+                    const newSection = container.lastElementChild;
+                    if (newSection && newSection.classList.contains('category-section')) {
+                        newSection.style.opacity = '0';
+                        newSection.style.transform = 'translateY(30px) scale(0.98)';
 
-                    await new Promise(resolve => setTimeout(resolve, 50));
+                        await new Promise(resolve => setTimeout(resolve, 50));
 
-                    newSection.offsetHeight; // Trigger reflow
+                        newSection.offsetHeight; // Trigger reflow
 
-                    newSection.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    newSection.style.opacity = '1';
-                    newSection.style.transform = 'translateY(0) scale(1)';
-                    console.log(`Animation applied for ${category.slug}`);
+                        newSection.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        newSection.style.opacity = '1';
+                        newSection.style.transform = 'translateY(0) scale(1)';
+                    }
+                } catch (error) {
+                    console.error(`Error loading category ${category.slug}:`, error);
+
+                    // Remove skeleton if exists
+                    const skeletonSection = container.querySelector('.skeleton-section');
+                    if (skeletonSection) {
+                        skeletonSection.remove();
+                    }
                 }
             }
 
             loadedCount += categoriesToLoad;
-            console.log('Batch load completed. Total loaded:', loadedCount);
 
         } catch (error) {
             console.error('Error in loadNextBatch:', error);
@@ -551,7 +536,6 @@
             skeletonSections.forEach(s => s.remove());
         } finally {
             isLoading = false;
-            console.log('Loading flag reset');
 
             // Attach error handlers to new images
             container.querySelectorAll('img').forEach(img => {
@@ -562,32 +546,44 @@
         }
     }
 
-    // Check if user is near bottom of page
+    // Check if user is near bottom of page - IMPROVED VERSION
     function isNearBottom() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
 
-        return (scrollTop + windowHeight) >= (documentHeight - 200);
+        return (scrollTop + windowHeight) >= (documentHeight - 300); // Increased trigger distance to 300px
     }
 
-    // Handle scroll event for lazy loading
+    // Handle scroll event for lazy loading - IMPROVED VERSION
+    let scrollThrottleTimer = null;
     function handleScroll() {
-        if (loadedCount < allCategories.length && isNearBottom() && !isLoading) {
-            loadNextBatch();
-        }
+        // Throttle scroll events to improve performance
+        if (scrollThrottleTimer) return;
+
+        scrollThrottleTimer = setTimeout(() => {
+            scrollThrottleTimer = null;
+
+            const shouldLoad = loadedCount < allCategories.length && isNearBottom() && !isLoading;
+            if (shouldLoad) {
+                loadNextBatch();
+            }
+        }, 200); // Throttle to 200ms
     }
 
-    // Initialize: Fetch categories and load first batch
+    // Initialize: Fetch categories and load first batch - IMPROVED VERSION
     async function init() {
-        await fetchCategories();
+        try {
+            await fetchCategories();
 
-        if (allCategories.length > 0) {
-            // Load first batch immediately
-            await loadNextBatch();
-
-            // Add scroll event listener for lazy loading
-            window.addEventListener('scroll', handleScroll, { passive: true });
+            if (allCategories.length > 0) {
+                // Load first batch immediately
+                await loadNextBatch();
+                // Add scroll event listener for lazy loading
+                window.addEventListener('scroll', handleScroll, { passive: true });
+            }
+        } catch (error) {
+            console.error('Error during initialization:', error);
         }
     }
 
@@ -595,49 +591,49 @@
     init();
 
     // Carousel functionality
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('#carouselContainer > div');
-    const totalSlides = slides.length;
-    const container = document.getElementById('carouselContainer');
-    const dotsContainer = document.getElementById('carouselDots');
+    let homeCurrentSlide = 0;
+    const homeSlides = document.querySelectorAll('#carouselContainer > div');
+    const homeTotalSlides = homeSlides.length;
+    const homeContainer = document.getElementById('carouselContainer');
+    const homeDotsContainer = document.getElementById('carouselDots');
 
     // Create dots
-    for (let i = 0; i < totalSlides; i++) {
+    for (let i = 0; i < homeTotalSlides; i++) {
         const dot = document.createElement('div');
         dot.className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
+        dot.onclick = () => homeGoToSlide(i);
+        homeDotsContainer.appendChild(dot);
     }
 
-    function updateCarousel() {
-        if (!container) return;
-        container.style.transform = `translateX(-${currentSlide * 100}%)`;
+    function updateHomeCarousel() {
+        if (!homeContainer) return;
+        homeContainer.style.transform = `translateX(-${homeCurrentSlide * 100}%)`;
 
-        if (dotsContainer) {
-            const dots = dotsContainer.children;
+        if (homeDotsContainer) {
+            const dots = homeDotsContainer.children;
             for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === currentSlide ? ' bg-yellow-450 w-6' : '');
+                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === homeCurrentSlide ? ' bg-yellow-450 w-6' : '');
             }
         }
     }
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
+    function homeNextSlide() {
+        homeCurrentSlide = (homeCurrentSlide + 1) % homeTotalSlides;
+        updateHomeCarousel();
     }
 
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateCarousel();
+    function homePrevSlide() {
+        homeCurrentSlide = (homeCurrentSlide - 1 + homeTotalSlides) % homeTotalSlides;
+        updateHomeCarousel();
     }
 
-    function goToSlide(index) {
-        currentSlide = index;
-        updateCarousel();
+    function homeGoToSlide(index) {
+        homeCurrentSlide = index;
+        updateHomeCarousel();
     }
 
-    if (container && totalSlides > 0) {
-        setInterval(nextSlide, 5000);
+    if (homeContainer && homeTotalSlides > 0) {
+        setInterval(homeNextSlide, 5000);
     }
 
     // Smooth scroll
