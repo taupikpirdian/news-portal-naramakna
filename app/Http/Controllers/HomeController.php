@@ -80,7 +80,7 @@ class HomeController extends Controller
         $categories = $this->apiService->getCategories((int)$limit, filter_var($mainCategoriesOnly, FILTER_VALIDATE_BOOLEAN));
 
         // limit 12 dan random order
-        $categories = collect($categories)->random(12)->values()->all();
+        $categories = collect($categories)->random(10)->values()->all();
 
         return response()->json([
             'success' => true,
