@@ -21,9 +21,11 @@
             bottom: 1rem;
             z-index: 950;
             display: flex;
-            align-items: flex-start;
+            align-items: stretch;
             justify-content: center;
             padding-top: 0.5rem;
+            width: 160px;
+            min-width: 160px;
         }
 
         .ad-sidebar-left {
@@ -135,12 +137,12 @@
             </div>
         </div>
     @else
-        {{-- Production Mode - Fetch from API first --}}
-        <div class="ad-sidebar-left">
-            <x-sidebar-ads side="left" />
+        {{-- Production Mode - Use Google AdSense - OPTIMIZED --}}
+        <div class="ad-sidebar-left" style="width: 160px;">
+            <x-google-ads type="sidebar_left" :lazy="true" />
         </div>
-        <div class="ad-sidebar-right">
-            <x-sidebar-ads side="right" />
+        <div class="ad-sidebar-right" style="width: 160px;">
+            <x-google-ads type="sidebar_right" :lazy="true" />
         </div>
     @endif
 
@@ -154,6 +156,84 @@
     </main>
     @include("components.footer")
     @stack('scripts')
+
+    {{-- UNIFIED LAZY AD LOADING - Single Observer for All Lazy Ads --}}
+    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && !app()->environment('local'))
+    <script>
+        (function() {
+            // Initialize once per page
+            if (window.unifiedAdLoaderInitialized) return;
+            window.unifiedAdLoaderInitialized = true;
+
+            // Use IntersectionObserver for maximum performance
+            if ('IntersectionObserver' in window) {
+                const adObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            const ad = entry.target;
+                            adObserver.unobserve(ad);
+
+                            // Wait for element to have valid dimensions before loading
+                            requestAnimationFrame(function() {
+                                setTimeout(function() {
+                                    // Check if element has valid width
+                                    const rect = ad.getBoundingClientRect();
+                                    const hasValidWidth = rect && rect.width > 0;
+
+                                    if (hasValidWidth && typeof adsbygoogle !== 'undefined') {
+                                        try {
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                        } catch(e) {
+                                            // Silently fail
+                                        }
+                                    }
+                                }, 100); // Small delay to ensure rendering is complete
+                            });
+                        }
+                    });
+                }, {
+                    rootMargin: '200px' // Load 200px before entering viewport
+                });
+
+                // Observe all lazy ads (sidebar, category, etc)
+                function observeLazyAds() {
+                    document.querySelectorAll('.lazy-ad, .lazy-category-ad').forEach(function(ad) {
+                        if (!ad.hasAttribute('data-ad-loaded')) {
+                            adObserver.observe(ad);
+                            ad.setAttribute('data-ad-loaded', 'true');
+                        }
+                    });
+                }
+
+                // Start observing after DOM is ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', observeLazyAds);
+                } else {
+                    observeLazyAds();
+                }
+
+                // Auto-observe new dynamically added ads
+                if ('MutationObserver' in window) {
+                    new MutationObserver(function(mutations) {
+                        // Only observe if there are actual additions
+                        let hasNewAds = false;
+                        mutations.forEach(function(mutation) {
+                            if (mutation.addedNodes.length > 0) {
+                                hasNewAds = true;
+                            }
+                        });
+                        if (hasNewAds) {
+                            observeLazyAds();
+                        }
+                    }).observe(document.body, {
+                        childList: true,
+                        subtree: true
+                    });
+                }
+            }
+        })();
+    </script>
+    @endif
 
     <script>
     function openMoreSidebar() {
@@ -196,6 +276,8 @@
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(updateHeaderHeight, 100);
     });
+
+    // End of main scripts
     </script>
 </body>
 </html>

@@ -21,7 +21,7 @@
         </a>
     </div>
 
-    <!-- Fallback to Google Ads when no ad available -->
+    {{-- Fallback to Google Ads when no ad available --}}
     <div id="{{ $componentId }}-fallback" style="display: none;" class="google-ads-fallback-wrapper">
         @if(config('ads.enabled'))
             <x-google-ads type="leaderboard" />

@@ -28,11 +28,12 @@ class InstagramService
                 ];
             }
 
-            // Check cache first
+            // Check cache first - reduced to 3 minutes for fresher data
             $cacheKey = "instagram_media_{$limit}";
             $cached = Cache::get($cacheKey);
 
             if ($cached) {
+                Log::info('Instagram: Returning cached data', ['key' => $cacheKey, 'posts_count' => count($cached)]);
                 return [
                     'success' => true,
                     'data' => $cached,
@@ -40,8 +41,8 @@ class InstagramService
             }
 
             // Fetch MORE posts first, then filter to get desired number of feed posts
-            // Multiply by 3 to account for excluded reels
-            $fetchLimit = min($limit * 3, 50);
+            // Multiply by 3 to account for excluded reels, but cap at 25 (Instagram API limit)
+            $fetchLimit = min($limit * 3, 25);
 
             // Fetch posts from Instagram Graph API
             // Add more fields to get video thumbnails
@@ -76,7 +77,6 @@ class InstagramService
             // Include ALL media types: IMAGE, VIDEO, CAROUSEL_ALBUM
             // For videos, use thumbnail_url as fallback
             $media = collect($data['data'])
-                ->take($limit)
                 ->map(function ($item) {
                     $mediaType = $item['media_type'] ?? 'IMAGE';
                     $imageUrl = $item['media_url'] ?? null;
@@ -97,17 +97,21 @@ class InstagramService
                         'like_count' => $item['like_count'] ?? 0,
                         'comments_count' => $item['comments_count'] ?? 0,
                         'timestamp' => $item['timestamp'] ?? null,
+                        'timestamp_utc' => $item['timestamp'] ?? null, // Keep UTC for reference
                     ];
                 })
                 ->filter(function ($item) {
                     // Only include items that have an image URL
                     return !is_null($item['image_url']);
                 })
+                ->sortByDesc('timestamp') // Sort by timestamp descending (newest first)
+                ->take($limit) // Take AFTER filtering and sorting to ensure we get exactly $limit posts
                 ->values()
                 ->toArray();
 
-            // Cache for 1 hour
-            Cache::put($cacheKey, $media, 3600);
+            // Cache for 3 minutes to balance freshness and performance
+            // Instagram like_count & comments_count update frequently, so we need fresh data
+            Cache::put($cacheKey, $media, 180); // 3 minutes (was 900 = 15 minutes)
 
             return [
                 'success' => true,
