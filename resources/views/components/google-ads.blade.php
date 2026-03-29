@@ -11,10 +11,10 @@
     $isLocalhost = app()->environment('local');
 
     $adDimensions = match($type) {
-        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '250px'],
-        'header' => ['width' => '728px', 'height' => '90px'],
-        'article' => ['width' => '728px', 'height' => '90px'],
-        default => ['width' => '728px', 'height' => '90px']
+        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'minWidth' => '160px'],
+        'header' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px'],
+        'article' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px'],
+        default => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px']
     };
 
     // Generate unique ID for each ad instance to prevent conflicts
@@ -25,30 +25,30 @@
     @if($isLocalhost)
         {{-- Development placeholder --}}
         <div class="ad-{{ $type }}"
-             style="width:{{ $adDimensions['width'] }}; @if(isset($adDimensions['height'])) height:{{ $adDimensions['height'] }}; @else min-height:{{ $adDimensions['minHeight'] }}; max-height:{{ $adDimensions['maxHeight'] }}; @endif min-width:{{ $adDimensions['minWidth'] }}; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+             style="width: {{ $adDimensions['width'] }}; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }}; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
             <div style="text-align:center; color:#1f2937; font-size:0.75rem; font-weight:600;">
-                {{ $type }}<br><small style="opacity:0.8">{{ $adDimensions['width'] }} × {{ $adDimensions['height'] ?? $adDimensions['minHeight'] . '-' . $adDimensions['maxHeight'] }}</small>
+                {{ $type }}<br><small style="opacity:0.8">{{ $adDimensions['width'] }} × {{ $adDimensions['height'] }}</small>
             </div>
         </div>
     @else
-        {{-- Production: Ultra-optimized with explicit pixel dimensions --}}
-        <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }}; margin: 0 auto;">
+        {{-- Production: Responsive full-width ads --}}
+        <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: 100%; min-width: {{ $adDimensions['minWidth'] }};">
             @if($priority)
-                {{-- Priority: Immediate load with explicit dimensions --}}
+                {{-- Priority: Immediate load --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
-                     style="display: block; width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
                      data-ad-layout="in-article"></ins>
             @elseif($lazy)
                 {{-- Lazy: Handled by unified observer in app.blade.php --}}
                 <ins class="adsbygoogle ad-{{ $type }} lazy-ad"
-                     style="display: block; width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
                      data-ad-layout="in-article"></ins>
             @else
-                {{-- Standard: Immediate load with explicit dimensions --}}
+                {{-- Standard: Immediate load --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
-                     style="display: block; width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
                      data-ad-layout="in-article"></ins>
             @endif
