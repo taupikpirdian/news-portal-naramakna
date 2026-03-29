@@ -7,8 +7,8 @@
 @endphp
 
 @if(config('ads.instagram_feed_enabled'))
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
+<section>
+    <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
             <h2 class="flex items-center gap-2">

@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Artikel Terbaru -->
-<section class="mb-16" id="latest-posts-section">
+<section class="mb-16">
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-2">
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
@@ -19,12 +19,12 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {{-- Featured Slider (left side - 2 columns) --}}
         <div class="lg:col-span-2">
-            <div class="relative rounded-2xl overflow-hidden bg-white">
-                <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease"
+            <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg">
+                <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease-out"
                     id="featuredSliderContainer">
                     @if(isset($featuredPosts) && count($featuredPosts) > 0)
                     @foreach($featuredPosts as $index => $post)
-                    <div class="min-w-full h-full relative" data-index="{{ $index }}">
+                    <div class="min-w-full h-full relative flex-shrink-0" data-index="{{ $index }}">
                         <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="block h-full">
                             <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
                                 alt="{{ $post['title'] }}" class="w-full h-full object-cover" loading="lazy">
@@ -37,23 +37,29 @@
                     @endif
                 </div>
                 <span id="featuredChannel"
-                    class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
+                    class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full z-30 shadow-md backdrop-blur-sm">
                     {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
                 </span>
-                <button
-                    class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                    <span onclick="featuredPrev()">‹</span>
+                <button onclick="featuredPrev()"
+                    class="absolute top-1/2 left-2 -translate-y-1/2 bg-white shadow-lg border-0 rounded-full flex items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
+                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 w-5 h-5 group-hover:text-white transition-colors duration-200 flex-shrink-0" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
                 </button>
-                <button
-                    class="absolute top-1/2 -translate-y-1/2 right-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                    <span onclick="featuredNext()">›</span>
+                <button onclick="featuredNext()"
+                    class="absolute top-1/2 right-2 -translate-y-1/2 bg-white shadow-lg border-0 rounded-full flex items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
+                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 w-5 h-5 group-hover:text-white transition-colors duration-200 flex-shrink-0" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
                 </button>
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
-                <div class="absolute left-4 right-4 bottom-16 text-white z-10">
-                    <a href="" id="featuredLink" class="no-underline">
+                <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20 pointer-events-none" id="featuredDots"></div>
+                <div class="absolute left-4 right-4 bottom-20 text-white z-10 pointer-events-none">
+                    <a href="" id="featuredLink" class="no-underline pointer-events-none">
                         <h3 id="featuredTitle"
                             class="text-xl sm:text-2xl font-bold hover:text-yellow-450 transition-colors"></h3>
-                        <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
+                        <div class="flex gap-3 items-center text-white/90 text-sm mt-2">
                             <span id="featuredAuthor"></span>
                             <span class="w-2 h-2 bg-white/50 rounded-full"></span>
                             <span id="featuredDate"></span>
@@ -92,18 +98,25 @@
     @endif
 </section>
 
+{{-- Above Instagram Feed Ad - PRIORITY LOADING --}}
+@if(config('ads.enabled') && config('ads.adsense_publisher_id'))
+    <div class="my-8">
+        <x-google-ads type="article" :priority="true" />
+    </div>
+@endif
+
 {{-- Instagram Feed - Real Posts from API --}}
 <x-instagram-feed :limit="12" />
 
 {{-- In-Article Ad between Instagram and Categories - PRIORITY LOADING --}}
 @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
-    <x-google-ads type="article" :priority="true" />
+    <div class="my-8">
+        <x-google-ads type="article" :priority="true" />
+    </div>
 @endif
 
 {{-- List Berita Berdasarkan Kategori --}}
-{{-- All categories will be loaded via AJAX --}}
 <div id="categories-container">
-    {{-- Categories will be loaded here via JavaScript --}}
 </div>
 
 {{-- Loading Skeleton Template --}}
@@ -201,48 +214,6 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
     }
-
-    /* Smooth Loading Indicator */
-    @keyframes pulse-ring {
-        0% {
-            transform: scale(0.8);
-            opacity: 0.5;
-        }
-
-        50% {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        100% {
-            transform: scale(0.8);
-            opacity: 0.5;
-        }
-    }
-
-    .loading-indicator {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 20px;
-    }
-
-    .loading-indicator span {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #fbbf24;
-        animation: pulse-ring 1.5s ease-in-out infinite;
-    }
-
-    .loading-indicator span:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .loading-indicator span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
 </style>
 @endsection
 
@@ -260,7 +231,7 @@
     let allCategories = [];
     let loadedCount = 0;
     let isLoading = false;
-    const categoriesPerBatch = 2; // Load first 2 categories immediately
+    const categoriesPerBatch = 2;
 
     function formatJakartaDate(input) {
         if (!input) return '';
@@ -313,11 +284,8 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
-        const readUrl = '{{ url('/artikel') }}';
-        const categoryUrl = '{{ url('/kategori') }}';
-        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
-        const adsensePublisherId = '{{ config('ads.adsense_publisher_id') }}';
-        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const readUrl = "{{ url('/artikel') }}";
+        const categoryUrl = "{{ url('/kategori') }}";
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -395,31 +363,7 @@
             </section>
         `;
 
-        // Add AdSense after every 5 categories - LAZY LOADING FOR PERFORMANCE
-        if (adsEnabled && (index + 1) % 5 === 0 && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')) {
-            if (isLocalhost) {
-                // Development Mode: Simple placeholder
-                html += `
-                    <div class="my-8" style="width: 100%; background: #facc15; border-radius: 8px; padding: 1.5rem; text-align: center;">
-                        <h3 style="font-size: 1.125rem; font-weight: 700;">📢 Advertisement Space</h3>
-                        <p style="font-size: 0.875rem;">Category Ad - After ${category.name}</p>
-                    </div>
-                `;
-            } else {
-                // Production: Lazy loading with batch processing
-                html += `
-                    <div class="my-8 category-ad-container" style="width: 100%; min-width: 300px;">
-                        <ins class="adsbygoogle lazy-category-ad"
-                             style="display:block; width:100%; min-height:90px;"
-                             data-ad-client="${adsensePublisherId}"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                    </div>
-                `;
-            }
-        }
-
-    return html;
+        return html;
     }
 
     // Function to create skeleton loader
@@ -454,7 +398,7 @@
         }
     }
 
-    // Function to load next batch of categories - IMPROVED VERSION
+    // Function to load next batch of categories
     async function loadNextBatch() {
         if (loadedCount >= allCategories.length || isLoading) {
             return;
@@ -546,16 +490,16 @@
         }
     }
 
-    // Check if user is near bottom of page - IMPROVED VERSION
+    // Check if user is near bottom of page
     function isNearBottom() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
 
-        return (scrollTop + windowHeight) >= (documentHeight - 300); // Increased trigger distance to 300px
+        return (scrollTop + windowHeight) >= (documentHeight - 300);
     }
 
-    // Handle scroll event for lazy loading - IMPROVED VERSION
+    // Handle scroll event for lazy loading
     let scrollThrottleTimer = null;
     function handleScroll() {
         // Throttle scroll events to improve performance
@@ -568,18 +512,16 @@
             if (shouldLoad) {
                 loadNextBatch();
             }
-        }, 200); // Throttle to 200ms
+        }, 200);
     }
 
-    // Initialize: Fetch categories and load first batch - IMPROVED VERSION
+    // Initialize: Fetch categories and load first batch
     async function init() {
         try {
             await fetchCategories();
 
             if (allCategories.length > 0) {
-                // Load first batch immediately
                 await loadNextBatch();
-                // Add scroll event listener for lazy loading
                 window.addEventListener('scroll', handleScroll, { passive: true });
             }
         } catch (error) {
@@ -590,63 +532,7 @@
     // Start the app
     init();
 
-    // Carousel functionality
-    let homeCurrentSlide = 0;
-    const homeSlides = document.querySelectorAll('#carouselContainer > div');
-    const homeTotalSlides = homeSlides.length;
-    const homeContainer = document.getElementById('carouselContainer');
-    const homeDotsContainer = document.getElementById('carouselDots');
-
-    // Create dots
-    for (let i = 0; i < homeTotalSlides; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
-        dot.onclick = () => homeGoToSlide(i);
-        homeDotsContainer.appendChild(dot);
-    }
-
-    function updateHomeCarousel() {
-        if (!homeContainer) return;
-        homeContainer.style.transform = `translateX(-${homeCurrentSlide * 100}%)`;
-
-        if (homeDotsContainer) {
-            const dots = homeDotsContainer.children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === homeCurrentSlide ? ' bg-yellow-450 w-6' : '');
-            }
-        }
-    }
-
-    function homeNextSlide() {
-        homeCurrentSlide = (homeCurrentSlide + 1) % homeTotalSlides;
-        updateHomeCarousel();
-    }
-
-    function homePrevSlide() {
-        homeCurrentSlide = (homeCurrentSlide - 1 + homeTotalSlides) % homeTotalSlides;
-        updateHomeCarousel();
-    }
-
-    function homeGoToSlide(index) {
-        homeCurrentSlide = index;
-        updateHomeCarousel();
-    }
-
-    if (homeContainer && homeTotalSlides > 0) {
-        setInterval(homeNextSlide, 5000);
-    }
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
+    // Featured Slider functionality
     let featuredCurrent = 0;
     const featuredContainer = document.getElementById('featuredSliderContainer');
     const featuredDotsContainer = document.getElementById('featuredDots');
@@ -655,22 +541,23 @@
     const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
     const featuredLinkEl = document.getElementById('featuredLink');
-    const readUrl = '{{ url('/artikel') }}';
+    const articleUrl = "{{ url('/artikel') }}";
 
     // Store post data from server-side rendered slides
-    const featuredData = @if (isset($featuredPosts) && count($featuredPosts) > 0)
-        {!! json_encode(collect($featuredPosts)->map(function ($post) {
-            return [
-                'title' => $post['title'] ?? '',
-                'author' => $post['author']['display_name'] ?? 'Redaksi',
-                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '',
-                'channel' => $post['metadata']['_channel'] ?? 'Artikel',
-                'slug' => $post['slug'] ?? ''
-            ];
-        })->values()->toArray()) !!}
-    @else
-        []
-    @endif;
+    const featuredData = {!! json_encode(
+        collect($featuredPosts ?? [])
+            ->map(function ($post) {
+                return [
+                    'title' => $post['title'] ?? '',
+                    'author' => $post['author']['display_name'] ?? 'Redaksi',
+                    'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '',
+                    'channel' => $post['metadata']['_channel'] ?? 'Artikel',
+                    'slug' => $post['slug'] ?? ''
+                ];
+            })
+            ->values()
+            ->toArray()
+    ) !!};
 
     const featuredTotal = featuredData.length;
 
@@ -687,7 +574,7 @@
             if (featuredAuthorEl) featuredAuthorEl.textContent = d.author;
             if (featuredDateEl) featuredDateEl.textContent = d.date;
             if (featuredChannelEl) featuredChannelEl.textContent = d.channel;
-            if (featuredLinkEl) featuredLinkEl.href = `${readUrl}/${d.slug}`;
+            if (featuredLinkEl) featuredLinkEl.href = `${articleUrl}/${d.slug}`;
         }
 
         // Update dots
@@ -743,65 +630,5 @@
             img.src = FALLBACK_IMG;
         }, { once: true });
     });
-
-    // ============================================================
-    // ADSENSE DEBUG CONSOLE - Development Mode ONLY
-    // ============================================================
-    (function() {
-        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
-        const adsensePublisherId = '{{ config('ads.adsense_publisher_id') }}';
-        const currentHost = window.location.hostname;
-        const isLocalhost = currentHost === 'localhost' || currentHost === '127.0.0.1';
-
-        // ONLY show debug console in localhost/development
-        if (!isLocalhost) return; // ← Exit silently if production
-
-        if (typeof console === 'undefined') return;
-
-        console.group('%c🎯 Google AdSense Debug Info', 'background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04, #ea4335); color: white; padding: 8px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;');
-        console.log('%cEnvironment:', 'color: #4285f4; font-weight: bold;', {
-            currentHost: currentHost,
-            isLocalhost: isLocalhost,
-            environment: isLocalhost ? 'Development (Localhost)' : 'Production'
-        });
-        console.log('%cConfiguration:', 'color: #34a853; font-weight: bold;', {
-            adsEnabled: adsEnabled,
-            publisherId: adsensePublisherId,
-            publisherIdValid: adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')
-        });
-        console.log('%cAd Elements Found:', 'color: #fbbc04; font-weight: bold;', document.querySelectorAll('.adsbygoogle').length);
-        console.log('%cAdSense Script:', 'color: #ea4335; font-weight: bold;', window.adsbygoogle ? '✓ Loaded' : '✗ Not loaded');
-
-        console.group('%c⚠️ Localhost Warning', 'color: #fbbc04; font-weight: bold;');
-        console.log('%cGoogle AdSense does NOT work on localhost!', 'color: #ea4335; font-size: 12px; font-weight: bold;');
-        console.log('403 errors are NORMAL when testing on localhost.');
-        console.log('Ads will only appear on production domains that are:');
-        console.log('  1. Added to your AdSense account');
-        console.log('  2. Verified by Google');
-        console.log('  3. Using HTTPS');
-        console.groupEnd();
-
-        console.group('%c📋 What to Expect:', 'color: #4285f4; font-weight: bold;');
-        console.log('❌ Blank/Empty ad spaces');
-        console.log('❌ 403 Forbidden errors in network tab');
-        console.log('✅ AdSense script loaded');
-        console.log('✅ Ad elements created with correct attributes');
-        console.log('✅ Console logs showing initialization steps');
-        console.log('\n%c→ All of the above are NORMAL for localhost!', 'color: #34a853; font-weight: bold;');
-        console.groupEnd();
-
-        console.groupEnd();
-
-        // Summary log
-        setTimeout(() => {
-            const adElements = document.querySelectorAll('.adsbygoogle');
-            console.log('%c📊 Final Summary:', 'background: #4285f4; color: white; padding: 4px 8px; border-radius: 4px;', {
-                totalAdElements: adElements.length,
-                adsInitialized: Array.from(adElements).filter(el => el.getAttribute('data-adsbygoogle-status')).length,
-                readyForProduction: !isLocalhost && adsensePublisherId && adsensePublisherId.startsWith('ca-pub-')
-            });
-        }, 2000);
-    })();
-    // ============================================================
 </script>
 @endpush

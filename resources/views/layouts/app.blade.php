@@ -138,12 +138,15 @@
         </div>
     @else
         {{-- Production Mode - Use Google AdSense - OPTIMIZED --}}
+        {{-- Sidebar ads commented out --}}
+        {{--
         <div class="ad-sidebar-left" style="width: 160px;">
             <x-google-ads type="sidebar_left" :lazy="true" />
         </div>
         <div class="ad-sidebar-right" style="width: 160px;">
             <x-google-ads type="sidebar_right" :lazy="true" />
         </div>
+        --}}
     @endif
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
