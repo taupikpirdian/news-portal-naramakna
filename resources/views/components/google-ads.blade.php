@@ -11,11 +11,14 @@
     $isLocalhost = app()->environment('local');
 
     $adDimensions = match($type) {
-        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'minHeight' => '250px', 'maxHeight' => '600px', 'minWidth' => '160px'],
+        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '250px', 'minWidth' => '160px'],
         'header' => ['width' => '100%', 'height' => '250px', 'minWidth' => '300px'],
         'article' => ['width' => '100%', 'height' => '180px', 'minWidth' => '300px'],
         default => ['width' => '100%', 'height' => '120px', 'minWidth' => '300px']
     };
+
+    // Generate unique ID for each ad instance to prevent conflicts
+    $adId = 'ad-' . $type . '-' . uniqid();
 @endphp
 
 @if($enabled && $publisherId)
@@ -29,29 +32,60 @@
         </div>
     @else
         {{-- Production: Ultra-optimized --}}
-        @if($priority)
-            {{-- Priority: Immediate load --}}
-            <ins class="adsbygoogle ad-{{ $type }}"
-                 style="display:block; width:{{ $adDimensions['width'] }}; min-width:{{ $adDimensions['minWidth'] }}; @if(isset($adDimensions['height'])) height:{{ $adDimensions['height'] }}; @else min-height:{{ $adDimensions['minHeight'] }}; max-height:{{ $adDimensions['maxHeight'] }}; @endif"
-                 data-ad-client="{{ $publisherId }}"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        @elseif($lazy)
-            {{-- Lazy: Handled by unified observer in app.blade.php --}}
-            <ins class="adsbygoogle ad-{{ $type }} lazy-ad"
-                 style="display:block; width:{{ $adDimensions['width'] }}; min-width:{{ $adDimensions['minWidth'] }}; @if(isset($adDimensions['height'])) height:{{ $adDimensions['height'] }}; @else min-height:{{ $adDimensions['minHeight'] }}; max-height:{{ $adDimensions['maxHeight'] }}; @endif"
-                 data-ad-client="{{ $publisherId }}"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-        @else
-            {{-- Standard: Immediate load --}}
-            <ins class="adsbygoogle ad-{{ $type }}"
-                 style="display:block; width:{{ $adDimensions['width'] }}; min-width:{{ $adDimensions['minWidth'] }}; @if(isset($adDimensions['height'])) height:{{ $adDimensions['height'] }}; @else min-height:{{ $adDimensions['minHeight'] }}; max-height:{{ $adDimensions['maxHeight'] }}; @endif"
-                 data-ad-client="{{ $publisherId }}"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        @endif
+        <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: 100%; min-width: {{ $adDimensions['minWidth'] }}; overflow: hidden;">
+            @if($priority)
+                {{-- Priority: Immediate load - wrapped to ensure dimensions --}}
+                <ins class="adsbygoogle ad-{{ $type }}"
+                     style="display: block !important; width: 100% !important; min-width: {{ $adDimensions['minWidth'] }} !important; height: {{ $adDimensions['height'] }} !important;"
+                     data-ad-client="{{ $publisherId }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            @elseif($lazy)
+                {{-- Lazy: Handled by unified observer in app.blade.php --}}
+                <ins class="adsbygoogle ad-{{ $type }} lazy-ad"
+                     style="display: block !important; width: 100% !important; min-width: {{ $adDimensions['minWidth'] }} !important; height: {{ $adDimensions['height'] }} !important;"
+                     data-ad-client="{{ $publisherId }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            @else
+                {{-- Standard: Immediate load - wrapped to ensure dimensions --}}
+                <ins class="adsbygoogle ad-{{ $type }}"
+                     style="display: block !important; width: 100% !important; min-width: {{ $adDimensions['minWidth'] }} !important; height: {{ $adDimensions['height'] }} !important;"
+                     data-ad-client="{{ $publisherId }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            @endif
+        </div>
+
+        {{-- Load ad only after wrapper has valid dimensions --}}
+        <script>
+            (function() {
+                var adWrapper = document.getElementById('{{ $adId }}-wrapper');
+                var adElement = adWrapper.querySelector('.adsbygoogle');
+
+                function loadAd() {
+                    if (typeof adsbygoogle !== 'undefined') {
+                        try {
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        } catch(e) {
+                            console.warn('Ad load error:', e);
+                        }
+                    }
+                }
+
+                // Wait for DOM to be ready with valid dimensions
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        requestAnimationFrame(function() {
+                            setTimeout(loadAd, 100);
+                        });
+                    });
+                } else {
+                    requestAnimationFrame(function() {
+                        setTimeout(loadAd, 50);
+                    });
+                }
+            })();
+        </script>
     @endif
 @endif
