@@ -529,10 +529,10 @@
         }
     }
 
-    // Start the app
-    init();
+    // ==========================================
+    // FEATURED SLIDER - MUST BE DEFINED BEFORE INIT()
+    // ==========================================
 
-    // Featured Slider functionality
     let featuredCurrent = 0;
     const featuredContainer = document.getElementById('featuredSliderContainer');
     const featuredDotsContainer = document.getElementById('featuredDots');
@@ -623,6 +623,13 @@
     if (featuredTotal > 0) {
         updateFeaturedSlider();
     }
+
+    // ==========================================
+    // START THE APP
+    // ==========================================
+
+    // Start the app
+    init();
 
     // Fallback image handler
     Array.from(document.querySelectorAll('img')).forEach(img => {

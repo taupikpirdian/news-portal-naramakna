@@ -11,14 +11,14 @@
     $isLocalhost = app()->environment('local');
 
     $adDimensions = match($type) {
-        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '250px', 'minWidth' => '160px'],
-        'header' => ['width' => '100%', 'height' => '250px', 'minWidth' => '300px'],
-        'article' => ['width' => '100%', 'height' => '180px', 'minWidth' => '300px'],
-        default => ['width' => '100%', 'height' => '120px', 'minWidth' => '300px']
+        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'height' => '250px'],
+        'header' => ['width' => '728px', 'height' => '90px'],
+        'article' => ['width' => '728px', 'height' => '90px'],
+        default => ['width' => '728px', 'height' => '90px']
     };
 
     // Generate unique ID for each ad instance to prevent conflicts
-    $adId = 'ad-' . $type . '-' . uniqid();
+    $adId = 'ad-' . str_replace('.', '', uniqid('', true));
 @endphp
 
 @if($enabled && $publisherId)
@@ -31,61 +31,27 @@
             </div>
         </div>
     @else
-        {{-- Production: Ultra-optimized --}}
-        <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: 100%; min-width: {{ $adDimensions['minWidth'] }}; overflow: hidden;">
+        {{-- Production: Ultra-optimized with explicit pixel dimensions --}}
+        <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }}; margin: 0 auto;">
             @if($priority)
-                {{-- Priority: Immediate load - wrapped to ensure dimensions --}}
+                {{-- Priority: Immediate load with explicit dimensions --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
-                     style="display: block !important; width: 100% !important; min-width: {{ $adDimensions['minWidth'] }} !important; height: {{ $adDimensions['height'] }} !important;"
+                     style="display: block; width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
+                     data-ad-layout="in-article"></ins>
             @elseif($lazy)
                 {{-- Lazy: Handled by unified observer in app.blade.php --}}
                 <ins class="adsbygoogle ad-{{ $type }} lazy-ad"
-                     style="display: block !important; width: 100% !important; min-width: {{ $adDimensions['minWidth'] }} !important; height: {{ $adDimensions['height'] }} !important;"
+                     style="display: block; width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
+                     data-ad-layout="in-article"></ins>
             @else
-                {{-- Standard: Immediate load - wrapped to ensure dimensions --}}
+                {{-- Standard: Immediate load with explicit dimensions --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
-                     style="display: block !important; width: 100% !important; min-width: {{ $adDimensions['minWidth'] }} !important; height: {{ $adDimensions['height'] }} !important;"
+                     style="display: block; width: {{ $adDimensions['width'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
+                     data-ad-layout="in-article"></ins>
             @endif
         </div>
-
-        {{-- Load ad only after wrapper has valid dimensions --}}
-        <script>
-            (function() {
-                var adWrapper = document.getElementById('{{ $adId }}-wrapper');
-                var adElement = adWrapper.querySelector('.adsbygoogle');
-
-                function loadAd() {
-                    if (typeof adsbygoogle !== 'undefined') {
-                        try {
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        } catch(e) {
-                            console.warn('Ad load error:', e);
-                        }
-                    }
-                }
-
-                // Wait for DOM to be ready with valid dimensions
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', function() {
-                        requestAnimationFrame(function() {
-                            setTimeout(loadAd, 100);
-                        });
-                    });
-                } else {
-                    requestAnimationFrame(function() {
-                        setTimeout(loadAd, 50);
-                    });
-                }
-            })();
-        </script>
     @endif
 @endif
