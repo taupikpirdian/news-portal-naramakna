@@ -38,8 +38,8 @@
         {{-- Production: Responsive full-width ads --}}
         <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: 100%; min-width: {{ $adDimensions['minWidth'] }};">
             @if($defer)
-                {{-- Defer: Script will be executed when element becomes visible --}}
-                <ins class="adsbygoogle ad-{{ $type }} deferred-ad"
+                {{-- Defer: No adsbygoogle class until ready to load --}}
+                <ins class="ad-{{ $type }} deferred-ad adsbygoogle-placeholder"
                      style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
                      data-ad-slot="{{ $adSlot }}"

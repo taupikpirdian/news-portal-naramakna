@@ -191,6 +191,11 @@
 
                                     if (hasValidWidth && typeof adsbygoogle !== 'undefined') {
                                         try {
+                                            // For deferred ads, add adsbygoogle class first
+                                            if (ad.classList.contains('adsbygoogle-placeholder')) {
+                                                ad.classList.remove('adsbygoogle-placeholder');
+                                                ad.classList.add('adsbygoogle');
+                                            }
                                             (adsbygoogle = window.adsbygoogle || []).push({});
                                         } catch(e) {
                                             // Silently fail
