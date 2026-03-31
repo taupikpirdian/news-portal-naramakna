@@ -45,6 +45,12 @@ return [
 
     'ad_units' => [
         // Homepage Placements (Sama dengan naramakna.id/frontend)
+        'article' => [
+            'enabled' => env('ADS_IN_ARTICLE_ENABLED', true),
+            'slot' => env('ADS_IN_ARTICLE_SLOT', ''),
+            'format' => 'article',
+            'responsive' => true,
+        ],
         'leaderboard' => [
             'enabled' => env('ADS_LEADERBOARD_ENABLED', true),
             'slot' => env('ADS_LEADERBOARD_SLOT', ''),

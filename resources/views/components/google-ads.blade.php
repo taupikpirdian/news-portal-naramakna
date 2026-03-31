@@ -17,6 +17,9 @@
         default => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px']
     };
 
+    // Get ad slot ID from configuration based on type
+    $adSlot = config("ads.ad_units.{$type}.slot", '');
+
     // Generate unique ID for each ad instance to prevent conflicts
     $adId = 'ad-' . str_replace('.', '', uniqid('', true));
 @endphp
@@ -38,19 +41,34 @@
                 <ins class="adsbygoogle ad-{{ $type }}"
                      style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-layout="in-article"></ins>
+                     data-ad-slot="{{ $adSlot }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             @elseif($lazy)
                 {{-- Lazy: Handled by unified observer in app.blade.php --}}
                 <ins class="adsbygoogle ad-{{ $type }} lazy-ad"
                      style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-layout="in-article"></ins>
+                     data-ad-slot="{{ $adSlot }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             @else
                 {{-- Standard: Immediate load --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
                      style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-layout="in-article"></ins>
+                     data-ad-slot="{{ $adSlot }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             @endif
         </div>
     @endif

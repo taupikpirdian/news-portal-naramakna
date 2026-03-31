@@ -7,6 +7,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
     @include("components.head")
+
+    {{-- Google AdSense Script - MUST be loaded before ads --}}
+    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && !app()->environment('local'))
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config('ads.adsense_publisher_id') }}" crossorigin="anonymous"></script>
+    @endif
+
     @stack('head-scripts')
     @stack('styles')
     <style>
