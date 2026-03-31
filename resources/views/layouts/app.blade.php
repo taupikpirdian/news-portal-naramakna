@@ -204,9 +204,9 @@
                     rootMargin: '200px' // Load 200px before entering viewport
                 });
 
-                // Observe all lazy ads (sidebar, category, etc)
+                // Observe all lazy ads and deferred ads (sidebar, category, etc)
                 function observeLazyAds() {
-                    document.querySelectorAll('.lazy-ad, .lazy-category-ad').forEach(function(ad) {
+                    document.querySelectorAll('.lazy-ad, .lazy-category-ad, .deferred-ad').forEach(function(ad) {
                         if (!ad.hasAttribute('data-ad-loaded')) {
                             adObserver.observe(ad);
                             ad.setAttribute('data-ad-loaded', 'true');

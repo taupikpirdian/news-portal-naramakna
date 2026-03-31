@@ -3,6 +3,7 @@
     'type' => 'leaderboard',
     'lazy' => false,
     'priority' => false,
+    'defer' => false,
 ])
 
 @php
@@ -36,7 +37,15 @@
     @else
         {{-- Production: Responsive full-width ads --}}
         <div id="{{ $adId }}-wrapper" class="ad-wrapper" style="width: 100%; min-width: {{ $adDimensions['minWidth'] }};">
-            @if($priority)
+            @if($defer)
+                {{-- Defer: Script will be executed when element becomes visible --}}
+                <ins class="adsbygoogle ad-{{ $type }} deferred-ad"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
+                     data-ad-client="{{ $publisherId }}"
+                     data-ad-slot="{{ $adSlot }}"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            @elseif($priority)
                 {{-- Priority: Immediate load --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
                      style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"

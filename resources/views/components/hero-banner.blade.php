@@ -24,7 +24,7 @@
     {{-- Fallback to Google Ads when no ad available --}}
     <div id="{{ $componentId }}-fallback" style="display: none;" class="google-ads-fallback-wrapper">
         @if(config('ads.enabled'))
-            <x-google-ads type="leaderboard" />
+            <x-google-ads type="leaderboard" :defer="true" />
         @endif
     </div>
 </div>
@@ -59,13 +59,13 @@
                 // Show ad
                 adContainer.style.display = 'block';
             } else {
-                // Show fallback - Google Ads will auto-initialize when visible
+                // Show fallback - Observer will handle deferred ads
                 fallback.style.display = 'block';
             }
         } catch (error) {
             console.error('Error fetching hero banner ad:', error);
 
-            // Hide loading and show fallback - Google Ads will auto-initialize when visible
+            // Hide loading and show fallback - Observer will handle deferred ads
             loadingState.style.display = 'none';
             fallback.style.display = 'block';
         }
