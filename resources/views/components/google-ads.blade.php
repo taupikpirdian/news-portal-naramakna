@@ -8,6 +8,10 @@
 
 @php
     $publisherId = config('ads.adsense_publisher_id');
+    // Tambahkan prefix "ca-pub-" jika belum ada
+    if ($publisherId && !str_starts_with($publisherId, 'ca-pub-')) {
+        $publisherId = 'ca-pub-' . $publisherId;
+    }
     $enabled = config('ads.enabled');
     $testMode = env('ADS_TEST_MODE', false);
     $isLocalhost = app()->environment('local') && !$testMode;

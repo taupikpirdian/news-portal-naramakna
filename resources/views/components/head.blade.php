@@ -62,8 +62,14 @@
 <link rel="alternate" type="application/rss+xml" title="Naramakna - RSS Feed" href="{{ url('/feed') }}">
 
 <!-- DNS Prefetch & Preconnect for Google AdSense - FASTEST LOADING -->
-@php($publisherId = config('ads.adsense_publisher_id'))
-@if($publisherId && strpos($publisherId, 'ca-pub-') === 0)
+@php
+    $publisherId = config('ads.adsense_publisher_id');
+    // Tambahkan prefix "ca-pub-" jika belum ada
+    if ($publisherId && !str_starts_with($publisherId, 'ca-pub-')) {
+        $publisherId = 'ca-pub-' . $publisherId;
+    }
+@endif
+@if($publisherId)
 <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
 <link rel="dns-prefetch" href="//googleads.g.doubleclick.net">
 <link rel="dns-prefetch" href="//tpc.googlesyndication.com">

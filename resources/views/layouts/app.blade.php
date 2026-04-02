@@ -10,7 +10,14 @@
 
     {{-- Google AdSense Script - MUST be loaded before ads --}}
     @if(config('ads.enabled') && config('ads.adsense_publisher_id') && !app()->environment('local'))
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ config('ads.adsense_publisher_id') }}" crossorigin="anonymous"></script>
+    @php
+        $pubId = config('ads.adsense_publisher_id');
+        // Tambahkan prefix "ca-pub-" jika belum ada
+        if ($pubId && !str_starts_with($pubId, 'ca-pub-')) {
+            $pubId = 'ca-pub-' . $pubId;
+        }
+    @endphp
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $pubId }}" crossorigin="anonymous"></script>
     @endif
 
     @stack('head-scripts')

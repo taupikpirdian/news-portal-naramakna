@@ -484,6 +484,52 @@ class GoogleAdsController extends Controller
     }
 
     /**
+     * Get AdSense configuration for frontend
+     */
+    public function getAdsConfig(): JsonResponse
+    {
+        try {
+            $enabled = config('ads.enabled');
+            $adsensePublisherId = config('ads.adsense_publisher_id');
+            $testMode = env('ADS_TEST_MODE', false);
+            $isLocalhost = app()->environment('local') && !$testMode;
+
+            // Get all ad unit configurations
+            $adUnits = config('ads.ad_units', []);
+
+            // Format ad units for frontend (only include enabled ones)
+            $formattedAdUnits = [];
+            foreach ($adUnits as $key => $unit) {
+                if ($unit['enabled']) {
+                    $formattedAdUnits[$key] = [
+                        'slot' => $unit['slot'],
+                        'format' => $unit['format'] ?? 'auto',
+                        'responsive' => $unit['responsive'] ?? true,
+                    ];
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'enabled' => $enabled,
+                    'test_mode' => $testMode,
+                    'is_localhost' => $isLocalhost,
+                    'adsense_publisher_id' => $adsensePublisherId,
+                    'ad_units' => $formattedAdUnits,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error in getAdsConfig: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching ads config',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Test connection
      */
     public function testConnection(): JsonResponse

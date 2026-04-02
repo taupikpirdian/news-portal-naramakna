@@ -16,6 +16,9 @@ Route::prefix('admin/cache')->name('api.admin.cache.')->group(function () {
 // Google Ads API Routes
 // Gunakan API key untuk autentikasi (X-API-Key header)
 Route::prefix('google-ads')->name('api.google_ads.')->group(function () {
+    // Public endpoint for fetching ads config (no authentication required)
+    Route::get('/config', [\App\Http\Controllers\GoogleAdsController::class, 'getAdsConfig'])->name('config');
+
     // Public endpoint for fetching ad data (no authentication required)
     Route::get('/fetch-ad', [\App\Http\Controllers\GoogleAdsController::class, 'fetchAd'])->name('fetch_ad');
 
