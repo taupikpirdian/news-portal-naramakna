@@ -68,7 +68,7 @@
     if ($publisherId && !str_starts_with($publisherId, 'ca-pub-')) {
         $publisherId = 'ca-pub-' . $publisherId;
     }
-@endif
+@endphp
 @if($publisherId)
 <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
 <link rel="dns-prefetch" href="//googleads.g.doubleclick.net">
