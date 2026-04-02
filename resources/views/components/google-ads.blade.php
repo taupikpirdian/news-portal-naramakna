@@ -9,7 +9,8 @@
 @php
     $publisherId = config('ads.adsense_publisher_id');
     $enabled = config('ads.enabled');
-    $isLocalhost = app()->environment('local');
+    $testMode = env('ADS_TEST_MODE', false);
+    $isLocalhost = app()->environment('local') && !$testMode;
 
     $adDimensions = match($type) {
         'sidebar_left', 'sidebar_right' => ['width' => '160px', 'minWidth' => '160px'],

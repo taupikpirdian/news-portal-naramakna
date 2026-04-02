@@ -167,7 +167,7 @@
     @stack('scripts')
 
     {{-- UNIFIED LAZY AD LOADING - Single Observer for All Lazy Ads --}}
-    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && !app()->environment('local'))
+    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && (!app()->environment('local') || env('ADS_TEST_MODE', false)))
     <script>
         (function() {
             // Initialize once per page
