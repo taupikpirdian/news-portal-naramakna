@@ -8,18 +8,6 @@
     @endif
     @include("components.head")
 
-    {{-- Google AdSense Script - MUST be loaded before ads --}}
-    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && !app()->environment('local'))
-    @php
-        $pubId = config('ads.adsense_publisher_id');
-        // Tambahkan prefix "ca-pub-" jika belum ada
-        if ($pubId && !str_starts_with($pubId, 'ca-pub-')) {
-            $pubId = 'ca-pub-' . $pubId;
-        }
-    @endphp
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $pubId }}" crossorigin="anonymous"></script>
-    @endif
-
     @stack('head-scripts')
     @stack('styles')
     <style>
@@ -174,7 +162,14 @@
     @stack('scripts')
 
     {{-- UNIFIED LAZY AD LOADING - Single Observer for All Lazy Ads --}}
-    @if(config('ads.enabled') && config('ads.adsense_publisher_id') && (!app()->environment('local') || env('ADS_TEST_MODE', false)))
+    {{-- FIXED: Only load on production - localhost shows error 403 from Google --}}
+    @php
+        $isProduction = !app()->environment('local');
+        $shouldLoadAdsScript = config('ads.enabled')
+            && config('ads.adsense_publisher_id')
+            && $isProduction;
+    @endphp
+    @if($shouldLoadAdsScript)
     <script>
         (function() {
             // Initialize once per page

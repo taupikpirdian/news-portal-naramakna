@@ -13,19 +13,17 @@
         $publisherId = 'ca-pub-' . $publisherId;
     }
     $enabled = config('ads.enabled');
-    $testMode = env('ADS_TEST_MODE', false);
-    $isLocalhost = app()->environment('local') && !$testMode;
+    $isLocalhost = app()->environment('local');
 
     $adDimensions = match($type) {
-        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'minWidth' => '160px'],
-        'header' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px'],
-        'article' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px'],
-        default => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px']
+        'sidebar_left', 'sidebar_right' => ['width' => '160px', 'minWidth' => '160px', 'minHeight' => '250px'],
+        'header' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px', 'minHeight' => '90px'],
+        'article' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px', 'minHeight' => '90px'],
+        default => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px', 'minHeight' => '90px']
     };
 
-    // Get ad slot ID from configuration based on type
-    $adSlot = config("ads.ad_units.{$type}.slot", '');
-
+    // FIXED: Don't use data-ad-slot - use auto format like naramakna.id frontend
+    // This prevents 400 errors from invalid slot IDs
     // Generate unique ID for each ad instance to prevent conflicts
     $adId = 'ad-' . str_replace('.', '', uniqid('', true));
 @endphp
@@ -45,17 +43,15 @@
             @if($defer)
                 {{-- Defer: No adsbygoogle class until ready to load --}}
                 <ins class="ad-{{ $type }} deferred-ad adsbygoogle-placeholder"
-                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; min-height: {{ $adDimensions['minHeight'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-slot="{{ $adSlot }}"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
             @elseif($priority)
                 {{-- Priority: Immediate load --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
-                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; min-height: {{ $adDimensions['minHeight'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-slot="{{ $adSlot }}"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
                 <script>
@@ -64,9 +60,8 @@
             @elseif($lazy)
                 {{-- Lazy: Handled by unified observer in app.blade.php --}}
                 <ins class="adsbygoogle ad-{{ $type }} lazy-ad"
-                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; min-height: {{ $adDimensions['minHeight'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-slot="{{ $adSlot }}"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
                 <script>
@@ -75,9 +70,8 @@
             @else
                 {{-- Standard: Immediate load --}}
                 <ins class="adsbygoogle ad-{{ $type }}"
-                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; height: {{ $adDimensions['height'] }};"
+                     style="display: block; width: 100%; min-width: {{ $adDimensions['minWidth'] }}; min-height: {{ $adDimensions['minHeight'] }};"
                      data-ad-client="{{ $publisherId }}"
-                     data-ad-slot="{{ $adSlot }}"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
                 <script>

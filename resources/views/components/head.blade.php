@@ -63,13 +63,20 @@
 
 <!-- DNS Prefetch & Preconnect for Google AdSense - FASTEST LOADING -->
 @php
+    // FIXED: Only load AdSense on PRODUCTION domain (not localhost)
+    // Localhost akan menampilkan error 403 dari Google, jadi lebih baik gunakan placeholder
+    $isProduction = !app()->environment('local');
+    $shouldLoadAds = config('ads.enabled')
+        && config('ads.adsense_publisher_id')
+        && $isProduction;
+
     $publisherId = config('ads.adsense_publisher_id');
     // Tambahkan prefix "ca-pub-" jika belum ada
     if ($publisherId && !str_starts_with($publisherId, 'ca-pub-')) {
         $publisherId = 'ca-pub-' . $publisherId;
     }
 @endphp
-@if($publisherId)
+@if($shouldLoadAds)
 <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
 <link rel="dns-prefetch" href="//googleads.g.doubleclick.net">
 <link rel="dns-prefetch" href="//tpc.googlesyndication.com">
