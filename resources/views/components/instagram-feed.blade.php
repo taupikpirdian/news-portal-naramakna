@@ -69,20 +69,12 @@
     const errorEl = document.getElementById('instagram-error');
     const gridEl = document.getElementById('instagram-grid');
 
-    console.log('[Instagram Feed] Initializing...');
-    console.log('[Instagram Feed] API URL:', apiUrl);
-
     async function fetchInstagramPosts() {
         try {
-            console.log('[Instagram Feed] Fetching posts...');
-
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            console.log('[Instagram Feed] Response:', data);
-
             if (!data.success || !data.data || data.data.length === 0) {
-                console.warn('[Instagram Feed] No posts found');
                 showError();
                 return;
             }
@@ -96,11 +88,7 @@
                 const postElement = createPostElement(post, index);
                 gridEl.appendChild(postElement);
             });
-
-            console.log(`[Instagram Feed] ✅ Loaded ${data.data.length} posts`);
-
         } catch (error) {
-            console.error('[Instagram Feed] ❌ Error:', error);
             showError();
         }
     }
@@ -121,7 +109,6 @@
 
         // Add error handling for missing images
         img.onerror = function() {
-            console.warn(`[Instagram Feed] Failed to load image for post ${index + 1}:`, post.id);
             this.style.display = 'none';
             const parent = this.parentElement;
             if (parent) {
