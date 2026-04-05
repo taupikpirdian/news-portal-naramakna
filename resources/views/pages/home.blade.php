@@ -99,11 +99,16 @@
 </section>
 
 {{-- Above Instagram Feed Ad - PRIORITY LOADING --}}
-@if(config('ads.enabled') && config('ads.adsense_publisher_id'))
-    <div class="my-8">
-        <x-google-ads type="article" :priority="true" />
-    </div>
-@endif
+{{-- @if(config('ads.enabled') && config('ads.adsense_publisher_id')) --}}
+    {{-- <div class="my-8">
+        <div class="ad-article"
+             style="width: 100%; min-width: 300px; height: 90px; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <div style="text-align:center; color:#1f2937; font-size:0.75rem; font-weight:600;">
+                article<br><small style="opacity:0.8">300px x 90px</small>
+            </div>
+        </div>
+    </div> --}}
+{{-- @endif --}}
 
 {{-- Instagram Feed - Real Posts from API --}}
 <x-instagram-feed :limit="12" />
@@ -227,10 +232,13 @@
 
     const categoriesApiEndpoint = "{{ route('api.categories', [], true) }}";
     const postsApiEndpoint = "{{ route('api.category.posts', [], true) }}";
+    const adsensePublisherId = "{{ config('ads.adsense_publisher_id') }}";
+    const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
 
     let allCategories = [];
     let loadedCount = 0;
     let isLoading = false;
+    let batchCount = 0; // Track how many batches have been loaded
     const categoriesPerBatch = 2;
 
     function formatJakartaDate(input) {
@@ -398,6 +406,62 @@
         }
     }
 
+    // Function to create ad HTML
+    function createAdHTML(localhost = false) {
+        var publisherId = @json(config('ads.adsense_publisher_id'));
+
+        if (!publisherId) {
+            return '';
+        }
+
+        // Add ca-pub- prefix if not present
+        if (publisherId && !publisherId.startsWith('ca-pub-')) {
+            publisherId = 'ca-pub-' + publisherId;
+        }
+
+        // Generate unique ID for each ad instance
+        var adId = 'ad-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+        if(localhost) {
+            return `
+                <div class="my-8 ad-section">
+                    <div id="${adId}-wrapper" class="ad-wrapper" style="width: 100%; min-width: 300px;">
+                        <div class="ad-article"
+                            style="width: 100%; min-width: 300px; height: 90px; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                            <div style="text-align:center; color:#1f2937; font-size:0.75rem; font-weight:600;">
+                                article<br><small style="opacity:0.8">300px x 90px</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Production ad HTML - matching google-ads.blade.php priority mode
+        return `
+            <div class="my-8 ad-section">
+                <div id="${adId}-wrapper" class="ad-wrapper" style="width: 100%; min-width: 300px;">
+                    <ins class="adsbygoogle ad-article"
+                         style="display: block; width: 100%; min-width: 300px; min-height: 90px;"
+                         data-ad-client="${publisherId}"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                </div>
+            </div>
+        `;
+    }
+
+    // Function to initialize ad after insertion (call AFTER HTML is in DOM)
+    function initializeAd() {
+        if (typeof adsbygoogle !== 'undefined') {
+            try {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error('Error initializing ad:', e);
+            }
+        }
+    }
+
     // Function to load next batch of categories
     async function loadNextBatch() {
         if (loadedCount >= allCategories.length || isLoading) {
@@ -471,6 +535,32 @@
             }
 
             loadedCount += categoriesToLoad;
+            batchCount++;
+            // Insert ad after every 2 batches (2x load more)
+            if (batchCount === 2) {
+                const isLocalhost = @json(app()->environment('local'));
+                const adHTML = createAdHTML(isLocalhost);
+                // const adHTML = "<h2 class='text-center text-gray-500 text-sm my-4'>Iklan</h2>";
+                if (adHTML) {
+                    container.insertAdjacentHTML('beforeend', adHTML);
+
+                    const adSection = container.lastElementChild;
+                    if (adSection && adSection.classList.contains('ad-section')) {
+                        adSection.style.opacity = '0';
+                        adSection.style.transform = 'translateY(20px)';
+
+                        await new Promise(resolve => setTimeout(resolve, 50));
+
+                        adSection.offsetHeight;
+                        adSection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        adSection.style.opacity = '1';
+                        adSection.style.transform = 'translateY(0)';
+
+                        // Initialize the ad
+                        initializeAd();
+                    }
+                }
+            }
 
         } catch (error) {
             console.error('Error in loadNextBatch:', error);
