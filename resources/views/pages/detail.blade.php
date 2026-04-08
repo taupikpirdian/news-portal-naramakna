@@ -158,6 +158,32 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
             </div>
         </div>
         @endif
+
+        {{-- Sidebar Ad - Portrait Banner --}}
+        <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+            @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
+            <div class="w-[300px] mx-auto">
+                <x-google-ads type="portrait" :lazy="true" />
+            </div>
+            @else
+            <div class="w-[300px] mx-auto">
+                <img src="{{ asset('assets/images/banner-300x600.jpg') }}" alt="Advertisement" class="w-full h-auto rounded-lg">
+            </div>
+            @endif
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+            @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
+            <div class="w-[300px] mx-auto">
+                <x-google-ads type="portrait" :lazy="true" />
+            </div>
+            @else
+            <div class="w-[300px] mx-auto">
+                <img src="{{ asset('assets/images/banner-300x600.jpg') }}" alt="Advertisement" class="w-full h-auto rounded-lg">
+            </div>
+            @endif
+        </div>
+
     </aside>
 </div>
 
@@ -206,9 +232,9 @@ $description = $post['metadata']['_aioseo_description'] ?? $post['excerpt'] ?? S
 @endif
 
 {{-- Final Article Ad - After Related Posts --}}
-<div class="my-8">
+{{-- <div class="my-8">
     <x-google-ads type="leaderboard" />
-</div>
+</div> --}}
 
 @endsection
 

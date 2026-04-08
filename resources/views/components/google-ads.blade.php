@@ -17,6 +17,7 @@
 
     $adDimensions = match($type) {
         'sidebar_left', 'sidebar_right' => ['width' => '160px', 'minWidth' => '160px', 'minHeight' => '250px'],
+        'portrait' => ['width' => '250px', 'minWidth' => '250px', 'height' => '600px', 'minHeight' => '600px'],
         'header' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px', 'minHeight' => '90px'],
         'article' => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px', 'minHeight' => '90px'],
         default => ['width' => '100%', 'minWidth' => '300px', 'height' => '90px', 'minHeight' => '90px']
