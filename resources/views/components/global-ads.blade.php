@@ -8,6 +8,13 @@
 @php
     $apiUrl = config('app.url') . '/api/ads/serve?placement=' . $placement . '&limit=1';
     $componentId = 'global-ad-' . str_replace('.', '', uniqid('', true));
+    
+    // Define dimensions based on placement
+    $fallbackDimensions = match($placement) {
+        'hero-banner', 'header', 'mid-content', 'article-top' => ['width' => '970px', 'height' => '250px'],
+        'article-mid', 'article-bottom' => ['width' => '728px', 'height' => '90px'],
+        default => ['width' => '970px', 'height' => '250px']
+    };
 @endphp
 
 <div id="{{ $componentId }}" class="global-ad-container">
@@ -25,9 +32,9 @@
     </div>
 
     {{-- Fallback to Google Ads when no ad available --}}
-    <div id="{{ $componentId }}-fallback" style="display: none;">
+    <div id="{{ $componentId }}-fallback" style="display: none; width: 100%; min-width: {{ $fallbackDimensions['width'] }}; height: {{ $fallbackDimensions['height'] }};">
         @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
-            <x-google-ads :type="$type" :priority="$priority" :lazy="$lazy" />
+            <x-google-ads :type="$type" :priority="$priority" :lazy="$lazy" :defer="true" />
         @endif
     </div>
 </div>
