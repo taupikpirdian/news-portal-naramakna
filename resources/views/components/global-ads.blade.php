@@ -32,7 +32,7 @@
     </div>
 
     {{-- Fallback to Google Ads when no ad available --}}
-    <div id="{{ $componentId }}-fallback" style="display: none; width: 100%; min-width: {{ $fallbackDimensions['width'] }}; height: {{ $fallbackDimensions['height'] }};">
+    <div id="{{ $componentId }}-fallback" style="display: none; width: 100%; min-width: {{ $fallbackDimensions['width'] }}; height: {{ $fallbackDimensions['height'] }}; margin-top: 16px; margin-bottom: 16px;">
         @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
             <x-google-ads :type="$type" :priority="$priority" :lazy="$lazy" :defer="true" />
         @endif
