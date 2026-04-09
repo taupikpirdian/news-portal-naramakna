@@ -24,7 +24,7 @@
     {{-- Fallback to Google Ads when no ad available --}}
     <div id="{{ $componentId }}-fallback" style="display: none;" class="my-8">
         @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
-            <x-google-ads type="article" :priority="true" />
+            <x-google-ads type="article" :defer="true" />
         @endif
     </div>
 </div>
@@ -38,6 +38,31 @@
     const adLink = document.getElementById(componentId + '-ad-link');
     const adImage = document.getElementById(componentId + '-ad-image');
     const fallback = document.getElementById(componentId + '-fallback');
+
+    // Function to initialize Google Ads after fallback is visible
+    function initializeGoogleAds() {
+        // Wait for element to have valid dimensions before loading
+        requestAnimationFrame(function() {
+            setTimeout(function() {
+                // Find all deferred ads in fallback container
+                fallback.querySelectorAll('.deferred-ad').forEach(function(ad) {
+                    const rect = ad.getBoundingClientRect();
+                    const hasValidWidth = rect && rect.width > 0;
+
+                    if (hasValidWidth && typeof adsbygoogle !== 'undefined') {
+                        try {
+                            // Remove placeholder class and add adsbygoogle class
+                            ad.classList.remove('adsbygoogle-placeholder');
+                            ad.classList.add('adsbygoogle');
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        } catch(e) {
+                            console.error('Error initializing header ad:', e);
+                        }
+                    }
+                });
+            }, 100); // Small delay to ensure rendering is complete
+        });
+    }
 
     async function fetchAd() {
         try {
@@ -60,6 +85,7 @@
             } else {
                 // Show fallback - Google Ads
                 fallback.style.display = 'block';
+                initializeGoogleAds();
             }
         } catch (error) {
             console.error('Error fetching header ad:', error);
@@ -67,6 +93,7 @@
             // Hide loading and show fallback
             loadingState.style.display = 'none';
             fallback.style.display = 'block';
+            initializeGoogleAds();
         }
     }
 
