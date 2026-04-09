@@ -98,27 +98,11 @@
     @endif
 </section>
 
-{{-- Above Instagram Feed Ad - PRIORITY LOADING --}}
-{{-- @if(config('ads.enabled') && config('ads.adsense_publisher_id')) --}}
-    {{-- <div class="my-8">
-        <div class="ad-article"
-             style="width: 100%; min-width: 300px; height: 90px; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            <div style="text-align:center; color:#1f2937; font-size:0.75rem; font-weight:600;">
-                article<br><small style="opacity:0.8">300px x 90px</small>
-            </div>
-        </div>
-    </div> --}}
-{{-- @endif --}}
-
 {{-- Instagram Feed - Real Posts from API --}}
 <x-instagram-feed :limit="12" />
 
-{{-- In-Article Ad between Instagram and Categories - PRIORITY LOADING --}}
-@if(config('ads.enabled') && config('ads.adsense_publisher_id'))
-    <div class="my-8">
-        <x-google-ads type="article" :priority="true" />
-    </div>
-@endif
+{{-- In-Article Ad between Instagram and Categories --}}
+<x-header-ads placement="header" />
 
 {{-- List Berita Berdasarkan Kategori --}}
 <div id="categories-container">
@@ -407,7 +391,7 @@
     }
 
     // Function to create ad HTML
-    function createAdHTML(localhost = false) {
+    async function createAdHTML(localhost = false) {
         var publisherId = @json(config('ads.adsense_publisher_id'));
 
         if (!publisherId) {
@@ -420,7 +404,9 @@
         }
 
         // Generate unique ID for each ad instance
-        var adId = 'ad-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        var adId = 'mid-content-ad-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        // Fetch banner data from API
+        var bannerData = await fetchMidContentAd();
 
         if(localhost) {
             return `
@@ -437,18 +423,51 @@
             `;
         }
 
-        // Production ad HTML - matching google-ads.blade.php priority mode
-        return `
-            <div class="my-8 ad-section">
-                <div id="${adId}-wrapper" class="ad-wrapper" style="width: 100%; min-width: 300px;">
-                    <ins class="adsbygoogle ad-article"
-                         style="display: block; width: 100%; min-width: 300px; min-height: 90px;"
-                         data-ad-client="${publisherId}"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
+        // Check if banner data is available
+        if (bannerData && bannerData.data && bannerData.data.ads && bannerData.data.ads.length > 0) {
+            const ad = bannerData.data.ads[0];
+
+            // Return banner ad HTML
+            return `
+                <div class="my-8 ad-section" id="${adId}-container">
+                    <a id="${adId}-ad-link" href="${ad.target_url || '#'}" target="_blank" rel="noopener noreferrer" class="block">
+                        <img id="${adId}-ad-image" src="${ad.media_url || ad.image_url}" alt="${ad.campaign_name || 'Advertisement'}" class="w-full h-auto rounded-lg shadow-lg" loading="lazy">
+                    </a>
                 </div>
-            </div>
-        `;
+            `;
+        } else {
+            // Return Google Ads fallback HTML
+            return `
+                <div class="my-8 ad-section" id="${adId}-container">
+                    <div id="${adId}-wrapper" class="ad-wrapper" style="width: 100%; min-width: 300px;">
+                        <ins class="adsbygoogle ad-article"
+                             style="display: block; width: 100%; min-width: 300px; min-height: 90px;"
+                             data-ad-client="${publisherId}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Function to fetch and display mid-content ad from API
+    async function fetchMidContentAd() {
+        try {
+            const adsApiUrl = "{{ config('app.url') }}/api/ads/serve?placement=mid-content&limit=1";
+            const response = await fetch(adsApiUrl);
+            const data = await response.json();
+
+            if (!data.success) {
+                console.error('Ad API error:', data.message || 'Unknown error');
+                return;
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error fetching mid-content ad:', error);
+            return;
+        }
     }
 
     // Function to initialize ad after insertion (call AFTER HTML is in DOM)
@@ -539,7 +558,7 @@
             // Insert ad after every 2 batches (2x load more)
             if (batchCount === 2) {
                 const isLocalhost = @json(app()->environment('local'));
-                const adHTML = createAdHTML(isLocalhost);
+                const adHTML = await createAdHTML(isLocalhost);
                 // const adHTML = "<h2 class='text-center text-gray-500 text-sm my-4'>Iklan</h2>";
                 if (adHTML) {
                     container.insertAdjacentHTML('beforeend', adHTML);
@@ -556,7 +575,7 @@
                         adSection.style.opacity = '1';
                         adSection.style.transform = 'translateY(0)';
 
-                        // Initialize the ad
+                        // Initialize the ad (for Google Ads fallback)
                         initializeAd();
                     }
                 }

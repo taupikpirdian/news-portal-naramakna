@@ -56,100 +56,6 @@
     @include("components.header")
     @include('components.sidebar')
 
-    {{-- Sidebar Ads - Left & Right --}}
-    @php
-        // Uncomment line below to use localhost placeholder
-        // $isLocalhost = request()->getHost() === 'localhost' || request()->getHost() === '127.0.0.1' || app()->environment('local');
-        $isLocalhost = false; // Always use production mode to test ads
-    @endphp
-
-    @if($isLocalhost)
-        {{-- Development Mode - Localhost Placeholder --}}
-        <div class="ad-sidebar-left">
-            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center justify-center" style="width: 160px; height: 100%;">
-                {{-- Icon --}}
-                <div style="margin-bottom: 0.5rem;">
-                    <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                    </svg>
-                </div>
-
-                {{-- Main Text --}}
-                <h3 style="font-size: 0.875rem; font-weight: 700; margin: 0 0 0.25rem 0; line-height: 1.2;">
-                    📢 Advertisement Space
-                </h3>
-
-                {{-- Subtitle --}}
-                <p style="font-size: 0.75rem; margin: 0 0 0.75rem 0; opacity: 0.9;">
-                    <span style="font-weight: 600;">Sidebar Left</span>
-                </p>
-
-                {{-- Info Box --}}
-                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 10px; max-width: 100%; border: 1px solid rgba(255,255,255,0.5);">
-                    <p style="font-size: 0.65rem; margin: 0; line-height: 1.4;">
-                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode:</strong> No ads on localhost</span>
-                    </p>
-                    <p style="font-size: 0.65rem; margin: 0.35rem 0 0 0; line-height: 1.4; opacity: 0.95;">
-                        ✅ <strong>Production domain</strong> only
-                    </p>
-                </div>
-
-                {{-- Size Badge --}}
-                <div style="margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.5); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.65rem;">
-                    <span style="opacity: 0.95;">📏</span>
-                    <span style="opacity: 1;">160 × Dynamic</span>
-                </div>
-            </div>
-        </div>
-        <div class="ad-sidebar-right">
-            <div class="rounded-xl shadow-2xl p-3 text-center bg-yellow-450 text-gray-800 flex flex-col items-center justify-center" style="width: 160px; height: 100%;">
-                {{-- Icon --}}
-                <div style="margin-bottom: 0.5rem;">
-                    <svg style="width: 32px; height: 32px; margin: 0 auto; opacity: 0.9;" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                    </svg>
-                </div>
-
-                {{-- Main Text --}}
-                <h3 style="font-size: 0.875rem; font-weight: 700; margin: 0 0 0.25rem 0; line-height: 1.2;">
-                    📢 Advertisement Space
-                </h3>
-
-                {{-- Subtitle --}}
-                <p style="font-size: 0.75rem; margin: 0 0 0.75rem 0; opacity: 0.9;">
-                    <span style="font-weight: 600;">Sidebar Right</span>
-                </p>
-
-                {{-- Info Box --}}
-                <div style="background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); border-radius: 6px; padding: 0.75rem 1rem; margin: 10px; max-width: 100%; border: 1px solid rgba(255,255,255,0.5);">
-                    <p style="font-size: 0.65rem; margin: 0; line-height: 1.4;">
-                        <span style="opacity: 0.95;">⚠️ <strong>Dev Mode:</strong> No ads on localhost</span>
-                    </p>
-                    <p style="font-size: 0.65rem; margin: 0.35rem 0 0 0; line-height: 1.4; opacity: 0.95;">
-                        ✅ <strong>Production domain</strong> only
-                    </p>
-                </div>
-
-                {{-- Size Badge --}}
-                <div style="margin-top: 0.75rem; display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.5); padding: 0.25rem 0.6rem; border-radius: 20px; font-size: 0.65rem;">
-                    <span style="opacity: 0.95;">📏</span>
-                    <span style="opacity: 1;">160 × Dynamic</span>
-                </div>
-            </div>
-        </div>
-    @else
-        {{-- Production Mode - Use Google AdSense - OPTIMIZED --}}
-        {{-- Sidebar ads commented out --}}
-        {{--
-        <div class="ad-sidebar-left" style="width: 160px;">
-            <x-google-ads type="sidebar_left" :lazy="true" />
-        </div>
-        <div class="ad-sidebar-right" style="width: 160px;">
-            <x-google-ads type="sidebar_right" :lazy="true" />
-        </div>
-        --}}
-    @endif
-
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Hero Banner Ads --}}
         <div class="mt-6">
@@ -158,6 +64,7 @@
         <br>
         @yield('content')
     </main>
+    
     @include("components.footer")
     @stack('scripts')
 
