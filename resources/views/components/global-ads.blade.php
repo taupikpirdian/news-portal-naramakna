@@ -1,30 +1,33 @@
 @props([
-    'placement' => 'header',
-    'limit' => 1,
+    'placement' => 'global',
+    'type' => 'leaderboard',
+    'priority' => false,
+    'lazy' => false,
 ])
 
 @php
-    $apiUrl = config('app.url') . '/api/ads/serve?placement=' . $placement . '&limit=' . $limit;
-    $componentId = 'header-ad-' . uniqid();
+    $apiUrl = config('app.url') . '/api/ads/serve?placement=' . $placement . '&limit=1';
+    $componentId = 'global-ad-' . str_replace('.', '', uniqid('', true));
 @endphp
 
-<div id="{{ $componentId }}" class="header-ad-container">
+<div id="{{ $componentId }}" class="global-ad-container">
     <!-- Loading state -->
-    <div id="{{ $componentId }}-loading-state" class="animate-pulse bg-gray-200 rounded-lg h-24 flex items-center justify-center">
-        <span class="text-gray-400">Loading...</span>
+    <div id="{{ $componentId }}-loading-state" class="animate-pulse bg-gray-200 rounded-lg flex items-center justify-center"
+         style="min-width: 300px; min-height: 90px;">
+        <span class="text-gray-400 text-sm">Loading...</span>
     </div>
 
-    <!-- API Ad Banner Container -->
-    <div id="{{ $componentId }}-ad-container" style="display: none;" class="relative my-8">
+    <!-- API Ad Container -->
+    <div id="{{ $componentId }}-ad-container" style="display: none;" class="relative">
         <a id="{{ $componentId }}-ad-link" target="_blank" rel="noopener noreferrer" class="block">
             <img id="{{ $componentId }}-ad-image" class="w-full h-auto rounded-lg shadow-lg" alt="" loading="lazy">
         </a>
     </div>
 
     {{-- Fallback to Google Ads when no ad available --}}
-    <div id="{{ $componentId }}-fallback" style="display: none;" class="my-8">
+    <div id="{{ $componentId }}-fallback" style="display: none;">
         @if(config('ads.enabled') && config('ads.adsense_publisher_id'))
-            <x-google-ads type="article" :defer="true" />
+            <x-google-ads :type="$type" :priority="$priority" :lazy="$lazy" />
         @endif
     </div>
 </div>
@@ -41,26 +44,21 @@
 
     // Function to initialize Google Ads after fallback is visible
     function initializeGoogleAds() {
-        // Wait for element to have valid dimensions before loading
         requestAnimationFrame(function() {
             setTimeout(function() {
                 // Find all deferred ads in fallback container
                 fallback.querySelectorAll('.deferred-ad').forEach(function(ad) {
-                    const rect = ad.getBoundingClientRect();
-                    const hasValidWidth = rect && rect.width > 0;
-
-                    if (hasValidWidth && typeof adsbygoogle !== 'undefined') {
+                    if (typeof adsbygoogle !== 'undefined') {
                         try {
-                            // Remove placeholder class and add adsbygoogle class
                             ad.classList.remove('adsbygoogle-placeholder');
                             ad.classList.add('adsbygoogle');
                             (adsbygoogle = window.adsbygoogle || []).push({});
                         } catch(e) {
-                            console.error('Error initializing header ad:', e);
+                            console.error('Error initializing global ad:', e);
                         }
                     }
                 });
-            }, 100); // Small delay to ensure rendering is complete
+            }, 100);
         });
     }
 
@@ -88,7 +86,7 @@
                 initializeGoogleAds();
             }
         } catch (error) {
-            console.error('Error fetching header ad:', error);
+            console.error('Error fetching global ad:', error);
 
             // Hide loading and show fallback
             loadingState.style.display = 'none';

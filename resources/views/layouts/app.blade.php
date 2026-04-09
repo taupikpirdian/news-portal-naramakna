@@ -59,7 +59,7 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Hero Banner Ads --}}
         <div class="mt-6">
-            <x-hero-banner placement="hero-banner" :limit="1" />
+            @yield('add-hero-banner')
         </div>
         <br>
         @yield('content')

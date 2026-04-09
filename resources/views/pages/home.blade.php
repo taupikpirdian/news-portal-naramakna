@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('add-hero-banner')
+<x-global-ads placement="hero-banner" type="article" :priority="true" />
+@endsection
+
 @section('content')
 <!-- Artikel Terbaru -->
 <section class="mb-16">
@@ -102,7 +106,7 @@
 <x-instagram-feed :limit="12" />
 
 {{-- In-Article Ad between Instagram and Categories --}}
-<x-header-ads placement="header" />
+<x-global-ads placement="header" type="article" :priority="true" />
 
 {{-- List Berita Berdasarkan Kategori --}}
 <div id="categories-container">
