@@ -388,7 +388,7 @@
         <div>
             <div class="flex items-center gap-2">
                 <span class="w-1 h-7 bg-yellow-450 rounded-full"></span>
-                <h2 class="text-2xl font-bold text-gray-900">Account Executive</h2>
+                <h2 class="text-2xl font-bold text-gray-900">Social Media Specialist</h2>
             </div>
             <div class="mt-2 text-xs text-gray-600" style="font-size: 14px;">Mengelola konten multimedia untuk pengalaman visual yang optimal.</div>
         </div>
