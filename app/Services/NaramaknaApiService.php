@@ -184,6 +184,34 @@ class NaramaknaApiService
     }
 
     /**
+     * Search posts from the API
+     *
+     * @param string $query
+     * @param int $limit
+     * @return array
+     */
+    public function searchPosts(string $query, int $limit = 10): array
+    {
+        $response = Http::timeout(10)->get("{$this->baseUrl}/api/news", [
+            'search' => $query,
+            'limit' => $limit,
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            return [
+                'data' => $data['data'] ?? [],
+                'total' => $data['total'] ?? 0,
+            ];
+        }
+
+        return [
+            'data' => [],
+            'total' => 0,
+        ];
+    }
+
+    /**
      * Clear cache for categories
      *
      * @return void

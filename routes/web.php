@@ -10,6 +10,7 @@ Route::get('/api/v1/category/posts', [\App\Http\Controllers\HomeController::clas
 // API endpoint for fetching category posts with pagination
 Route::get('/api/v1/category/{slug}/posts', [\App\Http\Controllers\HomeController::class , 'getCategoryPosts'])->name('api.category.posts.pagination');
 Route::get('/api/v1/feed', [\App\Http\Controllers\HomeController::class , 'getFeedPosts'])->name('api.feed');
+Route::get('/api/v1/search', [\App\Http\Controllers\HomeController::class , 'searchPosts'])->name('api.search');
 // index-berita.html
 Route::get('/kategori/{slug}', [\App\Http\Controllers\HomeController::class , 'category'])->name('category');
 Route::get('/index-naramakna', [\App\Http\Controllers\HomeController::class , 'index'])->name('index');

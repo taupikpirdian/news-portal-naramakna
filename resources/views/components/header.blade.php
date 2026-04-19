@@ -212,25 +212,6 @@
     {{-- Live Search Script --}}
     <script>
         (function () {
-            // Mock Data
-            const mockArticles = [
-                { title: 'Pemilu 2024: Hasil Rekapitulasi Suara Nasional', category: 'Narapandang', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+1' },
-                { title: 'Timnas Indonesia Lolos ke Babak Semifinal Piala AFF', category: 'Olah Bola', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+2' },
-                { title: 'Startup Lokal Raih Pendanaan Seri B Senilai $50 Juta', category: 'Teknologi', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+3' },
-                { title: 'Resep Rendang Padang Autentik yang Menggugah Selera', category: 'Cerita Rasa', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+4' },
-                { title: 'Film Indonesia Masuk Nominasi Festival Internasional Cannes', category: 'Laga & Gaya', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+5' },
-                { title: 'Kebijakan Pendidikan Kurikulum Merdeka Belajar Tahap 2', category: 'Pendidikan', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+6' },
-                { title: 'Pelaku UMKM Digital Meningkat 40% di Tahun 2024', category: 'Pelakon', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+7' },
-                { title: 'Festival Budaya Nusantara Digelar di Taman Mini Indonesia', category: 'Budaya', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+8' },
-                { title: 'Perubahan Iklim: Dampak Kenaikan Permukaan Air Laut', category: 'Jagat Kita', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+9' },
-                { title: 'Data Bicara: Statistik Ekonomi Kreatif Indonesia', category: 'Data Bicara', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+10' },
-                { title: 'Wahana Wisata Baru di Bali Menjadi Destinasi Viral', category: 'Wahana', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+11' },
-                { title: 'Teknologi AI Generatif Mengubah Landscape Industri Kreatif', category: 'Teknologi', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+12' },
-                { title: 'Liputan Khusus: Kehidupan Nelayan Pesisir Pulau Flores', category: 'Liputan Khusus', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+13' },
-                { title: 'Horison: Eksplorasi Dunia Astronomi dan Luar Angkasa', category: 'Horison', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+14' },
-                { title: 'Mata Elang: Panduan Investasi Saham untuk Pemula', category: 'Mata Elang', image: 'https://placehold.co/120x120/e2e8f0/64748b?text=News+15' },
-            ];
-
             const input = document.getElementById('live-search-input');
             const dropdown = document.getElementById('search-dropdown');
             const resultsContainer = document.getElementById('search-results');
@@ -239,6 +220,7 @@
             const wrapper = document.getElementById('search-wrapper');
 
             let debounceTimer = null;
+            let currentRequest = null;
 
             function highlightMatch(text, query) {
                 if (!query) return text;
@@ -267,7 +249,7 @@
 
                 articles.forEach(function (article) {
                     const item = document.createElement('a');
-                    item.href = '#';
+                    item.href = '/artikel/' + article.slug;
                     item.className = 'search-item';
                     item.innerHTML =
                         '<img src="' + article.image + '" alt="" class="search-item-thumb" loading="lazy">' +
@@ -276,12 +258,6 @@
                         '<div class="search-item-category">' + article.category + '</div>' +
                         '</div>';
 
-                    item.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        // In production, navigate to article URL
-                        // window.location.href = article.url;
-                    });
-
                     resultsContainer.appendChild(item);
                 });
 
@@ -289,20 +265,41 @@
             }
 
             function performSearch(query) {
-                spinner.classList.add('hidden');
-
-                if (query.length < 2) {
-                    hideDropdown();
-                    return;
+                if (currentRequest) {
+                    currentRequest.abort();
                 }
 
-                const lowerQuery = query.toLowerCase();
-                const filtered = mockArticles.filter(function (article) {
-                    return article.title.toLowerCase().includes(lowerQuery) ||
-                        article.category.toLowerCase().includes(lowerQuery);
-                });
+                const xhr = new XMLHttpRequest();
+                currentRequest = xhr;
+                xhr.open('GET', '/api/v1/search?search=' + encodeURIComponent(query), true);
 
-                renderResults(filtered, query);
+                xhr.onload = function () {
+                    spinner.classList.add('hidden');
+                    currentRequest = null;
+
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                renderResults(response.data || [], query);
+                            } else {
+                                renderResults([], query);
+                            }
+                        } catch (e) {
+                            renderResults([], query);
+                        }
+                    } else {
+                        renderResults([], query);
+                    }
+                };
+
+                xhr.onerror = function () {
+                    spinner.classList.add('hidden');
+                    currentRequest = null;
+                    renderResults([], query);
+                };
+
+                xhr.send();
             }
 
             input.addEventListener('input', function () {

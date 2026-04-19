@@ -242,6 +242,31 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * API endpoint for searching posts (AJAX)
+     */
+    public function searchPosts(Request $request)
+    {
+        $query = $request->query('search', '');
+
+        if (strlen($query) < 2) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'total' => 0,
+            ]);
+        }
+
+        $limit = $request->query('limit', 10);
+        $result = $this->apiService->searchPosts($query, (int)$limit);
+
+        return response()->json([
+            'success' => true,
+            'data' => $result['data'],
+            'total' => $result['total'],
+        ]);
+    }
+
     public function bantuan()
     {
         // SEO Data
