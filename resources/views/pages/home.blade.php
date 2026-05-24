@@ -25,7 +25,7 @@
         <div class="lg:col-span-2">
             <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg" id="featuredSliderWrapper">
                 {{-- Slider viewport --}}
-                <div class="relative w-full overflow-hidden aspect-16/9 sm:aspect-16/8" id="featuredSliderViewport">
+                <div class="relative w-full overflow-hidden" style="aspect-ratio: 16/9;" id="featuredSliderViewport">
                     <div class="flex w-full h-full transition-transform duration-500 ease-out will-change-transform"
                         id="featuredSliderContainer" style="touch-action: pan-y pinch-zoom;">
                         @if(isset($featuredPosts) && count($featuredPosts) > 0)
@@ -36,12 +36,12 @@
                             <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
                                 alt="{{ $post['title'] }}" class="w-full h-full object-cover" loading="lazy">
                             {{-- Content overlay inside each slide - works for both desktop and mobile --}}
-                            <div class="absolute left-4 right-4 bottom-6 lg:bottom-8 text-white z-20">
+                            <div class="absolute left-4 right-4 text-white z-20" style="bottom: 1.5rem;">
                                 <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="no-underline">
-                                    <h3 class="text-base sm:text-xl lg:text-3xl xl:text-4xl font-bold text-white drop-shadow-lg hover:text-yellow-400 transition-colors line-clamp-2" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">{{ $post['title'] }}</h3>
-                                    <div class="flex gap-2 sm:gap-3 items-center text-white text-sm sm:text-base lg:text-lg mt-2 lg:mt-3" style="text-shadow: 0 1px 4px rgba(0,0,0,0.9);">
+                                    <h3 class="font-bold text-white hover:text-yellow-400 transition-colors line-clamp-2" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9); font-size: 1rem; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15));">{{ $post['title'] }}</h3>
+                                    <div class="flex items-center text-white mt-2" style="gap: 0.5rem; font-size: 0.875rem; text-shadow: 0 1px 4px rgba(0,0,0,0.9);">
                                         <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
-                                        <span class="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-white rounded-full flex-shrink-0"></span>
+                                        <span class="bg-white rounded-full flex-shrink-0" style="width: 0.5rem; height: 0.5rem;"></span>
                                         <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '' }}</span>
                                     </div>
                                 </a>
@@ -54,7 +54,7 @@
 
                 {{-- Channel badge --}}
                 <span id="featuredChannel"
-                    class="absolute top-3 sm:top-4 left-3 sm:left-4 px-2 sm:px-3 py-1 sm:py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full z-30 shadow-md">
+                    class="absolute bg-yellow-450 text-white text-xs font-semibold rounded-full z-30 shadow-md" style="top: 0.75rem; left: 0.75rem; padding: 0.25rem 0.5rem;">
                     {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
                 </span>
 
@@ -77,7 +77,7 @@
                 </button>
 
                 {{-- Dot indicators --}}
-                <div class="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-30" id="featuredDots"></div>
+                <div class="absolute left-1/2 -translate-x-1/2 flex gap-2 z-30" style="bottom: 0.5rem;" id="featuredDots"></div>
             </div>
         </div>
 
