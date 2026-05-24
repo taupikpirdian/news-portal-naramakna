@@ -23,53 +23,61 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {{-- Featured Slider (left side - 2 columns) --}}
         <div class="lg:col-span-2">
-            <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg">
-                <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease-out"
-                    id="featuredSliderContainer">
-                    @if(isset($featuredPosts) && count($featuredPosts) > 0)
-                    @foreach($featuredPosts as $index => $post)
-                    <div class="min-w-full h-full relative flex-shrink-0" data-index="{{ $index }}">
-                        <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="block h-full">
+            <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg" id="featuredSliderWrapper">
+                {{-- Slider viewport --}}
+                <div class="relative w-full overflow-hidden aspect-[16/9] sm:aspect-[16/8]" id="featuredSliderViewport">
+                    <div class="flex w-full h-full transition-transform duration-500 ease-out will-change-transform"
+                        id="featuredSliderContainer" style="touch-action: pan-y pinch-zoom;">
+                        @if(isset($featuredPosts) && count($featuredPosts) > 0)
+                        @foreach($featuredPosts as $index => $post)
+                        <div class="w-full h-full flex-shrink-0 relative" data-index="{{ $index }}">
+                            {{-- Background gradient for text readability --}}
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10"></div>
                             <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
                                 alt="{{ $post['title'] }}" class="w-full h-full object-cover" loading="lazy">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none">
+                            {{-- Content overlay inside each slide - works for both desktop and mobile --}}
+                            <div class="absolute left-4 right-4 bottom-6 lg:bottom-8 text-white z-20">
+                                <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="no-underline">
+                                    <h3 class="text-base sm:text-xl lg:text-3xl xl:text-4xl font-bold text-white drop-shadow-lg hover:text-yellow-400 transition-colors line-clamp-2" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9);">{{ $post['title'] }}</h3>
+                                    <div class="flex gap-2 sm:gap-3 items-center text-white text-sm sm:text-base lg:text-lg mt-2 lg:mt-3" style="text-shadow: 0 1px 4px rgba(0,0,0,0.9);">
+                                        <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
+                                        <span class="w-2 lg:w-2.5 h-2 lg:h-2.5 bg-white rounded-full flex-shrink-0"></span>
+                                        <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '' }}</span>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
+                        @endforeach
+                        @endif
                     </div>
-                    @endforeach
-                    @endif
                 </div>
+
+                {{-- Channel badge --}}
                 <span id="featuredChannel"
-                    class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full z-30 shadow-md backdrop-blur-sm">
+                    class="absolute top-3 sm:top-4 left-3 sm:left-4 px-2 sm:px-3 py-1 sm:py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full z-30 shadow-md">
                     {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
                 </span>
+
+                {{-- Nav buttons --}}
                 <button onclick="featuredPrev()"
-                    class="absolute top-1/2 left-2 -translate-y-1/2 bg-white shadow-lg border-0 rounded-full flex items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
-                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;">
+                    class="hidden sm:flex absolute top-1/2 left-2 -translate-y-1/2 bg-white/90 shadow-lg border-0 rounded-full items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
+                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;"
+                    aria-label="Previous slide">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 w-5 h-5 group-hover:text-white transition-colors duration-200 flex-shrink-0" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                 </button>
                 <button onclick="featuredNext()"
-                    class="absolute top-1/2 right-2 -translate-y-1/2 bg-white shadow-lg border-0 rounded-full flex items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
-                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;">
+                    class="hidden sm:flex absolute top-1/2 right-2 -translate-y-1/2 bg-white/90 shadow-lg border-0 rounded-full items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
+                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;"
+                    aria-label="Next slide">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 w-5 h-5 group-hover:text-white transition-colors duration-200 flex-shrink-0" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 </button>
-                <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20 pointer-events-none" id="featuredDots"></div>
-                <div class="absolute left-4 right-4 bottom-20 text-white z-10 pointer-events-none">
-                    <a href="" id="featuredLink" class="no-underline pointer-events-none">
-                        <h3 id="featuredTitle"
-                            class="text-xl sm:text-2xl font-bold hover:text-yellow-450 transition-colors"></h3>
-                        <div class="flex gap-3 items-center text-white/90 text-sm mt-2">
-                            <span id="featuredAuthor"></span>
-                            <span class="w-2 h-2 bg-white/50 rounded-full"></span>
-                            <span id="featuredDate"></span>
-                        </div>
-                    </a>
-                </div>
+
+                {{-- Dot indicators --}}
+                <div class="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-30" id="featuredDots"></div>
             </div>
         </div>
 
@@ -83,7 +91,7 @@
                         class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                         <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
                             alt="{{ $post['title'] }}" class="w-20 h-20 object-cover rounded-lg" loading="lazy">
-                        <div class="flex-1">
+                        <div class="flex-1 flex flex-col justify-between h-20">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title']
                                 }}</div>
                             <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
@@ -648,15 +656,12 @@
 
     let featuredCurrent = 0;
     const featuredContainer = document.getElementById('featuredSliderContainer');
+    const featuredViewport = document.getElementById('featuredSliderViewport');
     const featuredDotsContainer = document.getElementById('featuredDots');
-    const featuredTitleEl = document.getElementById('featuredTitle');
-    const featuredAuthorEl = document.getElementById('featuredAuthor');
-    const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
-    const featuredLinkEl = document.getElementById('featuredLink');
     const articleUrl = "{{ url('/artikel') }}";
 
-    // Store post data from server-side rendered slides
+    // Store post data from server-side rendered slides (for channel badge and dot indicators)
     const featuredData = {!! json_encode(
         collect($featuredPosts ?? [])
             ->map(function ($post) {
@@ -673,28 +678,26 @@
     ) !!};
 
     const featuredTotal = featuredData.length;
+    let featuredAutoSlideInterval = null;
 
     function updateFeaturedSlider() {
         if (!featuredContainer || featuredTotal === 0) return;
 
-        // Update slide position
         featuredContainer.style.transform = `translateX(-${featuredCurrent * 100}%)`;
 
-        // Update text content and link
         if (featuredData[featuredCurrent]) {
             const d = featuredData[featuredCurrent];
-            if (featuredTitleEl) featuredTitleEl.textContent = d.title;
-            if (featuredAuthorEl) featuredAuthorEl.textContent = d.author;
-            if (featuredDateEl) featuredDateEl.textContent = d.date;
+            // Update channel badge only (content is now server-rendered in each slide)
             if (featuredChannelEl) featuredChannelEl.textContent = d.channel;
-            if (featuredLinkEl) featuredLinkEl.href = `${articleUrl}/${d.slug}`;
         }
 
-        // Update dots
+        // Update dot indicators
         if (featuredDotsContainer) {
             const dots = featuredDotsContainer.children;
             for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === featuredCurrent ? ' bg-yellow-450 w-6' : '');
+                const isActive = i === featuredCurrent;
+                dots[i].className = 'rounded-full cursor-pointer transition-all duration-300 ' +
+                    (isActive ? 'w-6 h-2 bg-yellow-450' : 'w-2 h-2 bg-white/60');
             }
         }
     }
@@ -715,22 +718,78 @@
         if (featuredTotal === 0) return;
         featuredCurrent = index;
         updateFeaturedSlider();
+        resetAutoSlide();
+    }
+
+    function resetAutoSlide() {
+        if (featuredAutoSlideInterval) clearInterval(featuredAutoSlideInterval);
+        if (featuredTotal > 1) {
+            featuredAutoSlideInterval = setInterval(featuredNext, 7000);
+        }
+    }
+
+    // --- Touch / Swipe support ---
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let isSwiping = false;
+    const SWIPE_THRESHOLD = 50;
+
+    if (featuredViewport) {
+        featuredViewport.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            isSwiping = false;
+            featuredContainer.style.transition = 'none';
+        }, { passive: true });
+
+        featuredViewport.addEventListener('touchmove', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+
+            // Only handle horizontal swipes
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+                isSwiping = true;
+                const viewportWidth = featuredViewport.offsetWidth;
+                const offset = -featuredCurrent * viewportWidth + dx;
+                const clampedOffset = Math.max(-((featuredTotal - 1) * viewportWidth), Math.min(0, offset));
+                featuredContainer.style.transform = `translateX(${clampedOffset}px)`;
+            }
+        }, { passive: true });
+
+        featuredViewport.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+
+            featuredContainer.style.transition = 'transform 500ms ease-out';
+
+            if (isSwiping && Math.abs(diff) > SWIPE_THRESHOLD) {
+                if (diff > 0) {
+                    featuredCurrent = Math.min(featuredCurrent + 1, featuredTotal - 1);
+                } else {
+                    featuredCurrent = Math.max(featuredCurrent - 1, 0);
+                }
+            }
+
+            updateFeaturedSlider();
+            resetAutoSlide();
+            isSwiping = false;
+        }, { passive: true });
     }
 
     // Initialize dots
     if (featuredDotsContainer && featuredTotal > 0) {
         for (let i = 0; i < featuredTotal; i++) {
             const dot = document.createElement('div');
-            dot.className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
+            dot.className = 'rounded-full cursor-pointer transition-all duration-300 ' +
+                (i === 0 ? 'w-6 h-2 bg-yellow-450' : 'w-2 h-2 bg-white/60');
             dot.onclick = () => featuredGoTo(i);
             featuredDotsContainer.appendChild(dot);
         }
     }
 
     // Auto-slide
-    if (featuredTotal > 1) {
-        setInterval(featuredNext, 7000);
-    }
+    resetAutoSlide();
 
     // Initial update
     if (featuredTotal > 0) {
