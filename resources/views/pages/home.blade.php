@@ -25,7 +25,7 @@
         <div class="lg:col-span-2">
             <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg" id="featuredSliderWrapper">
                 {{-- Slider viewport --}}
-                <div class="relative w-full overflow-hidden aspect-[16/9] sm:aspect-[16/8]" id="featuredSliderViewport">
+                <div class="relative w-full overflow-hidden aspect-16/9 sm:aspect-16/8" id="featuredSliderViewport">
                     <div class="flex w-full h-full transition-transform duration-500 ease-out will-change-transform"
                         id="featuredSliderContainer" style="touch-action: pan-y pinch-zoom;">
                         @if(isset($featuredPosts) && count($featuredPosts) > 0)
