@@ -4,8 +4,8 @@ echo "🚀 Starting deployment..."
 
 # Build image dulu (app masih jalan)
 
-echo "🔨 Rebuilding Docker image..."
-docker compose build
+echo "🔨 Rebuilding Docker image (no cache)..."
+docker compose build --no-cache
 
 # Recreate container tanpa mematikan service lain
 
