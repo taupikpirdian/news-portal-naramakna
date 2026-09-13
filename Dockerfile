@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM php:8.3-fpm
 
 WORKDIR /var/www
@@ -21,14 +23,26 @@ RUN apt-get update && apt-get install -y \
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_CACHE_DIR=/tmp/composer-cache
+
 # Copy composer & package files FIRST
 COPY composer.json composer.lock package.json ./
 
 # Install vendor dependencies
-RUN composer install \
-    --optimize-autoloader \
-    --no-interaction \
-    --no-scripts
+RUN --mount=type=cache,target=/tmp/composer-cache \
+    for attempt in 1 2 3; do \
+        composer install \
+            --no-dev \
+            --prefer-dist \
+            --optimize-autoloader \
+            --no-interaction \
+            --no-progress \
+            --no-scripts && break; \
+        if [ "$attempt" -eq 3 ]; then exit 1; fi; \
+        echo "Composer install failed (attempt $attempt/3); retrying..."; \
+        sleep $((attempt * 10)); \
+    done
 
 # Install npm dependencies
 RUN npm install
