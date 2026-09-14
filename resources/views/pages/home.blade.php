@@ -402,6 +402,21 @@
         }
     }
 
+    window.handleMidContentAdError = function(image) {
+        image.onerror = null;
+
+        const adLink = image.closest('a');
+        const fallbackId = image.id.replace('-ad-image', '-fallback');
+        const fallback = document.getElementById(fallbackId);
+
+        if (adLink) adLink.style.display = 'none';
+        if (!fallback) return;
+
+        fallback.style.display = 'block';
+
+        initializeAd(fallback);
+    };
+
     // Function to create ad HTML
     async function createAdHTML(localhost = false) {
         var publisherId = @json(config('ads.adsense_publisher_id'));
@@ -443,8 +458,15 @@
             return `
                 <div class="my-8 ad-section" id="${adId}-container">
                     <a id="${adId}-ad-link" href="${ad.target_url || '#'}" target="_blank" rel="noopener noreferrer" class="block">
-                        <img id="${adId}-ad-image" src="${ad.media_url || ad.image_url}" alt="${ad.campaign_name || 'Advertisement'}" class="w-full h-auto rounded-lg shadow-lg" loading="lazy">
+                        <img id="${adId}-ad-image" src="${ad.media_url || ad.image_url}" alt="${ad.campaign_name || 'Advertisement'}" class="w-full h-auto rounded-lg shadow-lg" loading="lazy" onerror="window.handleMidContentAdError(this)">
                     </a>
+                    <div id="${adId}-fallback" style="display: none; width: 100%; min-height: 90px; overflow: hidden;">
+                        <ins class="adsbygoogle ad-article"
+                             style="display: block; width: 100%; min-width: 300px; min-height: 90px;"
+                             data-ad-client="${publisherId}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
                 </div>
             `;
         } else {
@@ -483,13 +505,15 @@
     }
 
     // Function to initialize ad after insertion (call AFTER HTML is in DOM)
-    function initializeAd() {
+    function initializeAd(container = document) {
         if (typeof adsbygoogle !== 'undefined') {
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.error('Error initializing ad:', e);
-            }
+            container.querySelectorAll('.adsbygoogle:not([data-ad-status])').forEach(function() {
+                try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.error('Error initializing ad:', e);
+                }
+            });
         }
     }
 
@@ -588,7 +612,7 @@
                         adSection.style.transform = 'translateY(0)';
 
                         // Initialize the ad (for Google Ads fallback)
-                        initializeAd();
+                        initializeAd(adSection);
                     }
                 }
             }
@@ -605,6 +629,7 @@
             // Attach error handlers to new images
             container.querySelectorAll('img').forEach(img => {
                 img.addEventListener('error', () => {
+                    if (img.id.endsWith('-ad-image')) return;
                     img.src = FALLBACK_IMG;
                 }, { once: true });
             });
@@ -806,6 +831,7 @@
     // Fallback image handler
     Array.from(document.querySelectorAll('img')).forEach(img => {
         img.addEventListener('error', () => {
+            if (img.id.endsWith('-ad-image')) return;
             img.src = FALLBACK_IMG;
         }, { once: true });
     });
