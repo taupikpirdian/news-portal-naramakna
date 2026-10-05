@@ -1,3 +1,5 @@
+@php($isHomePage = request()->is('/'))
+
 <header class="bg-white border-b border-gray-200 sticky top-0 z-[1000]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-4 py-4 flex-wrap">
@@ -49,7 +51,7 @@
         </div>
         <nav class="border-t border-gray-200 py-3 overflow-y-hidden">
             <ul
-                class="flex list-none gap-3 md:gap-6 flex-nowrap md:flex-wrap overflow-x-auto overflow-y-hidden md:overflow-visible -mx-4 px-4 snap-x snap-mandatory">
+                class="flex list-none gap-3 md:gap-6 {{ $isHomePage ? 'flex-wrap' : 'flex-nowrap md:flex-wrap overflow-x-auto overflow-y-hidden md:overflow-visible -mx-4 px-4 snap-x snap-mandatory' }}">
                 @if(isset($headerCategories))
                     @foreach($headerCategories as $category)
                         <li class="shrink-0 snap-start"><a href="{{ route('category', ['slug' => $category['slug']]) }}"
@@ -102,7 +104,7 @@
         </nav>
         <div class="bg-gray-50 border-t border-gray-200 py-2.5 min-h-[56px] overflow-y-hidden">
             <ul
-                class="flex list-none gap-2 md:gap-3 flex-nowrap md:flex-wrap overflow-x-auto overflow-y-hidden md:overflow-visible -mx-4 px-4 snap-x snap-mandatory h-[48px] md:h-auto items-center">
+                class="flex list-none gap-2 md:gap-3 items-center {{ $isHomePage ? 'flex-wrap' : 'flex-nowrap md:flex-wrap overflow-x-auto overflow-y-hidden md:overflow-visible -mx-4 px-4 snap-x snap-mandatory h-[48px] md:h-auto' }}">
                 <li class="shrink-0 snap-start"><a href="{{ route('index') }}"
                         class="px-4 h-8 inline-flex items-center text-xs font-medium rounded-full no-underline bg-red-100 text-red-800 whitespace-nowrap">Index
                         Berita</a></li>
