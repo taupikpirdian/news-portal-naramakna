@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\NaramaknaApiService;
 use Carbon\Carbon;
 
@@ -22,7 +21,9 @@ class SitemapController extends Controller
     {
         $sitemapUrls = [
             route('sitemap.pages'),
-            route('sitemap.posts'),
+            route('sitemap.posts.page', ['page' => 1]),
+            route('sitemap.posts.page', ['page' => 2]),
+            route('sitemap.posts.page', ['page' => 3]),
             route('sitemap.categories'),
         ];
 
@@ -36,40 +37,41 @@ class SitemapController extends Controller
      */
     public function pages()
     {
+        $monthlyLastMod = Carbon::now()->startOfMonth()->format('Y-m-d');
         $staticPages = [
             [
                 'url' => url('/'),
-                'lastmod' => Carbon::now()->toAtomString(),
+                'lastmod' => Carbon::now()->format('Y-m-d'),
                 'changefreq' => 'daily',
                 'priority' => '1.0',
             ],
             [
                 'url' => url('/index'),
-                'lastmod' => Carbon::now()->toAtomString(),
+                'lastmod' => Carbon::now()->format('Y-m-d'),
                 'changefreq' => 'hourly',
                 'priority' => '0.9',
             ],
             [
                 'url' => url('/tentang-kami'),
-                'lastmod' => Carbon::now()->toAtomString(),
+                'lastmod' => $monthlyLastMod,
                 'changefreq' => 'monthly',
                 'priority' => '0.8',
             ],
             [
                 'url' => url('/bantuan'),
-                'lastmod' => Carbon::now()->toAtomString(),
+                'lastmod' => $monthlyLastMod,
                 'changefreq' => 'monthly',
                 'priority' => '0.6',
             ],
             [
                 'url' => url('/kerja-sama'),
-                'lastmod' => Carbon::now()->toAtomString(),
+                'lastmod' => $monthlyLastMod,
                 'changefreq' => 'monthly',
                 'priority' => '0.6',
             ],
             [
                 'url' => url('/cara-menulis'),
-                'lastmod' => Carbon::now()->toAtomString(),
+                'lastmod' => $monthlyLastMod,
                 'changefreq' => 'monthly',
                 'priority' => '0.6',
             ],
@@ -83,21 +85,19 @@ class SitemapController extends Controller
     /**
      * Generate sitemap for posts/articles
      */
-    public function posts()
+    public function posts($page = 1)
     {
         try {
             // Fetch all posts (you may want to adjust the limit based on your needs)
-            $feedData = $this->apiService->getFeed(1, 1000, 'date', 'desc');
+            $feedData = $this->apiService->getFeed($page, 1000, 'date', 'desc');
             $posts = $feedData['posts'] ?? [];
 
             $postUrls = [];
             foreach ($posts as $post) {
                 $postUrls[] = [
                     'url' => url('/artikel/' . ($post['slug'] ?? '')),
-                    'lastmod' => isset($post['modified_at'])
-                    ?Carbon::parse($post['modified_at'])->toAtomString()
-                    : (isset($post['created_at']) ?Carbon::parse($post['created_at'])->toAtomString() : Carbon::now()->toAtomString()),
-                    'changefreq' => 'weekly',
+                    'lastmod' => date('Y-m-d', strtotime($post['date'])),
+                    'changefreq' => 'daily',
                     'priority' => '0.8',
                 ];
             }
@@ -126,7 +126,7 @@ class SitemapController extends Controller
             foreach ($categories as $category) {
                 $categoryUrls[] = [
                     'url' => url('/kategori/' . ($category['slug'] ?? '')),
-                    'lastmod' => Carbon::now()->toAtomString(),
+                    'lastmod' => Carbon::now()->format('Y-m-d'),
                     'changefreq' => 'daily',
                     'priority' => '0.7',
                 ];

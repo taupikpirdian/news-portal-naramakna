@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
+@section('add-hero-banner')
+<x-global-ads placement="hero-banner" type="article" :priority="true" />
+@endsection
+
 @section('content')
 <!-- Artikel Terbaru -->
-<section class="mb-16" id="latest-posts-section">
+<section class="mb-16">
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-2">
             <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
@@ -19,47 +23,61 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {{-- Featured Slider (left side - 2 columns) --}}
         <div class="lg:col-span-2">
-            <div class="relative rounded-2xl overflow-hidden bg-white">
-                <div class="flex h-[300px] sm:h-[380px] lg:h-[420px] transition-transform duration-500 ease"
-                    id="featuredSliderContainer">
-                    @if(isset($featuredPosts) && count($featuredPosts) > 0)
-                    @foreach($featuredPosts as $index => $post)
-                    <div class="min-w-full h-full relative" data-index="{{ $index }}">
-                        <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="block h-full">
+            <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg" id="featuredSliderWrapper">
+                {{-- Slider viewport --}}
+                <div class="relative w-full overflow-hidden" style="aspect-ratio: 16/9;" id="featuredSliderViewport">
+                    <div class="flex w-full h-full transition-transform duration-500 ease-out will-change-transform"
+                        id="featuredSliderContainer" style="touch-action: pan-y pinch-zoom;">
+                        @if(isset($featuredPosts) && count($featuredPosts) > 0)
+                        @foreach($featuredPosts as $index => $post)
+                        <div class="w-full h-full flex-shrink-0 relative" data-index="{{ $index }}">
+                            {{-- Background gradient for text readability --}}
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10"></div>
                             <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop' }}"
-                                alt="{{ $post['title'] }}" class="w-full h-full object-cover">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none">
+                                alt="{{ $post['title'] }}" class="w-full h-full object-cover" loading="lazy">
+                            {{-- Content overlay inside each slide - works for both desktop and mobile --}}
+                            <div class="absolute left-4 right-4 text-white z-20" style="bottom: 1.5rem;">
+                                <a href="{{ url('/artikel') }}/{{ $post['slug'] }}" class="no-underline">
+                                    <h3 class="font-bold text-white hover:text-yellow-400 transition-colors line-clamp-2" style="text-shadow: 0 2px 8px rgba(0,0,0,0.9); font-size: 1rem; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15));">{{ $post['title'] }}</h3>
+                                    <div class="flex items-center text-white mt-2" style="gap: 0.5rem; font-size: 0.875rem; text-shadow: 0 1px 4px rgba(0,0,0,0.9);">
+                                        <span>{{ $post['author']['display_name'] ?? 'Redaksi' }}</span>
+                                        <span class="bg-white rounded-full flex-shrink-0" style="width: 0.5rem; height: 0.5rem;"></span>
+                                        <span>{{ $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '' }}</span>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
+                        @endforeach
+                        @endif
                     </div>
-                    @endforeach
-                    @endif
                 </div>
+
+                {{-- Channel badge --}}
                 <span id="featuredChannel"
-                    class="absolute top-4 left-4 px-3 py-1.5 bg-yellow-450 text-white text-xs font-semibold rounded-full">
+                    class="absolute bg-yellow-450 text-white text-xs font-semibold rounded-full z-30 shadow-md" style="top: 0.75rem; left: 0.75rem; padding: 0.25rem 0.5rem;">
                     {{ $featuredPosts[0]['metadata']['_channel'] ?? 'Artikel' }}
                 </span>
-                <button
-                    class="absolute top-1/2 -translate-y-1/2 left-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                    <span onclick="featuredPrev()">‹</span>
+
+                {{-- Nav buttons --}}
+                <button onclick="featuredPrev()"
+                    class="hidden sm:flex absolute top-1/2 left-2 -translate-y-1/2 bg-white/90 shadow-lg border-0 rounded-full items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
+                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;"
+                    aria-label="Previous slide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 w-5 h-5 group-hover:text-white transition-colors duration-200 flex-shrink-0" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
                 </button>
-                <button
-                    class="absolute top-1/2 -translate-y-1/2 right-4 w-10 h-10 bg-white/60 backdrop-blur-sm border-none rounded-full text-gray-800 text-2xl cursor-pointer z-20 hover:bg-white">
-                    <span onclick="featuredNext()">›</span>
+                <button onclick="featuredNext()"
+                    class="hidden sm:flex absolute top-1/2 right-2 -translate-y-1/2 bg-white/90 shadow-lg border-0 rounded-full items-center justify-center cursor-pointer z-50 transition-all duration-200 select-none outline-none p-0 m-0 hover:scale-105 hover:bg-gray-100 active:scale-95 group"
+                    style="width: 40px; height: 40px; min-width: 40px; min-height: 40px;"
+                    aria-label="Next slide">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 w-5 h-5 group-hover:text-white transition-colors duration-200 flex-shrink-0" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
                 </button>
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="featuredDots"></div>
-                <div class="absolute left-4 right-4 bottom-16 text-white z-10">
-                    <a href="" id="featuredLink" class="no-underline">
-                        <h3 id="featuredTitle"
-                            class="text-xl sm:text-2xl font-bold hover:text-yellow-450 transition-colors"></h3>
-                        <div class="flex gap-3 items-center text-white/80 text-sm mt-2">
-                            <span id="featuredAuthor"></span>
-                            <span class="w-2 h-2 bg-white/50 rounded-full"></span>
-                            <span id="featuredDate"></span>
-                        </div>
-                    </a>
-                </div>
+
+                {{-- Dot indicators --}}
+                <div class="absolute left-1/2 -translate-x-1/2 flex gap-2 z-30" style="bottom: 0.5rem;" id="featuredDots"></div>
             </div>
         </div>
 
@@ -72,8 +90,8 @@
                     <a href="{{ url('/artikel') }}/{{ $post['slug'] }}"
                         class="flex gap-3 no-underline rounded-xl px-2 pt-0.5 pb-1.5 hover:bg-gray-50">
                         <img src="{{ $post['featured_image']['url'] ?? 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=200&h=200&fit=crop' }}"
-                            alt="{{ $post['title'] }}" class="w-20 h-20 object-cover rounded-lg">
-                        <div class="flex-1">
+                            alt="{{ $post['title'] }}" class="w-20 h-20 object-cover rounded-lg" loading="lazy">
+                        <div class="flex-1 flex flex-col justify-between h-20">
                             <div class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2">{{ $post['title']
                                 }}</div>
                             <div class="flex items-center gap-2 text-xs text-gray-500 mt-1">
@@ -92,216 +110,14 @@
     @endif
 </section>
 
-{{-- TODO: Feed Instagram --}}
-@if(config('ads.instagram_feed_enabled'))
-<section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-            <div class="w-1 h-8 bg-yellow-450 rounded-full"></div>
-            <h2 class="flex items-center gap-2">
-                <svg class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-                Instagram Feed
-            </h2>
-        </div>
-        <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank" rel="noopener noreferrer"
-            class="text-yellow-450 no-underline text-sm font-medium flex items-center gap-1 hover:text-yellow-550">
-            @naramakna_id
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-            </svg>
-        </a>
-    </div>
-
-    <div class="bg-gradient-to-br from-purple-50 via-pink-50 to-yellow-50 rounded-2xl p-6 border border-gray-200">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            <!-- Instagram Post 1 -->
-            <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=400&fit=crop"
-                    alt="Instagram post 1"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                            1.2k
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
-                            </svg>
-                            89
-                        </span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Instagram Post 2 -->
-            <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop"
-                    alt="Instagram post 2"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                            2.1k
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
-                            </svg>
-                            142
-                        </span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Instagram Post 3 -->
-            <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?w=400&h=400&fit=crop"
-                    alt="Instagram post 3"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                            856
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
-                            </svg>
-                            67
-                        </span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Instagram Post 4 -->
-            <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop"
-                    alt="Instagram post 4"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                            1.5k
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
-                            </svg>
-                            98
-                        </span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Instagram Post 5 -->
-            <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1515847049296-a281d6401047?w=400&h=400&fit=crop"
-                    alt="Instagram post 5"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                            3.2k
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
-                            </svg>
-                            234
-                        </span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Instagram Post 6 -->
-            <a href="#" class="group relative aspect-square rounded-xl overflow-hidden no-underline">
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop"
-                    alt="Instagram post 6"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div class="absolute bottom-2 left-2 right-2 flex items-center gap-3 text-white text-xs">
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                            </svg>
-                            1.8k
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z" />
-                            </svg>
-                            156
-                        </span>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- Follow Button -->
-        <div class="mt-6 text-center">
-            <a href="https://www.instagram.com/naramakna.id?igsh=ejNla2VjeDdwaWd5" target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white font-semibold rounded-full no-underline transition-all hover:shadow-lg hover:scale-105">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-                Ikuti Kami di Instagram
-            </a>
-        </div>
-    </div>
-</section>
-@endif
+{{-- Instagram Feed - Real Posts from API --}}
+<x-instagram-feed :limit="12" />
 
 {{-- In-Article Ad between Instagram and Categories --}}
-@if(config('ads.enabled'))
-<div class="mb-12">
-    <x-google-ads type="in_article" />
-</div>
-@endif
+<x-global-ads placement="header" type="article" :priority="true" />
 
 {{-- List Berita Berdasarkan Kategori --}}
-{{-- All categories will be loaded via AJAX --}}
 <div id="categories-container">
-    {{-- Categories will be loaded here via JavaScript --}}
 </div>
 
 {{-- Loading Skeleton Template --}}
@@ -399,48 +215,6 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
     }
-
-    /* Smooth Loading Indicator */
-    @keyframes pulse-ring {
-        0% {
-            transform: scale(0.8);
-            opacity: 0.5;
-        }
-
-        50% {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        100% {
-            transform: scale(0.8);
-            opacity: 0.5;
-        }
-    }
-
-    .loading-indicator {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 20px;
-    }
-
-    .loading-indicator span {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #fbbf24;
-        animation: pulse-ring 1.5s ease-in-out infinite;
-    }
-
-    .loading-indicator span:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-
-    .loading-indicator span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
 </style>
 @endsection
 
@@ -454,11 +228,14 @@
 
     const categoriesApiEndpoint = "{{ route('api.categories', [], true) }}";
     const postsApiEndpoint = "{{ route('api.category.posts', [], true) }}";
+    const adsensePublisherId = "{{ config('ads.adsense_publisher_id') }}";
+    const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false' }};
 
     let allCategories = [];
     let loadedCount = 0;
     let isLoading = false;
-    const categoriesPerBatch = 2; // Load first 2 categories immediately
+    let batchCount = 0; // Track how many batches have been loaded
+    const categoriesPerBatch = 2;
 
     function formatJakartaDate(input) {
         if (!input) return '';
@@ -485,7 +262,6 @@
     async function fetchCategories() {
         try {
             const url = `${categoriesApiEndpoint}?limit=50&mainCategoriesOnly=true`;
-            console.log('Fetching categories from:', url);
 
             const response = await fetch(url);
 
@@ -494,15 +270,12 @@
             }
 
             const data = await response.json();
-            console.log('Categories API Response:', data);
 
             if (!data.success) {
-                console.warn('API returned unsuccessful response');
                 return [];
             }
 
             allCategories = data.data.categories || [];
-            console.log('Categories fetched successfully:', allCategories.length);
             return allCategories;
 
         } catch (error) {
@@ -515,8 +288,8 @@
     function createCategoryHTML(category, posts, index) {
         const firstPost = posts[0] || null;
         const otherPosts = posts.slice(1, 5);
-        const readUrl = '{{ url('/artikel') }}';
-        const categoryUrl = '{{ url('/kategori') }}';
+        const readUrl = "{{ url('/artikel') }}";
+        const categoryUrl = "{{ url('/kategori') }}";
 
         let html = `
             <section class="mb-10 category-section fade-in-section" data-category-slug="${category.slug}" data-category-index="${index}">
@@ -594,36 +367,7 @@
             </section>
         `;
 
-        // Add AdSense after every 2 categories
-        const adsEnabled = {{ config('ads.enabled') ? 'true' : 'false'
-    }};
-    if (adsEnabled && (index + 1) % 2 === 0) {
-        html += `
-                <div class="my-8">
-                    <div class="google-ads-container google-ads-leaderboard" id="google-ad-${index}">
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-lg py-6 text-center">
-                            <div class="space-y-2">
-                                <div class="flex items-center justify-center space-x-2">
-                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                    </svg>
-                                    <span class="text-sm font-semibold text-blue-800">Advertisement</span>
-                                </div>
-                                <div class="mt-3 flex justify-center">
-                                    <div class="bg-white rounded shadow-sm border border-gray-200 px-8 py-3">
-                                        <p class="text-xs text-gray-500 mb-1">Sponsored Content</p>
-                                        <p class="text-sm font-medium text-gray-800">In-Article Ad</p>
-                                        <p class="text-xs text-gray-600 mt-1">Your ad could be here</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-    }
-
-    return html;
+        return html;
     }
 
     // Function to create skeleton loader
@@ -636,7 +380,6 @@
     async function loadCategoryPosts(categorySlug) {
         try {
             const url = `${postsApiEndpoint}?slug=${encodeURIComponent(categorySlug)}&limit=5`;
-            console.log('Fetching posts from:', url);
 
             const response = await fetch(url);
 
@@ -645,15 +388,12 @@
             }
 
             const data = await response.json();
-            console.log('Posts API Response for', categorySlug, ':', data);
 
             if (!data.success) {
-                console.warn('API returned unsuccessful response');
                 return [];
             }
 
             const posts = data.data.posts || [];
-            console.log('Posts fetched successfully:', posts.length);
             return posts;
 
         } catch (error) {
@@ -662,23 +402,130 @@
         }
     }
 
+    window.handleMidContentAdError = function(image) {
+        image.onerror = null;
+
+        const adLink = image.closest('a');
+        const fallbackId = image.id.replace('-ad-image', '-fallback');
+        const fallback = document.getElementById(fallbackId);
+
+        if (adLink) adLink.style.display = 'none';
+        if (!fallback) return;
+
+        fallback.style.display = 'block';
+
+        initializeAd(fallback);
+    };
+
+    // Function to create ad HTML
+    async function createAdHTML(localhost = false) {
+        var publisherId = @json(config('ads.adsense_publisher_id'));
+
+        if (!publisherId) {
+            return '';
+        }
+
+        // Add ca-pub- prefix if not present
+        if (publisherId && !publisherId.startsWith('ca-pub-')) {
+            publisherId = 'ca-pub-' + publisherId;
+        }
+
+        // Generate unique ID for each ad instance
+        var adId = 'mid-content-ad-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        // Fetch banner data from API
+        var bannerData = await fetchMidContentAd();
+
+        if(localhost) {
+            return `
+                <div class="my-8 ad-section">
+                    <div id="${adId}-wrapper" class="ad-wrapper" style="width: 100%; min-width: 300px;">
+                        <div class="ad-article"
+                            style="width: 100%; min-width: 300px; height: 90px; background:#facc15; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                            <div style="text-align:center; color:#1f2937; font-size:0.75rem; font-weight:600;">
+                                article<br><small style="opacity:0.8">300px x 90px</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Check if banner data is available
+        if (bannerData && bannerData.data && bannerData.data.ads && bannerData.data.ads.length > 0) {
+            const ad = bannerData.data.ads[0];
+
+            // Return banner ad HTML
+            return `
+                <div class="my-8 ad-section" id="${adId}-container">
+                    <a id="${adId}-ad-link" href="${ad.target_url || '#'}" target="_blank" rel="noopener noreferrer" class="block">
+                        <img id="${adId}-ad-image" src="${ad.media_url || ad.image_url}" alt="${ad.campaign_name || 'Advertisement'}" class="w-full h-auto rounded-lg shadow-lg" loading="lazy" onerror="window.handleMidContentAdError(this)">
+                    </a>
+                    <div id="${adId}-fallback" style="display: none; width: 100%; min-height: 90px; overflow: hidden;">
+                        <ins class="adsbygoogle ad-article"
+                             style="display: block; width: 100%; min-width: 300px; min-height: 90px;"
+                             data-ad-client="${publisherId}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Return Google Ads fallback HTML
+            return `
+                <div class="my-8 ad-section" id="${adId}-container">
+                    <div id="${adId}-wrapper" class="ad-wrapper" style="width: 100%; min-width: 300px;">
+                        <ins class="adsbygoogle ad-article"
+                             style="display: block; width: 100%; min-width: 300px; min-height: 90px;"
+                             data-ad-client="${publisherId}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Function to fetch and display mid-content ad from API
+    async function fetchMidContentAd() {
+        try {
+            const adsApiUrl = "{{ config('app.url') }}/api/ads/serve?placement=mid-content&limit=1";
+            const response = await fetch(adsApiUrl);
+            const data = await response.json();
+
+            if (!data.success) {
+                console.error('Ad API error:', data.message || 'Unknown error');
+                return;
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error fetching mid-content ad:', error);
+            return;
+        }
+    }
+
+    // Function to initialize ad after insertion (call AFTER HTML is in DOM)
+    function initializeAd(container = document) {
+        if (typeof adsbygoogle !== 'undefined') {
+            container.querySelectorAll('.adsbygoogle:not([data-ad-status])').forEach(function() {
+                try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                } catch (e) {
+                    console.error('Error initializing ad:', e);
+                }
+            });
+        }
+    }
+
     // Function to load next batch of categories
     async function loadNextBatch() {
         if (loadedCount >= allCategories.length || isLoading) {
-            console.log('Load skipped:', {
-                loadedCount,
-                total: allCategories.length,
-                isLoading
-            });
             return;
         }
 
         isLoading = true;
-        console.log('Starting load for categories:', loadedCount, 'to', Math.min(loadedCount + categoriesPerBatch, allCategories.length) - 1);
-
         const container = document.getElementById('categories-container');
         if (!container) {
-            console.error('Container not found');
             isLoading = false;
             return;
         }
@@ -689,59 +536,86 @@
             for (let i = 0; i < categoriesToLoad; i++) {
                 const currentIndex = loadedCount + i;
                 const category = allCategories[currentIndex];
-
-                console.log(`Loading category ${i + 1}/${categoriesToLoad}:`, category.slug);
-
                 // Show skeleton
                 const skeleton = createSkeleton();
                 container.appendChild(skeleton);
 
-                // Load posts via AJAX
-                const posts = await loadCategoryPosts(category.slug);
-                console.log(`Posts loaded for ${category.slug}:`, posts.length);
+                try {
+                    // Load posts via AJAX
+                    const posts = await loadCategoryPosts(category.slug);
 
-                // Remove skeleton with animation
-                skeletonSection = container.querySelector('.skeleton-section');
-                if (skeletonSection) {
-                    skeletonSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    skeletonSection.style.opacity = '0';
-                    skeletonSection.style.transform = 'translateY(-10px)';
+                    // Remove skeleton with animation
+                    let skeletonSection = container.querySelector('.skeleton-section');
+                    if (skeletonSection) {
+                        skeletonSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        skeletonSection.style.opacity = '0';
+                        skeletonSection.style.transform = 'translateY(-10px)';
 
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    skeletonSection.remove();
-                    console.log(`Skeleton removed for ${category.slug}`);
-                }
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                        skeletonSection.remove();
+                    }
 
-                // Check if we have posts
-                if (!posts || posts.length === 0) {
-                    console.warn('No posts found for category:', category.slug);
-                    continue;
-                }
+                    // Check if we have posts
+                    if (!posts || posts.length === 0) {
+                        continue;
+                    }
 
-                // Create and append category section
-                const categoryHTML = createCategoryHTML(category, posts, currentIndex);
-                container.insertAdjacentHTML('beforeend', categoryHTML);
-                console.log(`Category HTML added for ${category.slug}`);
+                    // Create and append category section
+                    const categoryHTML = createCategoryHTML(category, posts, currentIndex);
+                    container.insertAdjacentHTML('beforeend', categoryHTML);
 
-                // Add fade-in animation
-                const newSection = container.lastElementChild;
-                if (newSection && newSection.classList.contains('category-section')) {
-                    newSection.style.opacity = '0';
-                    newSection.style.transform = 'translateY(30px) scale(0.98)';
+                    // Add fade-in animation
+                    const newSection = container.lastElementChild;
+                    if (newSection && newSection.classList.contains('category-section')) {
+                        newSection.style.opacity = '0';
+                        newSection.style.transform = 'translateY(30px) scale(0.98)';
 
-                    await new Promise(resolve => setTimeout(resolve, 50));
+                        await new Promise(resolve => setTimeout(resolve, 50));
 
-                    newSection.offsetHeight; // Trigger reflow
+                        newSection.offsetHeight; // Trigger reflow
 
-                    newSection.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                    newSection.style.opacity = '1';
-                    newSection.style.transform = 'translateY(0) scale(1)';
-                    console.log(`Animation applied for ${category.slug}`);
+                        newSection.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        newSection.style.opacity = '1';
+                        newSection.style.transform = 'translateY(0) scale(1)';
+                    }
+                } catch (error) {
+                    console.error(`Error loading category ${category.slug}:`, error);
+
+                    // Remove skeleton if exists
+                    const skeletonSection = container.querySelector('.skeleton-section');
+                    if (skeletonSection) {
+                        skeletonSection.remove();
+                    }
                 }
             }
 
             loadedCount += categoriesToLoad;
-            console.log('Batch load completed. Total loaded:', loadedCount);
+            batchCount++;
+            // Insert ad after every 2 batches (2x load more)
+            if (batchCount === 2) {
+                const isLocalhost = @json(app()->environment('local'));
+                const adHTML = await createAdHTML(isLocalhost);
+                // const adHTML = "<h2 class='text-center text-gray-500 text-sm my-4'>Iklan</h2>";
+                if (adHTML) {
+                    container.insertAdjacentHTML('beforeend', adHTML);
+
+                    const adSection = container.lastElementChild;
+                    if (adSection && adSection.classList.contains('ad-section')) {
+                        adSection.style.opacity = '0';
+                        adSection.style.transform = 'translateY(20px)';
+
+                        await new Promise(resolve => setTimeout(resolve, 50));
+
+                        adSection.offsetHeight;
+                        adSection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        adSection.style.opacity = '1';
+                        adSection.style.transform = 'translateY(0)';
+
+                        // Initialize the ad (for Google Ads fallback)
+                        initializeAd(adSection);
+                    }
+                }
+            }
 
         } catch (error) {
             console.error('Error in loadNextBatch:', error);
@@ -751,11 +625,11 @@
             skeletonSections.forEach(s => s.remove());
         } finally {
             isLoading = false;
-            console.log('Loading flag reset');
 
             // Attach error handlers to new images
             container.querySelectorAll('img').forEach(img => {
                 img.addEventListener('error', () => {
+                    if (img.id.endsWith('-ad-image')) return;
                     img.src = FALLBACK_IMG;
                 }, { once: true });
             });
@@ -768,137 +642,87 @@
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
 
-        return (scrollTop + windowHeight) >= (documentHeight - 200);
+        return (scrollTop + windowHeight) >= (documentHeight - 300);
     }
 
     // Handle scroll event for lazy loading
+    let scrollThrottleTimer = null;
     function handleScroll() {
-        if (loadedCount < allCategories.length && isNearBottom() && !isLoading) {
-            loadNextBatch();
-        }
+        // Throttle scroll events to improve performance
+        if (scrollThrottleTimer) return;
+
+        scrollThrottleTimer = setTimeout(() => {
+            scrollThrottleTimer = null;
+
+            const shouldLoad = loadedCount < allCategories.length && isNearBottom() && !isLoading;
+            if (shouldLoad) {
+                loadNextBatch();
+            }
+        }, 200);
     }
 
     // Initialize: Fetch categories and load first batch
     async function init() {
-        await fetchCategories();
+        try {
+            await fetchCategories();
 
-        if (allCategories.length > 0) {
-            // Load first batch immediately
-            await loadNextBatch();
-
-            // Add scroll event listener for lazy loading
-            window.addEventListener('scroll', handleScroll, { passive: true });
+            if (allCategories.length > 0) {
+                await loadNextBatch();
+                window.addEventListener('scroll', handleScroll, { passive: true });
+            }
+        } catch (error) {
+            console.error('Error during initialization:', error);
         }
     }
 
-    // Start the app
-    init();
-
-    // Carousel functionality
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('#carouselContainer > div');
-    const totalSlides = slides.length;
-    const container = document.getElementById('carouselContainer');
-    const dotsContainer = document.getElementById('carouselDots');
-
-    // Create dots
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
-        dot.onclick = () => goToSlide(i);
-        dotsContainer.appendChild(dot);
-    }
-
-    function updateCarousel() {
-        if (!container) return;
-        container.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-        if (dotsContainer) {
-            const dots = dotsContainer.children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-white/50 rounded-full cursor-pointer transition-all' + (i === currentSlide ? ' bg-yellow-450 w-6' : '');
-            }
-        }
-    }
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateCarousel();
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateCarousel();
-    }
-
-    function goToSlide(index) {
-        currentSlide = index;
-        updateCarousel();
-    }
-
-    if (container && totalSlides > 0) {
-        setInterval(nextSlide, 5000);
-    }
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
+    // ==========================================
+    // FEATURED SLIDER - MUST BE DEFINED BEFORE INIT()
+    // ==========================================
 
     let featuredCurrent = 0;
     const featuredContainer = document.getElementById('featuredSliderContainer');
+    const featuredViewport = document.getElementById('featuredSliderViewport');
     const featuredDotsContainer = document.getElementById('featuredDots');
-    const featuredTitleEl = document.getElementById('featuredTitle');
-    const featuredAuthorEl = document.getElementById('featuredAuthor');
-    const featuredDateEl = document.getElementById('featuredDate');
     const featuredChannelEl = document.getElementById('featuredChannel');
-    const featuredLinkEl = document.getElementById('featuredLink');
-    const readUrl = '{{ url('/artikel') }}';
+    const articleUrl = "{{ url('/artikel') }}";
 
-    // Store post data from server-side rendered slides
-    const featuredData = @if (isset($featuredPosts) && count($featuredPosts) > 0)
-        {!! json_encode(collect($featuredPosts)->map(function ($post) {
-            return [
-                'title' => $post['title'] ?? '',
-                'author' => $post['author']['display_name'] ?? 'Redaksi',
-                'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '',
-                'channel' => $post['metadata']['_channel'] ?? 'Artikel',
-                'slug' => $post['slug'] ?? ''
-            ];
-        })->values()->toArray()) !!}
-    @else
-        []
-    @endif;
+    // Store post data from server-side rendered slides (for channel badge and dot indicators)
+    const featuredData = {!! json_encode(
+        collect($featuredPosts ?? [])
+            ->map(function ($post) {
+                return [
+                    'title' => $post['title'] ?? '',
+                    'author' => $post['author']['display_name'] ?? 'Redaksi',
+                    'date' => $post['date'] ? \Carbon\Carbon::parse($post['date'])->setTimezone('Asia/Jakarta')->format('d/m, H.i') : '',
+                    'channel' => $post['metadata']['_channel'] ?? 'Artikel',
+                    'slug' => $post['slug'] ?? ''
+                ];
+            })
+            ->values()
+            ->toArray()
+    ) !!};
 
     const featuredTotal = featuredData.length;
+    let featuredAutoSlideInterval = null;
 
     function updateFeaturedSlider() {
         if (!featuredContainer || featuredTotal === 0) return;
 
-        // Update slide position
         featuredContainer.style.transform = `translateX(-${featuredCurrent * 100}%)`;
 
-        // Update text content and link
         if (featuredData[featuredCurrent]) {
             const d = featuredData[featuredCurrent];
-            if (featuredTitleEl) featuredTitleEl.textContent = d.title;
-            if (featuredAuthorEl) featuredAuthorEl.textContent = d.author;
-            if (featuredDateEl) featuredDateEl.textContent = d.date;
+            // Update channel badge only (content is now server-rendered in each slide)
             if (featuredChannelEl) featuredChannelEl.textContent = d.channel;
-            if (featuredLinkEl) featuredLinkEl.href = `${readUrl}/${d.slug}`;
         }
 
-        // Update dots
+        // Update dot indicators
         if (featuredDotsContainer) {
             const dots = featuredDotsContainer.children;
             for (let i = 0; i < dots.length; i++) {
-                dots[i].className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === featuredCurrent ? ' bg-yellow-450 w-6' : '');
+                const isActive = i === featuredCurrent;
+                dots[i].className = 'rounded-full cursor-pointer transition-all duration-300 ' +
+                    (isActive ? 'w-6 h-2 bg-yellow-450' : 'w-2 h-2 bg-white/60');
             }
         }
     }
@@ -919,31 +743,95 @@
         if (featuredTotal === 0) return;
         featuredCurrent = index;
         updateFeaturedSlider();
+        resetAutoSlide();
+    }
+
+    function resetAutoSlide() {
+        if (featuredAutoSlideInterval) clearInterval(featuredAutoSlideInterval);
+        if (featuredTotal > 1) {
+            featuredAutoSlideInterval = setInterval(featuredNext, 7000);
+        }
+    }
+
+    // --- Touch / Swipe support ---
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let isSwiping = false;
+    const SWIPE_THRESHOLD = 50;
+
+    if (featuredViewport) {
+        featuredViewport.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            isSwiping = false;
+            featuredContainer.style.transition = 'none';
+        }, { passive: true });
+
+        featuredViewport.addEventListener('touchmove', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+
+            // Only handle horizontal swipes
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+                isSwiping = true;
+                const viewportWidth = featuredViewport.offsetWidth;
+                const offset = -featuredCurrent * viewportWidth + dx;
+                const clampedOffset = Math.max(-((featuredTotal - 1) * viewportWidth), Math.min(0, offset));
+                featuredContainer.style.transform = `translateX(${clampedOffset}px)`;
+            }
+        }, { passive: true });
+
+        featuredViewport.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+
+            featuredContainer.style.transition = 'transform 500ms ease-out';
+
+            if (isSwiping && Math.abs(diff) > SWIPE_THRESHOLD) {
+                if (diff > 0) {
+                    featuredCurrent = Math.min(featuredCurrent + 1, featuredTotal - 1);
+                } else {
+                    featuredCurrent = Math.max(featuredCurrent - 1, 0);
+                }
+            }
+
+            updateFeaturedSlider();
+            resetAutoSlide();
+            isSwiping = false;
+        }, { passive: true });
     }
 
     // Initialize dots
     if (featuredDotsContainer && featuredTotal > 0) {
         for (let i = 0; i < featuredTotal; i++) {
             const dot = document.createElement('div');
-            dot.className = 'w-2 h-2 bg-gray-300/70 rounded-full cursor-pointer transition-all' + (i === 0 ? ' bg-yellow-450 w-6' : '');
+            dot.className = 'rounded-full cursor-pointer transition-all duration-300 ' +
+                (i === 0 ? 'w-6 h-2 bg-yellow-450' : 'w-2 h-2 bg-white/60');
             dot.onclick = () => featuredGoTo(i);
             featuredDotsContainer.appendChild(dot);
         }
     }
 
     // Auto-slide
-    if (featuredTotal > 1) {
-        setInterval(featuredNext, 7000);
-    }
+    resetAutoSlide();
 
     // Initial update
     if (featuredTotal > 0) {
         updateFeaturedSlider();
     }
 
+    // ==========================================
+    // START THE APP
+    // ==========================================
+
+    // Start the app
+    init();
+
     // Fallback image handler
     Array.from(document.querySelectorAll('img')).forEach(img => {
         img.addEventListener('error', () => {
+            if (img.id.endsWith('-ad-image')) return;
             img.src = FALLBACK_IMG;
         }, { once: true });
     });

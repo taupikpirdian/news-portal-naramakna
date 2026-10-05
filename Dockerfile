@@ -1,55 +1,77 @@
+# syntax=docker/dockerfile:1.7
+
+FROM node:22-bookworm-slim AS frontend
+
+WORKDIR /build
+
+COPY package.json ./
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm install --no-audit --no-fund
+
+COPY vite.config.js ./
+COPY app ./app
+COPY resources ./resources
+COPY public ./public
+
+RUN npm run build
+
 FROM php:8.3-fpm
 
 WORKDIR /var/www
 
-# System deps & Node.js
-RUN apt-get update && apt-get install -y \
+# System dependencies and PHP extensions
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
     git \
-    curl \
     unzip \
     zip \
+    libcurl4-openssl-dev \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
     libicu-dev \
-    nodejs \
-    npm \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-install -j"$(nproc)" curl pdo_mysql mbstring exif pcntl bcmath gd zip intl
 
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy composer & package files FIRST
-COPY composer.json composer.lock package.json ./
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_CACHE_DIR=/tmp/composer-cache \
+    COMPOSER_IPRESOLVE=4 \
+    COMPOSER_MAX_PARALLEL_HTTP=4
+
+# Copy Composer manifests first so dependency installation stays cached
+COPY composer.json composer.lock ./
 
 # Install vendor dependencies
-RUN composer install \
-    --optimize-autoloader \
-    --no-interaction \
-    --no-scripts
-
-# Install npm dependencies
-RUN npm install
+RUN --mount=type=cache,target=/tmp/composer-cache \
+    for attempt in 1 2 3; do \
+        composer install \
+            --no-dev \
+            --prefer-dist \
+            --optimize-autoloader \
+            --no-interaction \
+            --no-progress \
+            --no-scripts && break; \
+        if [ "$attempt" -eq 3 ]; then exit 1; fi; \
+        echo "Composer install failed (attempt $attempt/3); retrying..."; \
+        sleep $((attempt * 10)); \
+    done
 
 # Copy app source
 COPY . .
 
-# Clean esbuild completely and reinstall to fix version mismatch
-RUN rm -rf node_modules/esbuild node_modules/.cache \
-    && npm install --force \
-    && npm cache clean --force
+COPY --from=frontend /build/public/build ./public/build
 
 # Clear package cache and build assets
 RUN rm -f bootstrap/cache/packages.php \
     && php artisan package:discover --ansi || true
 
-# Build frontend assets
-RUN npm run build
-
 # Permissions
-RUN chown -R www-data:www-data /var/www \
+RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 9000

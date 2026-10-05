@@ -80,7 +80,7 @@ class HomeController extends Controller
         $categories = $this->apiService->getCategories((int)$limit, filter_var($mainCategoriesOnly, FILTER_VALIDATE_BOOLEAN));
 
         // limit 12 dan random order
-        $categories = collect($categories)->random(12)->values()->all();
+        $categories = collect($categories)->random(10)->values()->all();
 
         return response()->json([
             'success' => true,
@@ -239,6 +239,31 @@ class HomeController extends Controller
             'latestPosts' => $latestPosts,
             'seo' => $seo,
             'postId' => $postId,
+        ]);
+    }
+
+    /**
+     * API endpoint for searching posts (AJAX)
+     */
+    public function searchPosts(Request $request)
+    {
+        $query = $request->query('search', '');
+
+        if (strlen($query) < 2) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'total' => 0,
+            ]);
+        }
+
+        $limit = $request->query('limit', 10);
+        $result = $this->apiService->searchPosts($query, (int)$limit);
+
+        return response()->json([
+            'success' => true,
+            'data' => $result['data'],
+            'total' => $result['total'],
         ]);
     }
 

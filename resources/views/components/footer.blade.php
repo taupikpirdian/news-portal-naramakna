@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
             <div>
-                <img src="{{ $footerLogoBase64 }}" alt="Naramakna" class="h-14 md:h-16 w-auto mb-4">
+                <img src="{{ $footerLogoBase64 }}" alt="Naramakna" class="h-14 md:h-16 w-auto mb-4" loading="lazy">
                 <p class="text-sm mb-4">
                     Platform media digital yang menghadirkan informasi berkualitas dan perspektif mendalam untuk membantu Anda cerdas dalam memaknai berbagai peristiwa dan isu terkini.
                 </p>

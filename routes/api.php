@@ -16,6 +16,9 @@ Route::prefix('admin/cache')->name('api.admin.cache.')->group(function () {
 // Google Ads API Routes
 // Gunakan API key untuk autentikasi (X-API-Key header)
 Route::prefix('google-ads')->name('api.google_ads.')->group(function () {
+    // Public endpoint for fetching ads config (no authentication required)
+    Route::get('/config', [\App\Http\Controllers\GoogleAdsController::class, 'getAdsConfig'])->name('config');
+
     // Public endpoint for fetching ad data (no authentication required)
     Route::get('/fetch-ad', [\App\Http\Controllers\GoogleAdsController::class, 'fetchAd'])->name('fetch_ad');
 
@@ -52,3 +55,10 @@ Route::prefix('google-ads')->name('api.google_ads.')->group(function () {
 // Ads Serving Routes
 // Public endpoint for serving ads
 Route::get('/ads/serve', [\App\Http\Controllers\AdsController::class, 'serve'])->name('api.ads.serve');
+
+// Instagram Routes
+// Public endpoint for Instagram media
+Route::prefix('v1')->name('v1.')->group(function () {
+    Route::get('/instagram/media', [\App\Http\Controllers\InstagramController::class, 'getMedia'])->name('instagram.media');
+});
+
